@@ -63,24 +63,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return jwtConverter;
     }
 
-
-    /*
-    @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
-    
-    public String getAccessToken() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-        final OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(
-                        oauthToken.getAuthorizedClientRegistrationId(),
-                        oauthToken.getName());
-
-        return client.getAccessToken().getTokenValue();
-    }
-    
-     */
-
-
 }
 
