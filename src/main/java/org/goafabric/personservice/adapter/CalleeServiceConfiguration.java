@@ -11,7 +11,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
@@ -47,14 +46,14 @@ public class CalleeServiceConfiguration {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
+    //todo: token refresh missing
     public String getAccessToken() {
-        //todo: token refresh missing
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (OAuth2AuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
-            final OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+            return authorizedClientService.loadAuthorizedClient(
                     ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),
-                    authentication.getName());
-            return client.getAccessToken().getTokenValue();
+                    authentication.getName()
+            ).getAccessToken().getTokenValue();
         } else if (JwtAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
             return ((AbstractOAuth2Token) authentication.getCredentials()).getTokenValue();
         } else {
