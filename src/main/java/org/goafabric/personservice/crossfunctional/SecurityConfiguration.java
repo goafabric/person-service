@@ -35,17 +35,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         if (authEnabled) {
             http
-                    .authorizeRequests(authorize -> authorize
-                            .antMatchers(
-                                    "/actuator/**",
-                                    "/", "/welcome/**"
-                            ).permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .oauth2Login(Customizer.withDefaults())
-                    .oauth2ResourceServer()
-                    .jwt()
-                    .jwtAuthenticationConverter(jwtAuthenticationConverter());
+                .authorizeRequests(authorize -> authorize
+                        .antMatchers(
+                                "/actuator/**",
+                                "/", "/welcome/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(Customizer.withDefaults())
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthenticationConverter());
         } else {
             http.authorizeRequests(authorize -> authorize.anyRequest().permitAll());
         }
