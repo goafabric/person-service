@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.AbstractOAuth2Token;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -46,19 +48,18 @@ public class CalleeServiceConfiguration {
     private OAuth2AuthorizedClientService authorizedClientService;
 
     public String getAccessToken() {
+        //todo: token refresh missing
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!OAuth2AuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+        if (OAuth2AuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+            final OAuth2AuthorizedClient client = authorizedClientService
+                    .loadAuthorizedClient(((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
+                            , authentication.getName());
+            return client.getAccessToken().getTokenValue();
+        } else if (JwtAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+            return ((AbstractOAuth2Token) authentication.getCredentials()).getTokenValue();
+        } else {
             throw new IllegalStateException("Cannot obtain access token for logged in user");
         }
-        //TODO: does not work for backend JWT Bearer Call, also would crash in case of Refresh
-
-        final OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-        final OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(
-                        oauthToken.getAuthorizedClientRegistrationId(),
-                        oauthToken.getName());
-
-        return client.getAccessToken().getTokenValue();
     }
 
 }
