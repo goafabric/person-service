@@ -22,9 +22,28 @@ spring.zipkin.enabled: false
 
 
 #security
-security:
-  authentication:
-    enabled: true
+security.authentication.enabled: true
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: person-service
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+        provider:
+          keycloak:
+            authorization-uri: https://kubernetes/oidc/auth/realms/tenant-0/protocol/openid-connect/auth
+
+            token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+            userinfo-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:30100/auth/realms/tenant-0
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
 #persistence
 spring.datasource.url: jdbc:h2:mem:persondb
