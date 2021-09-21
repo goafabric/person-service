@@ -51,9 +51,9 @@ public class CalleeServiceConfiguration {
         //todo: token refresh missing
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (OAuth2AuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
-            final OAuth2AuthorizedClient client = authorizedClientService
-                    .loadAuthorizedClient(((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId()
-                            , authentication.getName());
+            final OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                    ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),
+                    authentication.getName());
             return client.getAccessToken().getTokenValue();
         } else if (JwtAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
             return ((AbstractOAuth2Token) authentication.getCredentials()).getTokenValue();
