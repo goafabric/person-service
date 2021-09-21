@@ -1,5 +1,6 @@
 package org.goafabric.personservice.adapter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -22,6 +23,7 @@ import java.util.Collections;
 
 @Configuration
 @TypeHint(types = org.goafabric.personservice.adapter.Callee.class)
+@Slf4j
 public class CalleeServiceConfiguration {
 
     @Bean
@@ -57,7 +59,8 @@ public class CalleeServiceConfiguration {
         } else if (JwtAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
             return ((AbstractOAuth2Token) authentication.getCredentials()).getTokenValue();
         } else {
-            throw new IllegalStateException("Cannot obtain access token for logged in user");
+            log.warn("Cannot obtain access token for logged in user");
+            return "";
         }
     }
 
