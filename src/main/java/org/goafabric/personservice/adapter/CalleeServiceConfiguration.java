@@ -73,7 +73,7 @@ public class CalleeServiceConfiguration {
                     .build();
             return new HttpComponentsClientHttpRequestFactory(httpClient);
         } catch (Exception e) {
-            log.error("cannot initialize ssl !");
+            log.error("cannot initialize ssl !", e);
             return null;
         }
     }
