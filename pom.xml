@@ -13,7 +13,7 @@
 
     <groupId>org.goafabric</groupId>
     <artifactId>person-service</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.2-tls-SNAPSHOT</version>
 
     <properties>
         <docker.baseimage.multi>ibm-semeru-runtimes:open-17.0.2_8-jre-focal@sha256:727543ea31c493f0f4405d553d4cb28068fd38200c7d3d3962d691aa91a24d55</docker.baseimage.multi>
@@ -112,6 +112,13 @@
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt-hibernate5</artifactId>
+        </dependency>
+
+        <!-- TLS -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
         </dependency>
 
         <!-- test -->
