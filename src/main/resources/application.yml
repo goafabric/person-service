@@ -57,3 +57,6 @@ logging.level.org.hibernate.SQL: "INFO"
 logging.level.org.goafabric.personservice.persistence.audit: "INFO"
 
 #logging.pattern.console: "%white(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable"
+
+my.trust-store: "classpath:truststore/root.p12"
+my.trust-store-password: "goafabric"
