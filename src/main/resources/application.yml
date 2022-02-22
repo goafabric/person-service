@@ -43,7 +43,7 @@ database.provisioning.goals: -import-demo-data
 adapter:
   timeout: 10000
   calleeservice:
-    url: http://localhost:50900
+    url: https://kubernetes:50900
     user: YWRtaW4=
     password: YWRtaW4=
 
