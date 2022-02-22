@@ -60,3 +60,6 @@ logging.level.org.goafabric.personservice.persistence.audit: "INFO"
 
 my.trust-store: "classpath:truststore/root.p12"
 my.trust-store-password: "goafabric"
+
+#  server.ssl.trust-store: "classpath:truststore/root.p12"
+#  server.ssl.trust-store-password: "goafabric"
