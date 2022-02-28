@@ -36,7 +36,7 @@ public class CalleeServiceConfiguration {
         final RestTemplate restTemplate = new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofMillis(timeout))
                 .setReadTimeout(Duration.ofMillis(timeout))
-                .requestFactory(this::sslRequestFactory)
+                //.requestFactory(this::sslRequestFactory)
                 .build();
 
         addBasicAuthAndStuff(user, password, restTemplate);
