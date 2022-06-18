@@ -1,5 +1,6 @@
 package org.goafabric.personservice;
 
+import org.goafabric.flywaydb.FlywayConfiguration;
 import org.goafabric.personservice.persistence.DatabaseProvisioning;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -17,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 
 @SpringBootApplication
+@Import(FlywayConfiguration.class)
 public class Application {
 
     public static void main(String[] args){
