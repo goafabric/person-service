@@ -396,6 +396,7 @@
                                                 <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-J-Xmx6000m --initialize-at-build-time=org.flywaydb.NativePathLocationScanner</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
                                             </env>
                                             <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                                            <buildpacks><buildpack>gcr.io/paketo-buildpacks/java-native-image:7.19.0</buildpack></buildpacks>
                                         </image>
                                     </configuration>
                                 </execution>
