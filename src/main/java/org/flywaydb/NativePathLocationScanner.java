@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.goafabric.flywaydb;
+package org.flywaydb;
 
 import org.flywaydb.core.api.Location;
 import org.flywaydb.core.api.resource.LoadableResource;

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.goafabric.flywaydb;
+package org.flywaydb;
 
 import com.oracle.svm.core.annotate.AutomaticFeature;
-import org.flywaydb.NativePathLocationScanner;
 import org.graalvm.nativeimage.hosted.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

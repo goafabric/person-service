@@ -1,6 +1,6 @@
 package org.goafabric.personservice;
 
-import org.goafabric.flywaydb.FlywayConfiguration;
+import org.flywaydb.FlywayConfiguration;
 import org.goafabric.personservice.persistence.DatabaseProvisioning;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

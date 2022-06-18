@@ -1,4 +1,4 @@
-package org.goafabric.flywaydb;
+package org.flywaydb;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.nativex.hint.*;

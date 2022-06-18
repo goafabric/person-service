@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.goafabric.flywaydb;
+package org.flywaydb;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
-import org.flywaydb.NativePathLocationScanner;
 import org.flywaydb.core.api.Location;
 import org.flywaydb.core.api.resource.LoadableResource;
 import org.flywaydb.core.internal.scanner.LocationScannerCache;
