@@ -10,11 +10,6 @@
     <name>goa parent pom</name>
     <description>goa parent pom</description>
 
-    <scm>
-        <url>https://github.com/goafabric/goa-parent.git</url>
-        <tag>HEAD</tag>
-    </scm>
-    
     <properties>
         <!-- Project -->
         <java.version>17</java.version>
