@@ -1,4 +1,4 @@
-package org.flywaydb;
+package org.goafabric.personservice.crossfunctional;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.AutomaticFeature;
