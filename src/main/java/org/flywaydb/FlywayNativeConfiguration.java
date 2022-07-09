@@ -1,4 +1,4 @@
-package org.goafabric.personservice.crossfunctional;
+package org.flywaydb;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.AutomaticFeature;
@@ -34,7 +34,7 @@ import java.util.stream.Stream;
         resources = {@ResourceHint(patterns = {"org/flywaydb/core/internal/version.txt"})}
 )
 //also mind the --initialize-at-build-time inside parent pom
-public class FlywayConfiguration {
+public class FlywayNativeConfiguration {
 }
 
 @AutomaticFeature
