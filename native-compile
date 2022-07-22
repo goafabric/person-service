@@ -1,7 +1,9 @@
 #!/bin/bash
 mvn clean package -Pdocker-image-native,fat-jar -DskipTests=true -Dspring-boot.build-image.skip=true
 (rm -rf target/native && mkdir -p target/native && cd target/native && jar -xvf ../*-fat.jar >/dev/null 2>&1 && cp -R META-INF BOOT-INF/classes \
-&& $GRAALVM_HOME/bin/native-image -H:Name=my-app --initialize-at-build-time=org.goafabric.personservice.crossfunctional.NativePathLocationScanner \
+&& $GRAALVM_HOME/bin/native-image -H:Name=my-app \
+--initialize-at-build-time=org.goafabric.personservice.crossfunctional.NativePathLocationScanner \
+--trace-object-instantiation=org.flywaydb.core.internal.logging.buffered.BufferedLogCreator \
 -cp BOOT-INF/classes:`find BOOT-INF/lib | tr '\n' ':'`)
 
 
