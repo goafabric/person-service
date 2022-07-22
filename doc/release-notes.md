@@ -2,6 +2,7 @@
 - owasp added to parent pom
 - upgrade to Spring Native 0.12.1
 
+
 #1.2.3
 - upgrade to Spring Boot 2.7.1
 - upgrade to Spring Cloud 2021.0.3
