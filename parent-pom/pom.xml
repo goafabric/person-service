@@ -21,9 +21,9 @@
         <docker.baseimage.multi>ibm-semeru-runtimes:open-17.0.3_7-jre-focal@sha256:e89df25f95379321ef61d5119eee68c28884ff8f8c5deaf2d474f3cdb1dbbb7e</docker.baseimage.multi>
 
         <!-- Spring Boot -->
-        <spring.boot.version>2.7.1</spring.boot.version>
+        <spring.boot.version>2.7.2</spring.boot.version>
         <spring.cloud.version>2021.0.3</spring.cloud.version>
-        <spring.native.version>0.12.0</spring.native.version>
+        <spring.native.version>0.12.1</spring.native.version>
         <spring.native.buildpack.version>gcr.io/paketo-buildpacks/java-native-image:7.19.0</spring.native.buildpack.version>
         <spring.native.check.integrity.argument></spring.native.check.integrity.argument>
 
@@ -378,7 +378,7 @@
                                             <env>
                                                 <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
                                                 <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
-                                                <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-J-Xmx6000m --initialize-at-build-time=org.goafabric.personservice.crossfunctional.NativePathLocationScanner</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                                <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-J-Xmx6000m --initialize-at-build-time=org.goafabric.personservice.crossfunctional.NativePathLocationScanner --initialize-at-build-time=org.flywaydb.core.internal.logging.buffered.BufferedLogCreator</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
                                             </env>
                                             <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                                             <buildpacks><buildpack>${spring.native.buildpack.version}</buildpack></buildpacks>
