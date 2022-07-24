@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 
 @SpringBootApplication
-@ImportRuntimeHints(Application.DemoControllerRuntimeHints.class)
+@ImportRuntimeHints(Application.ApplicationRuntimeHints.class)
 public class Application {
 
     public static void main(String[] args){
@@ -35,7 +35,7 @@ public class Application {
 
     }
 
-    static class DemoControllerRuntimeHints implements RuntimeHintsRegistrar {
+    static class ApplicationRuntimeHints implements RuntimeHintsRegistrar {
         @Override
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
             Arrays.stream(Callee.class.getConstructors()).forEach(
