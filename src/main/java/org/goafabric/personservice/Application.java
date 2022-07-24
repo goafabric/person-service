@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportRuntimeHints;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 import java.util.Arrays;
 
@@ -41,6 +42,12 @@ public class Application {
                     r -> hints.reflection().registerConstructor(r));
             Arrays.stream(Callee.class.getDeclaredMethods()).forEach(
                     r -> hints.reflection().registerMethod(r));
+
+            Arrays.stream(SimpleClientHttpRequestFactory.class.getConstructors()).forEach(
+                    r -> hints.reflection().registerConstructor(r));
+            Arrays.stream(SimpleClientHttpRequestFactory.class.getMethods()).forEach(
+                    r -> hints.reflection().registerMethod(r));
+
         }
 
     }
