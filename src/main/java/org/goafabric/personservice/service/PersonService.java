@@ -6,7 +6,6 @@ import org.goafabric.personservice.service.dto.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RequestMapping(value = "/persons", produces = "application/json")
@@ -38,7 +37,7 @@ public class PersonService {
 
 
     @PostMapping(value = "save", consumes = "application/json")
-    public Person save(@RequestBody @Valid Person person) {
+    public Person save(@RequestBody Person person) {
         return personLogic.save(person);
     }
 
