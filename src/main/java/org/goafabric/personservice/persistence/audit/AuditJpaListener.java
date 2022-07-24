@@ -1,3 +1,4 @@
+/*
 package org.goafabric.personservice.persistence.audit;
 
 import jakarta.persistence.*;
@@ -69,5 +70,5 @@ public class AuditJpaListener implements ApplicationContextAware {
         }
     }
 }
-
+*/
 
