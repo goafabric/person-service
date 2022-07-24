@@ -6,4 +6,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'callee-service'
+rootProject.name = 'person-service'
