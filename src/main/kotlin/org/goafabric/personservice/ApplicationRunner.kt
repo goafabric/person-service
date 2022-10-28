@@ -29,14 +29,7 @@ class ApplicationRunner {
 
     internal class ApplicationRuntimeHints : RuntimeHintsRegistrar {
         override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-            //openapi
-            hints.reflection().registerType(Module::class.java, MemberCategory.INVOKE_DECLARED_METHODS)
-            hints.reflection().registerType(ModuleLayer::class.java, MemberCategory.INVOKE_DECLARED_METHODS)
-            hints.reflection().registerType(java.lang.module.Configuration::class.java, MemberCategory.INVOKE_DECLARED_METHODS)
-            hints.reflection().registerType(ResolvedModule::class.java, MemberCategory.INVOKE_DECLARED_METHODS)
-
             //data jpa
-            //hints.reflection().registerType(org.springframework.data.repository.query.FluentQuery::class.java, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS)
             hints.reflection().registerType(org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery::class.java, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS)
         }
     }
