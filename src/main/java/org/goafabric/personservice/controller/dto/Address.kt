@@ -1,4 +1,4 @@
-package org.goafabric.personservice.service.dto
+package org.goafabric.personservice.controller.dto
 
 data class Address (
     val id: String? = null,

@@ -1,4 +1,4 @@
-package org.goafabric.personservice.service.dto
+package org.goafabric.personservice.controller.dto
 
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Null

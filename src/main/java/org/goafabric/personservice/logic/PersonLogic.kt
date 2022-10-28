@@ -2,7 +2,7 @@ package org.goafabric.personservice.logic
 
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
 import org.goafabric.personservice.persistence.PersonRepository
-import org.goafabric.personservice.service.dto.Person
+import org.goafabric.personservice.controller.dto.Person
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

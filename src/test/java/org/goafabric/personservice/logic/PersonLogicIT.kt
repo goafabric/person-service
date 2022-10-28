@@ -3,9 +3,8 @@ package org.goafabric.personservice.logic
 
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.crossfunctional.HttpInterceptor
-import org.goafabric.personservice.persistence.domain.AddressBo
-import org.goafabric.personservice.service.dto.Address
-import org.goafabric.personservice.service.dto.Person
+import org.goafabric.personservice.controller.dto.Address
+import org.goafabric.personservice.controller.dto.Person
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
