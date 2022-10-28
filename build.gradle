@@ -4,7 +4,6 @@ plugins {
 	id 'org.graalvm.buildtools.native' version '0.9.16'
 	id 'com.google.cloud.tools.jib' version '3.3.0'
 	id 'jacoco'
-	id 'java'
 
 	//kotlin
 	id 'org.jetbrains.kotlin.jvm' version '1.7.20'
