@@ -3,12 +3,15 @@ package org.goafabric.personservice.persistence.audit
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.goafabric.personservice.crossfunctional.HttpInterceptor
+import org.goafabric.personservice.persistence.multitenancy.TenantInspector
 import org.slf4j.LoggerFactory
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
+@RegisterReflectionForBinding(AuditBean.AuditEvent::class)
 /** A class that audits all registered entities with @EntityListeners and writes the Audit Entries to the database  */
 class AuditBean {
     private val log = LoggerFactory.getLogger(this::class.java)
