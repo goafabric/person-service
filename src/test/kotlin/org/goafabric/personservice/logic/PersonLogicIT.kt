@@ -16,7 +16,7 @@ internal class PersonLogicIT (
 
     @Test
     fun findById() {
-        //HttpInterceptor.setTenantId("0")
+        HttpInterceptor.setTenantId("0")
         val persons = personLogic.findAll()
         assertThat(persons).isNotNull.hasSize(3)
         val person = personLogic.getById(persons[0].id!!)

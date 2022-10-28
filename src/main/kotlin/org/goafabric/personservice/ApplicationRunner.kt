@@ -1,5 +1,6 @@
 package org.goafabric.personservice
 
+import org.goafabric.personservice.persistence.DatabaseProvisioning
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
@@ -17,8 +18,9 @@ import java.lang.module.ResolvedModule
 @ImportRuntimeHints(ApplicationRunner.ApplicationRuntimeHints::class)
 class ApplicationRunner {
     @Bean
-    fun runner(context: ApplicationContext?): CommandLineRunner? {
+    fun runner(context: ApplicationContext?, databaseProvisioning: DatabaseProvisioning): CommandLineRunner? {
         return CommandLineRunner { args: Array<String> ->
+            databaseProvisioning.run()
             if (args.isNotEmpty() && "-check-integrity" == args[0]) {
                 SpringApplication.exit(context, ExitCodeGenerator { 0 })
             }
