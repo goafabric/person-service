@@ -1,7 +1,7 @@
 #application
 server:
   port: 50800
-  tomcat.max-threads: 20
+  tomcat.threads.max: 20
 
 #monitoring
 management:
