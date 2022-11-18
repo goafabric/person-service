@@ -1,10 +1,10 @@
 package org.goafabric.personservice.persistence
 
+import org.goafabric.personservice.controller.dto.Address
+import org.goafabric.personservice.controller.dto.Person
 import org.slf4j.LoggerFactory
 import org.goafabric.personservice.crossfunctional.HttpInterceptor
-import org.goafabric.personservice.persistence.domain.AddressBo
-import org.goafabric.personservice.persistence.domain.PersonBo
-import org.springframework.beans.factory.annotation.Autowired
+import org.goafabric.personservice.logic.PersonLogic
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ExitCodeGenerator
 import org.springframework.boot.SpringApplication
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class DatabaseProvisioning(
-        val personRepository: PersonRepository,
-        val applicationContext: ApplicationContext) {
+    val personLogic: PersonLogic,
+    val applicationContext: ApplicationContext) {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
@@ -34,7 +34,8 @@ class DatabaseProvisioning(
     }
 
     private fun importDemoData() {
-        if (personRepository.findAll().isEmpty()) {
+        HttpInterceptor.setTenantId("0")
+        if (personLogic.findAll().isEmpty()) {
             HttpInterceptor.setTenantId("0")
             insertData()
             HttpInterceptor.setTenantId("5a2f")
@@ -43,31 +44,32 @@ class DatabaseProvisioning(
     }
 
     private fun insertData() {
-        personRepository.save(
-            PersonBo(
+        personLogic.save(
+            Person(
                 id = null,
                 firstName = "Homer", lastName = "Simpson",
                 address = (createAddress("Evergreen Terrace 1"))
         ))
 
-        personRepository.save(
-            PersonBo(
+        personLogic.save(
+            Person(
                 id = null,
                 firstName = "Bart", lastName = "Simpson",
                 address = (createAddress("Evergblue Terrace 1"))
         ))
 
-        personRepository.save(
-        PersonBo(
+        personLogic.save(
+        Person(
             id = null,
             firstName = "Monty", lastName = "Burns",
             address = (createAddress("Burns Mansion"))
-        ))
+        )
+        )
         
     }
 
-    private fun createAddress(street: String): AddressBo {
-        return AddressBo(street = street, city = "Springfield " + HttpInterceptor.getTenantId())
+    private fun createAddress(street: String): Address {
+        return Address(street = street, city = "Springfield " + HttpInterceptor.getTenantId())
     }
     
 }
