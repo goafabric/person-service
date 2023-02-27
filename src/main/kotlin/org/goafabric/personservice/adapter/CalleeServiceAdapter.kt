@@ -1,10 +1,8 @@
 package org.goafabric.personservice.adapter
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
-import org.goafabric.personservice.persistence.multitenancy.TenantInspector
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
