@@ -56,7 +56,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
 	//adapter
-	implementation "io.github.resilience4j:resilience4j-spring-boot2:1.7.0"
+	implementation "io.github.resilience4j:resilience4j-spring-boot2:1.7.0" // we have to use old resilience4j because 2.x clashes with aot + kotlin
 
 	//code generation
 	compileOnly 'org.projectlombok:lombok'
