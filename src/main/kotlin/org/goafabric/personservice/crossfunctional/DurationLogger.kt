@@ -1,9 +1,10 @@
-package org.goafabric.personservice.crossfunctional
+package org.goafabric.calleeservice.crossfunctional
 
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.reflect.MethodSignature
+import org.goafabric.personservice.crossfunctional.HttpInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
@@ -23,7 +24,7 @@ import java.util.stream.Collectors
 class DurationLogger {
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    @Around("execution(public * org.goafabric.personservice.logic.PersonLogic.*(..))")
+    @Around("@within(org.goafabric.calleeservice.crossfunctional.DurationLog)")
     @Throws(Throwable::class)
     fun around(joinPoint: ProceedingJoinPoint): Any {
         val startTime = System.currentTimeMillis()

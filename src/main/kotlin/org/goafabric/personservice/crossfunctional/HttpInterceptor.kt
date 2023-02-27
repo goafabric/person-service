@@ -1,5 +1,9 @@
 package org.goafabric.personservice.crossfunctional
 
+import io.micrometer.observation.Observation
+import io.micrometer.observation.ObservationPredicate
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -10,25 +14,16 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 
 @Configuration
+@Slf4j
 class HttpInterceptor : WebMvcConfigurer {
-    companion object {
-        private val tenantId = ThreadLocal<String>()
-        private val userName = ThreadLocal<String>()
 
-        fun getTenantId(): String? { return tenantId.get() }
-        fun getUserName(): String? { return userName.get() }
-        fun setTenantId(tenantId: String?) { HttpInterceptor.tenantId.set(tenantId) }
-    }
-    
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(object : HandlerInterceptor {
             override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-                tenantId.set(if (request.getHeader("X-TenantId") != null) request.getHeader("X-TenantId") else "0") //TODO
-                userName.set(if (request.getHeader("X-Auth-Request-Preferred-Username") != null) request.getHeader("X-Auth-Request-Preferred-Username") else SecurityContextHolder.getContext().authentication.name)
+                tenantId.set(request.getHeader("X-TenantId"))
+                userName.set(request.getHeader("X-Auth-Request-Preferred-Username"))
                 return true
             }
 
@@ -39,18 +34,33 @@ class HttpInterceptor : WebMvcConfigurer {
         })
     }
 
+    companion object {
+        private val tenantId = ThreadLocal<String>()
+        private val userName = ThreadLocal<String>()
 
-    @Value("\${security.authentication.enabled}")
-    private val isAuthenticationEnabled: Boolean = true
+        fun setTenantId(tenantId: String) {
+            Companion.tenantId.set(tenantId)
+        }
+
+        fun getTenantId(): String {
+            return if (tenantId.get() != null) tenantId.get() else "0" //tdo
+        }
+
+        fun getUserName(): String {
+            return if (userName.get() != null) userName.get() else if (SecurityContextHolder.getContext().authentication != null) SecurityContextHolder.getContext().authentication.name else ""
+        }
+    }
+
 
     @Bean
     @Throws(Exception::class)
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        if (isAuthenticationEnabled) {
-            http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable()
-        } else {
-            http.authorizeHttpRequests().anyRequest().permitAll()
-        }
-        return http.build()
+    fun filterChain(http: HttpSecurity, @Value("\${security.authentication.enabled:true}") isAuthenticationEnabled: Boolean): SecurityFilterChain {
+        return if (isAuthenticationEnabled) http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic()
+            .and().csrf().disable().build() else http.authorizeHttpRequests().anyRequest().permitAll().and().build()
+    }
+
+    @Bean
+    fun disableHttpServerObservationsFromName(): ObservationPredicate {
+        return ObservationPredicate { name: String, context: Observation.Context? -> !name.startsWith("spring.security.") }
     }
 }
