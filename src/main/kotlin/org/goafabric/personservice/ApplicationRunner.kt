@@ -1,6 +1,5 @@
 package org.goafabric.personservice
 
-import io.github.resilience4j.spring6.circuitbreaker.configure.CircuitBreakerAspect
 import org.goafabric.personservice.persistence.DatabaseProvisioning
 import org.postgresql.util.PGobject
 import org.springframework.aot.hint.MemberCategory
@@ -35,6 +34,7 @@ class ApplicationRunner {
         override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
             //data jpa
             hints.reflection().registerType(org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery::class.java, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS)
+            /*
             hints.reflection().registerType(
                 CircuitBreakerAspect::class.java
             ) { builder: TypeHint.Builder ->
@@ -42,6 +42,8 @@ class ApplicationRunner {
                     MemberCategory.INVOKE_DECLARED_METHODS
                 )
             }
+            
+             */
 
         }
     }
