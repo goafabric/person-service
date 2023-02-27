@@ -1,9 +1,11 @@
 package org.goafabric.personservice
 
 import org.goafabric.personservice.persistence.DatabaseProvisioning
+import org.postgresql.util.PGobject
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.ExitCodeGenerator
 import org.springframework.boot.SpringApplication
@@ -16,6 +18,7 @@ import java.lang.module.ResolvedModule
 
 @Configuration
 @ImportRuntimeHints(ApplicationRunner.ApplicationRuntimeHints::class)
+@RegisterReflectionForBinding(PGobject::class)
 class ApplicationRunner {
     @Bean
     fun runner(context: ApplicationContext?, databaseProvisioning: DatabaseProvisioning): CommandLineRunner? {
