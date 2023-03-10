@@ -46,21 +46,18 @@ class DatabaseProvisioning(
     private fun insertData() {
         personLogic.save(
             Person(
-                id = null,
                 firstName = "Homer", lastName = "Simpson",
                 address = (createAddress("Evergreen Terrace 1"))
         ))
 
         personLogic.save(
             Person(
-                id = null,
                 firstName = "Bart", lastName = "Simpson",
                 address = (createAddress("Evergblue Terrace 1"))
         ))
 
         personLogic.save(
         Person(
-            id = null,
             firstName = "Monty", lastName = "Burns",
             address = (createAddress("Burns Mansion"))
         )
