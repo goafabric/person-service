@@ -1,14 +1,13 @@
 package org.goafabric.personservice.persistence.multitenancy
 
 import org.goafabric.personservice.crossfunctional.HttpInterceptor
-import org.goafabric.personservice.persistence.audit.AuditJpaListener
 import jakarta.persistence.Access
 import jakarta.persistence.AccessType
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 
 @MappedSuperclass
-@EntityListeners(AuditJpaListener::class)
+@EntityListeners(AuditListener::class)
 abstract class TenantAware {
     companion object {
         const val TENANT_FILTER = "TENANT_FILTER"
