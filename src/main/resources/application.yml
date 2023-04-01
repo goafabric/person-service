@@ -22,6 +22,7 @@ management.zipkin.tracing.endpoint: "http://localhost:9411/api/v2/spans"
 management.tracing.sampling.probability: "1.0"
 management.tracing.propagation.type: "B3"
 management.tracing.enabled: "true"
+logging.level.zipkin2.reporter: "ERROR"
 
 #security
 security.authentication.enabled: true
@@ -30,7 +31,7 @@ spring.security.user.name: "admin"
 spring.security.user.password: "admin"
 
 #persistence
-spring.datasource.url: jdbc:h2:mem:persondb
+spring.datasource.url: jdbc:h2:mem:person
 #spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
 spring.datasource.username: postgres
 spring.datasource.password: postgres

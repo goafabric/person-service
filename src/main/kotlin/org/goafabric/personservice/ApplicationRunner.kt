@@ -33,8 +33,6 @@ class ApplicationRunner {
 
     internal class ApplicationRuntimeHints : RuntimeHintsRegistrar {
         override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-            //data jpa
-            hints.reflection().registerType(org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery::class.java, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS)
             hints.reflection().registerType(CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
         }
     }
