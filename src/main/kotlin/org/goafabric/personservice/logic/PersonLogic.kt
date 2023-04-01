@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid
+import org.goafabric.calleeservice.crossfunctional.DurationLog
 
 @Component
 @Transactional
+@DurationLog
 class PersonLogic (
     private val personMapper : PersonMapper,
     private val personRepository: PersonRepository,
