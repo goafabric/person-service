@@ -47,6 +47,11 @@ class HttpInterceptor : WebMvcConfigurer {
         fun getUserName(): String {
             return if (userName.get() != null) userName.get() else if (SecurityContextHolder.getContext().authentication != null) SecurityContextHolder.getContext().authentication.name else ""
         }
+
+        fun getCompanyId(): String {
+            return "1";
+        }
+
     }
 
 

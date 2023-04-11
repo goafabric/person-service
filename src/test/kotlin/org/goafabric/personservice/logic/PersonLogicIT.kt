@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.crossfunctional.HttpInterceptor
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.persistence.PersonRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -12,7 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 internal class PersonLogicIT (
     @Autowired
-    private val personLogic: PersonLogic) {
+    private val personLogic: PersonLogic,
+    private val personRepository: PersonRepository) {
 
     @Test
     fun findById() {
@@ -66,5 +68,6 @@ internal class PersonLogicIT (
         )
 
         assertThat(person).isNotNull
+        personRepository.deleteById(person?.id ?: "")
     }
 }

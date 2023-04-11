@@ -1,7 +1,6 @@
 package org.goafabric.personservice.persistence.domain
 
-import org.goafabric.personservice.crossfunctional.HttpInterceptor
-import org.goafabric.personservice.persistence.multitenancy.TenantAware
+import org.goafabric.personservice.persistence.multitenancy.AuditAware
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Where
 import jakarta.persistence.*
@@ -9,7 +8,6 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "person")
-@Where(clause = TenantAware.TENANT_FILTER)
 class PersonBo (
     @Id
     @GeneratedValue(generator = "uuid")
@@ -24,7 +22,7 @@ class PersonBo (
 
     @Version //optimistic locking
     val version: Long? = null
-) : TenantAware() {
+) : AuditAware() {
     override fun getMyId(): String {
         return id ?: ""
     }

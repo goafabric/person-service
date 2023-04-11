@@ -45,17 +45,17 @@ class AuditListener : ApplicationContextAware {
 
     @PostLoad
     fun afterRead(`object`: Any) {
-        insertAudit(DbOperation.READ, (`object` as TenantAware).getMyId(), `object`, `object`)
+        insertAudit(DbOperation.READ, (`object` as AuditAware).getMyId(), `object`, `object`)
     }
 
     @PostPersist
     fun afterCreate(`object`: Any) {
-        insertAudit(DbOperation.CREATE, (`object` as TenantAware).getMyId(), null, `object`)
+        insertAudit(DbOperation.CREATE, (`object` as AuditAware).getMyId(), null, `object`)
     }
 
     @PostUpdate
     fun afterUpdate(`object`: Any) {
-        val id: String = (`object` as TenantAware).getMyId()
+        val id: String = (`object` as AuditAware).getMyId()
         insertAudit(
             DbOperation.UPDATE, id,
             context!!.getBean(
@@ -66,7 +66,7 @@ class AuditListener : ApplicationContextAware {
 
     @PostRemove
     fun afterDelete(`object`: Any) {
-        insertAudit(DbOperation.DELETE, (`object` as TenantAware).getMyId(), `object`, null)
+        insertAudit(DbOperation.DELETE, (`object` as AuditAware).getMyId(), `object`, null)
     }
 
     private fun insertAudit(operation: DbOperation, referenceId: String, oldObject: Any?, newObject: Any?) {

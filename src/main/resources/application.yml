@@ -31,7 +31,7 @@ spring.security.user.name: "admin"
 spring.security.user.password: "admin"
 
 #persistence
-spring.datasource.url: jdbc:h2:mem:person
+spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
 #spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
 spring.datasource.username: postgres
 spring.datasource.password: postgres
@@ -39,7 +39,9 @@ spring.datasource.password: postgres
 spring.datasource.hikari.maximum-pool-size: "10"
 spring.datasource.hikari.connection-timeout: "10000"
 
-database.provisioning.goals: -import-demo-data
+multi-tenancy.schemas: "0,5a2f"
+multi-tenancy.schema-prefix: "tenant_"
+multi-tenancy.migration.enabled: "true"
 
 #adapter
 adapter:
@@ -69,4 +71,3 @@ logging.level.org.springframework: "INFO"
 logging.level.org.goafabric: "INFO"
 logging.level.org.flywaydb.core: "INFO"
 logging.level.org.hibernate.SQL: "INFO"
-logging.level.org.goafabric.personservice.persistence.audit: "INFO"

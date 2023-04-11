@@ -7,16 +7,7 @@ import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 
 @MappedSuperclass
-@EntityListeners(AuditListener::class)
-abstract class TenantAware {
-    companion object {
-        const val TENANT_FILTER = "TENANT_FILTER"
-    }
-
-    @Access(AccessType.PROPERTY)
-    fun getTenantId(): String? { return HttpInterceptor.getTenantId() }
-
-    fun setTenantId(tenantId: String?) {}
-
+//@EntityListeners(AuditListener::class)
+abstract class AuditAware {
     abstract fun getMyId() : String
 }

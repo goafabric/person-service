@@ -6,7 +6,6 @@ import org.postgresql.util.PGobject
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
-import org.springframework.aot.hint.TypeHint
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.ExitCodeGenerator
