@@ -1,7 +1,6 @@
 package org.goafabric.personservice
 
 import io.github.resilience4j.circuitbreaker.configure.CircuitBreakerAspect
-import org.goafabric.personservice.persistence.DatabaseProvisioning
 import org.postgresql.util.PGobject
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
@@ -21,9 +20,8 @@ import org.springframework.context.annotation.ImportRuntimeHints
 @RegisterReflectionForBinding(PGobject::class)
 class ApplicationRunner {
     @Bean
-    fun runner(context: ApplicationContext?, databaseProvisioning: DatabaseProvisioning): CommandLineRunner? {
+    fun runner(context: ApplicationContext?): CommandLineRunner? {
         return CommandLineRunner { args: Array<String> ->
-            databaseProvisioning.run()
             if (args.isNotEmpty() && "-check-integrity" == args[0]) {
                 SpringApplication.exit(context, ExitCodeGenerator { 0 })
             }

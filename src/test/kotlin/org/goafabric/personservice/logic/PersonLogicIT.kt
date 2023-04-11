@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest
 internal class PersonLogicIT (
     @Autowired
     private val personLogic: PersonLogic,
+
+    @Autowired
     private val personRepository: PersonRepository) {
 
     @Test
@@ -61,7 +63,7 @@ internal class PersonLogicIT (
 
     @Test
     fun save() {
-        HttpInterceptor.setTenantId("4711")
+        HttpInterceptor.setTenantId("0")
         val person = personLogic.save(
             Person(firstName = "Homer", lastName = "Simpson",
                     address = Address(street = "Evergreeen ", city = "Springfield " + HttpInterceptor.getTenantId()))

@@ -96,17 +96,15 @@ class TenantResolver(
     ): CommandLineRunner {
         return CommandLineRunner { args: Array<String> ->
             if (enabled) {
-                listOf(schemas).forEach {
+                listOf("0", "5a2f").forEach {schema ->
                     Flyway.configure()
                         .configuration(flyway.configuration)
-                        .schemas(schema_prefix + it)
-                        .defaultSchema(schema_prefix + it)
+                        .schemas(schema_prefix + schema)
+                        .defaultSchema(schema_prefix + schema)
                         //.placeholders(Map.of("tenantId", it))
                         .load()
                         .migrate()
                 }
-
-              
             }
         }
     }
