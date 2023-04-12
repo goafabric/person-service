@@ -101,7 +101,7 @@ class TenantResolver(
                         .configuration(flyway.configuration)
                         .schemas(schema_prefix + schema)
                         .defaultSchema(schema_prefix + schema)
-                        //.placeholders(Map.of("tenantId", it))
+                        .placeholders(Map.of("tenantId", schema))
                         .load()
                         .migrate()
                 }
