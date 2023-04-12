@@ -92,11 +92,11 @@ class TenantResolver(
     fun schemas(
         flyway: Flyway,
         @Value("\${multi-tenancy.migration.enabled}") enabled: Boolean,
-        @Value("\${multi-tenancy.schemas}") schemas: Array<String?>
+        @Value("\${multi-tenancy.schemas}") schemas: String
     ): CommandLineRunner {
         return CommandLineRunner { args: Array<String> ->
             if (enabled) {
-                listOf("0", "5a2f").forEach {schema ->
+                schemas.split(",").forEach {schema ->
                     Flyway.configure()
                         .configuration(flyway.configuration)
                         .schemas(schema_prefix + schema)
