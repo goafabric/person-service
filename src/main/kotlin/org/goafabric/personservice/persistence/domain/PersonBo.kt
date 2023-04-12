@@ -1,7 +1,7 @@
 package org.goafabric.personservice.persistence.domain
 
 import jakarta.persistence.*
-import org.goafabric.personservice.persistence.multitenancy.AuditAware
+import org.goafabric.personservice.persistence.multitenancy.AuditListener
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.TenantId
 
@@ -26,7 +26,7 @@ class PersonBo (
 
     @Version //optimistic locking
     val version: Long? = null
-) : AuditAware() {
+) : AuditListener.AuditAware() {
     override fun getMyId(): String {
         return id ?: ""
     }

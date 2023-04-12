@@ -19,6 +19,12 @@ import java.util.*
 import javax.sql.DataSource
 
 class AuditListener : ApplicationContextAware {
+    @MappedSuperclass
+    @EntityListeners(AuditListener::class)
+    abstract class AuditAware {
+        abstract fun getMyId() : String
+    }
+
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     enum class DbOperation {
