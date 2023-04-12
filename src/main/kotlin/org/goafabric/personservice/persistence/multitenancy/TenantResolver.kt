@@ -16,7 +16,6 @@ import java.sql.Connection
 import java.sql.SQLException
 import java.util.*
 import java.util.Map
-import java.util.function.Consumer
 import javax.sql.DataSource
 import kotlin.collections.MutableMap
 import kotlin.collections.set
@@ -26,7 +25,7 @@ import kotlin.collections.set
 class TenantResolver(
     private val dataSource: DataSource,
     @param:Value("\${multi-tenancy.default-schema:PUBLIC}") private val defaultSchema: String,
-    @param:Value("\${multi-tenancy.schema-prefix:_}") private val schema_prefix: String
+    @param:Value("\${multi-tenancy.schema-prefix:_}") private val schemaPrefix: String
 ) : CurrentTenantIdentifierResolver, MultiTenantConnectionProvider, HibernatePropertiesCustomizer {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
@@ -49,7 +48,7 @@ class TenantResolver(
     override fun getConnection(schema: String): Connection {
         val connection = dataSource.connection
         connection.schema =
-            if (defaultSchema == schema) defaultSchema else schema_prefix + HttpInterceptor.getTenantId()
+            if (defaultSchema == schema) defaultSchema else schemaPrefix + HttpInterceptor.getTenantId()
         log.info("## setting schema: " + connection.schema)
         return connection
     }
@@ -99,8 +98,8 @@ class TenantResolver(
                 schemas.split(",").forEach {schema ->
                     Flyway.configure()
                         .configuration(flyway.configuration)
-                        .schemas(schema_prefix + schema)
-                        .defaultSchema(schema_prefix + schema)
+                        .schemas(schemaPrefix + schema)
+                        .defaultSchema(schemaPrefix + schema)
                         .placeholders(Map.of("tenantId", schema))
                         .load()
                         .migrate()

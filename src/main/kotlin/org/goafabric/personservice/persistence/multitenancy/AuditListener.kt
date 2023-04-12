@@ -7,6 +7,7 @@ import org.goafabric.personservice.crossfunctional.HttpInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.BeansException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource
@@ -26,7 +27,7 @@ class AuditListener : ApplicationContextAware {
 
     internal data class AuditEvent(
         val id: String,
-        val tenantId: String,
+        val companyId: String,
         val referenceId: String,
         val type: String,
         val operation: DbOperation,
@@ -119,9 +120,12 @@ class AuditListener : ApplicationContextAware {
 
     @Component
     @RegisterReflectionForBinding(AuditEvent::class)
-    internal class AuditJpaInserter(private val dataSource: DataSource) {
-        fun insertAudit(auditEvent: AuditEvent?, `object`: Any) { //we cannot use jpa because of the dynamic table name
-            SimpleJdbcInsert(dataSource).withTableName(getTableName(`object`) + "_audit")
+    internal class AuditJpaInserter(private val dataSource: DataSource,
+                                    @param:Value("\${multi-tenancy.schema-prefix:_}") private val schemaPrefix: String) {
+        fun insertAudit(auditEvent: AuditEvent?, `object`: Any) {
+            SimpleJdbcInsert(dataSource)
+                .withTableName(getTableName(`object`) + "_audit")
+                .withSchemaName(schemaPrefix + HttpInterceptor.getTenantId())
                 .execute(BeanPropertySqlParameterSource(auditEvent!!))
         }
 

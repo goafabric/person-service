@@ -7,7 +7,7 @@ import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 
 @MappedSuperclass
-//@EntityListeners(AuditListener::class)
+@EntityListeners(AuditListener::class)
 abstract class AuditAware {
     abstract fun getMyId() : String
 }
