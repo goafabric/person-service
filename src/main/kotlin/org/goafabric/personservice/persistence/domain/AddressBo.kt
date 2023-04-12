@@ -2,7 +2,7 @@ package org.goafabric.personservice.persistence.domain
 
 import org.hibernate.annotations.GenericGenerator
 import jakarta.persistence.*
-import org.goafabric.personservice.persistence.multitenancy.AuditListener
+import org.goafabric.personservice.persistence.extensions.AuditListener
 import org.hibernate.annotations.TenantId
 
 @Entity
