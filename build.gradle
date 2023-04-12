@@ -99,7 +99,7 @@ tasks.named('bootBuildImage') {
 	environment = ['BP_NATIVE_IMAGE': 'true', 'BP_JVM_VERSION': '17', 'BP_NATIVE_IMAGE_BUILD_ARGUMENTS': '-J-Xmx4000m']
 }
 task dockerImageNativeRun(type:Exec) { dependsOn('bootBuildImage')
-	commandLine 'docker', 'run', "--rm", "${dockerRegistry}/${project.name}-native${archSuffix}:${project.version}", '-check-integrity'
+	commandLine 'docker', 'run', "--rm", "${dockerRegistry}/${project.name}-native${archSuffix}:${project.version}", '-check-integrity', '-Dmulti-tenancy.migration.enabled=false'
 }
 task dockerImageNative(type:Exec) { dependsOn(dockerImageNativeRun)
 	commandLine 'docker', 'push', "${dockerRegistry}/${project.name}-native${archSuffix}:${project.version}"
