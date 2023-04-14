@@ -105,7 +105,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 }
 
 task<Exec>("dockerImageNativeRun") { dependsOn("bootBuildImage")
-	commandLine ("docker", "run", "--rm", "${dockerRegistry}/${project.name}-native${archSuffix}:${project.version}", "-check-integrity")
+	commandLine ("docker", "run", "--rm", "${dockerRegistry}/${project.name}-native${archSuffix}:${project.version}", "-check-integrity", "-Dmulti-tenancy.migration.enabled=false")
 }
 
 task<Exec>("dockerImageNative") { dependsOn("dockerImageNativeRun")
