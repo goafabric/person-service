@@ -16,9 +16,6 @@ plugins {
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
 	kotlin("kapt") version "1.7.22"
-	//id("org.jetbrains.kotlin.plugin.jpa' version '1.7.22'
-	//id 'org.jetbrains.kotlin.kapt' version '1.7.22'
-
 }
 
 repositories {

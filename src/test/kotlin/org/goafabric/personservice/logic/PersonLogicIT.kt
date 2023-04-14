@@ -35,7 +35,7 @@ internal class PersonLogicIT (
     @Test
     fun findAll() {
         HttpInterceptor.setTenantId("0")
-        assertThat(personLogic!!.findAll()).isNotNull.hasSize(3)
+        assertThat(personLogic.findAll()).isNotNull.hasSize(3)
         HttpInterceptor.setTenantId("5a2f")
         assertThat(personLogic.findAll()).isNotNull.hasSize(3)
     }

@@ -84,7 +84,7 @@ class TenantResolver(
     /** Flyway configuration to create database schemas  */
     @Bean
     fun flywayMigrationStrategy(): FlywayMigrationStrategy {
-        return FlywayMigrationStrategy { flyway: Flyway? -> }
+        return FlywayMigrationStrategy { _: Flyway? -> }
     }
 
     @Bean
@@ -93,7 +93,7 @@ class TenantResolver(
         @Value("\${multi-tenancy.migration.enabled}") enabled: Boolean,
         @Value("\${multi-tenancy.schemas}") schemas: String
     ): CommandLineRunner {
-        return CommandLineRunner { args: Array<String> ->
+        return CommandLineRunner { _: Array<String> ->
             if (enabled) {
                 schemas.split(",").forEach {schema ->
                     Flyway.configure()
