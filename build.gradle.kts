@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 group = "org.goafabric"
@@ -14,6 +15,11 @@ plugins {
 
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
+	kotlin("plugin.jpa") version "1.7.22"
+	kotlin("kapt") version "1.7.22"
+	//id("org.jetbrains.kotlin.plugin.jpa' version '1.7.22'
+	//id 'org.jetbrains.kotlin.kapt' version '1.7.22'
+
 }
 
 repositories {
@@ -70,6 +76,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	//kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
 }
 
 tasks.withType<Test> {
