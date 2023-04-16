@@ -100,7 +100,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	imageName.set(nativeImageName)
 	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "17", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx4000m"))
 	doLast {
-		exec { commandLine("docker", "run", "--rm", nativeImageName, "-check-integrity") }
+		exec { commandLine("docker", "run", "--rm", nativeImageName, "-check-integrity", "-Dmulti-tenancy.migration.enabled=false") }
 		exec { commandLine("docker", "push", nativeImageName) }
 	}
 }
