@@ -18,6 +18,7 @@ import java.util.*
 import java.util.Map
 import javax.sql.DataSource
 import kotlin.collections.MutableMap
+import kotlin.collections.forEach
 import kotlin.collections.set
 
 // Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
@@ -93,8 +94,8 @@ class TenantResolver(
         @Value("\${multi-tenancy.migration.enabled}") enabled: Boolean,
         @Value("\${multi-tenancy.schemas}") schemas: String
     ): CommandLineRunner {
-        return CommandLineRunner { _: Array<String> ->
-            if (enabled) {
+        return CommandLineRunner { args: Array<String> ->
+            if (enabled && !(args.isNotEmpty() && "-check-integrity" == args[0])) {
                 schemas.split(",").forEach {schema ->
                     Flyway.configure()
                         .configuration(flyway.configuration)
