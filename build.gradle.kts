@@ -52,7 +52,7 @@ dependencies {
 
 	//adapter
 	//implementation("io.github.resilience4j:resilience4j-spring-boot3")
-	implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.0") // we have to use old resilience4j because 2.x clashes with aot + kotlin
+	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")}// we have to use old resilience4j because 2.x clashes with aot + kotlin
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")

@@ -1,6 +1,5 @@
 package org.goafabric.personservice
 
-import io.github.resilience4j.circuitbreaker.configure.CircuitBreakerAspect
 import org.postgresql.util.PGobject
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
@@ -30,7 +29,7 @@ class ApplicationRunner {
 
     internal class ApplicationRuntimeHints : RuntimeHintsRegistrar {
         override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-            hints.reflection().registerType(CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
+            //hints.reflection().registerType(CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
         }
     }
 
