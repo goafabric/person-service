@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 group = "org.goafabric"
-version = "3.0.5-SNAPSHOT"
+version = "3.0.5-kotlin-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
@@ -52,7 +52,7 @@ dependencies {
 
 	//adapter
 	//implementation("io.github.resilience4j:resilience4j-spring-boot3")
-	implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.0") // we have to use old resilience4j because 2.x clashes with aot + kotlin
+	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
