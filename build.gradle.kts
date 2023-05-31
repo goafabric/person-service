@@ -7,7 +7,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.0.5"
+	id("org.springframework.boot") version "3.0.7"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("org.graalvm.buildtools.native") version "0.9.20"
 	id("com.google.cloud.tools.jib") version "3.3.1"
