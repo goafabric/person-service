@@ -36,6 +36,7 @@ dependencies {
 dependencies {
 	//web
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -98,7 +99,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native" + (if (System.getProperty("os.arch").equals("aarch64")) "-arm64v8" else "") + ":${project.version}"
 	builder.set(nativeBuilder)
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "17", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx4000m"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "17", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx4500m"))
 	doLast {
 		exec { commandLine("docker", "run", "--rm", nativeImageName, "-check-integrity") }
 		exec { commandLine("docker", "push", nativeImageName) }
