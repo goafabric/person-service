@@ -92,7 +92,7 @@ class TenantResolver(
     fun schemas(
         flyway: Flyway,
         @Value("\${multi-tenancy.migration.enabled}") enabled: Boolean,
-        @Value("\${multi-tenancy.schemas}") schemas: String
+        @Value("\${multi-tenancy.tenants}") schemas: String
     ): CommandLineRunner {
         return CommandLineRunner { args: Array<String> ->
             if (enabled && !(args.isNotEmpty() && "-check-integrity" == args[0])) {
