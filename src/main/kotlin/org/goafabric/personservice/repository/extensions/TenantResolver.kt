@@ -6,6 +6,7 @@ import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
 import org.slf4j.LoggerFactory
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
@@ -23,6 +24,8 @@ import kotlin.collections.set
 
 // Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
 @Component
+@RegisterReflectionForBinding(org.hibernate.binder.internal.TenantIdBinder::class, org.hibernate.generator.internal.TenantIdGeneration::class)
+
 class TenantResolver(
     private val dataSource: DataSource,
     @param:Value("\${multi-tenancy.default-schema:PUBLIC}") private val defaultSchema: String,

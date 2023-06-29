@@ -1,15 +1,19 @@
 package org.goafabric.personservice.crossfunctional
 
+import io.micrometer.common.KeyValue
 import io.micrometer.observation.Observation
 import io.micrometer.observation.ObservationPredicate
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.server.observation.ServerRequestObservationContext
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.filter.ServerHttpObservationFilter
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -22,6 +26,7 @@ class HttpInterceptor : WebMvcConfigurer {
             override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
                 tenantId.set(request.getHeader("X-TenantId"))
                 userName.set(request.getHeader("X-Auth-Request-Preferred-Username"))
+                configureLogsAndTracing(getTenantId(), request)
                 return true
             }
 
@@ -29,7 +34,21 @@ class HttpInterceptor : WebMvcConfigurer {
                 tenantId.remove()
                 userName.remove()
             }
+
+            private fun configureLogsAndTracing(tenantId: String?, request: HttpServletRequest?) {
+                if (tenantId != null && request != null) {
+                    MDC.put("tenantId", tenantId)
+                    ServerHttpObservationFilter.findObservationContext(request)
+                        .ifPresent { context: ServerRequestObservationContext ->
+                            context.addHighCardinalityKeyValue(
+                                KeyValue.of("tenant.id", tenantId)
+                            )
+                        }
+                }
+            }
+
         })
+
     }
 
     companion object {
