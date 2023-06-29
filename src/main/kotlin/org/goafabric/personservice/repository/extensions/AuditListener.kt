@@ -136,7 +136,7 @@ class AuditListener : ApplicationContextAware {
         }
 
         private fun getTableName(`object`: Any): String {
-            return `object`.javaClass.simpleName.replace("Bo".toRegex(), "").lowercase(Locale.getDefault())
+            return `object`.javaClass.simpleName.replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
         }
     }
 

@@ -16,7 +16,6 @@ import org.springframework.context.annotation.ImportRuntimeHints
 
 @Configuration
 @ImportRuntimeHints(ApplicationRunner.ApplicationRuntimeHints::class)
-@RegisterReflectionForBinding(PGobject::class)
 class ApplicationRunner {
     @Bean
     fun runner(context: ApplicationContext?): CommandLineRunner? {

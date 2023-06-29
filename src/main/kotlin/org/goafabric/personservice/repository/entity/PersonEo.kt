@@ -8,7 +8,7 @@ import org.hibernate.annotations.TenantId
 
 @Entity
 @Table(name = "person")
-class PersonBo (
+class PersonEo (
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -22,7 +22,7 @@ class PersonBo (
 
     @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "address_id", referencedColumnName = "id")
-    val address: AddressBo,
+    val address: AddressEo,
 
     @Version //optimistic locking
     val version: Long? = null

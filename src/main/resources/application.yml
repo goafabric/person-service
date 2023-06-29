@@ -13,16 +13,18 @@ management:
       exposure:
         include: "health,prometheus,heapdump"
 
+spring.cloud.consul.config.enabled: "false"
+
+# openapi
 springdoc.swagger-ui.path: /swagger-ui/index.html
 springdoc.enable-native-support: "true"
 
-#jaeger / zipkin
+
+#tracing
 spring.application.name: person-service
-management.zipkin.tracing.endpoint: "http://localhost:9411/api/v2/spans"
 management.tracing.sampling.probability: "1.0"
-management.tracing.propagation.type: "B3"
-management.tracing.enabled: "true"
-logging.level.zipkin2.reporter: "ERROR"
+logging.level.io.opentelemetry.exporter: "OFF"
+management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
 
 #security
 security.authentication.enabled: true
@@ -36,12 +38,15 @@ spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
 spring.datasource.username: postgres
 spring.datasource.password: postgres
 
+spring.jpa.hibernate.ddl-auto: "none"
 spring.datasource.hikari.maximum-pool-size: "10"
 spring.datasource.hikari.connection-timeout: "10000"
 
 multi-tenancy.tenants: "0,5"
-multi-tenancy.schema-prefix: "tenant_"
+multi-tenancy.schema-prefix: "core_"
 multi-tenancy.migration.enabled: "true"
+
+database.provisioning.goals: "-import-demo-data"
 
 #adapter
 adapter:
@@ -65,6 +70,8 @@ resilience4j.circuitbreaker:
       permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
 
 #logging
+logging.pattern.level: "%5p tenantId=%X{tenantId:-}" #"%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}] tenantId=%X{tenantId:-}"
+
 logging.level.root: "WARN"
 logging.level.org.springframework: "INFO"
 

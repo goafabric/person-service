@@ -7,7 +7,7 @@ import org.hibernate.annotations.TenantId
 
 @Entity
 @Table(name = "address")
-class AddressBo (
+class AddressEo (
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
