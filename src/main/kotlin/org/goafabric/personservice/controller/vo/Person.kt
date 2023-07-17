@@ -1,8 +1,9 @@
-package org.goafabric.personservice.controller.dto
+package org.goafabric.personservice.controller.vo
 
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Null
 import jakarta.validation.constraints.Size
+import org.goafabric.personservice.controller.vo.Address
 
 
 data class Person (

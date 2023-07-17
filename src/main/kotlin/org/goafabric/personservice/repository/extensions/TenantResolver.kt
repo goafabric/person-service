@@ -1,7 +1,7 @@
 package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
-import org.goafabric.personservice.crossfunctional.HttpInterceptor
+import org.goafabric.personservice.extensions.HttpInterceptor
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
@@ -35,7 +35,11 @@ class TenantResolver(
 
     /** Resolver for optional CompanyId via @TenantId Discriminator  */
     override fun resolveCurrentTenantIdentifier(): String {
-        return HttpInterceptor.getCompanyId()
+        return getOrgunitId()
+    }
+
+    private fun getOrgunitId(): String {
+        return "1";
     }
 
     override fun validateExistingCurrentSessions(): Boolean {

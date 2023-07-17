@@ -12,7 +12,7 @@ import reactor.netty.resources.ConnectionProvider
 import java.time.Duration
 
 @Configuration
-class CalleeServiceAdapterConfiguration {
+class AdapterConfiguration {
     @Bean
     fun calleeServiceAdapter( //ReactorLoadBalancerExchangeFilterFunction lbFunction,
         @Value("\${adapter.calleeservice.url}") url: String,

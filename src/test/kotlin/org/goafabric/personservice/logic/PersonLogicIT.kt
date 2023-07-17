@@ -2,9 +2,9 @@ package org.goafabric.personservice.logic
 
 
 import org.assertj.core.api.Assertions.assertThat
-import org.goafabric.personservice.crossfunctional.HttpInterceptor
-import org.goafabric.personservice.controller.dto.Address
-import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.extensions.HttpInterceptor
+import org.goafabric.personservice.controller.vo.Address
+import org.goafabric.personservice.controller.vo.Person
 import org.goafabric.personservice.persistence.PersonRepository
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +52,8 @@ internal class PersonLogicIT (
     fun save() {
         val person = personLogic.save(
             Person(firstName = "Homer", lastName = "Simpson",
-                    address = Address(street = "Evergreeen ", city = "Springfield " + HttpInterceptor.getTenantId()))
+                    address = Address(street = "Evergreeen ", city = "Springfield " + HttpInterceptor.getTenantId())
+            )
         )
 
         assertThat(person).isNotNull

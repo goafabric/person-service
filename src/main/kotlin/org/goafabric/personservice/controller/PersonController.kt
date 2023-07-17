@@ -1,7 +1,7 @@
 package org.goafabric.personservice.controller
 
 import org.goafabric.personservice.logic.PersonLogic
-import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.vo.Person
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid

@@ -2,17 +2,15 @@ package org.goafabric.personservice.logic
 
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
 import org.goafabric.personservice.persistence.PersonRepository
-import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.vo.Person
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import jakarta.validation.Valid
-import org.goafabric.calleeservice.crossfunctional.DurationLog
 
 @Component
 @Transactional
-@DurationLog
 class PersonLogic (
     private val personMapper : PersonMapper,
     private val personRepository: PersonRepository,
