@@ -8,6 +8,7 @@ import org.goafabric.personservice.controller.vo.Address
 
 data class Person (
     val id: @Null String? = null,
+    val version: @Null String? = null,
     val firstName: @NotNull @Size(min = 3, max = 255) String,
     val lastName: @NotNull @Size(min = 3, max = 255) String,
     val address: Address?
