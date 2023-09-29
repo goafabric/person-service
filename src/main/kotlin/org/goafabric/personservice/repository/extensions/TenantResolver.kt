@@ -38,8 +38,10 @@ class TenantResolver(
         return getOrgunitId()
     }
 
-    private fun getOrgunitId(): String {
-        return "1";
+    companion object {
+        fun getOrgunitId(): String {
+            return "1";
+        }
     }
 
     override fun validateExistingCurrentSessions(): Boolean {
@@ -57,7 +59,6 @@ class TenantResolver(
         val connection = dataSource.connection
         connection.schema =
             if (defaultSchema == schema) defaultSchema else schemaPrefix + HttpInterceptor.getTenantId()
-        log.info("## setting schema: " + connection.schema)
         return connection
     }
 
@@ -115,4 +116,5 @@ class TenantResolver(
             }
         }
     }
+
 }

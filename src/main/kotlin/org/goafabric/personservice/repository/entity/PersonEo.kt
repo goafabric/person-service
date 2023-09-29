@@ -1,13 +1,14 @@
-package org.goafabric.personservice.persistence.domain
+package org.goafabric.personservice.repository.entity
 
 import jakarta.persistence.*
-import org.goafabric.personservice.persistence.extensions.AuditListener
+import org.goafabric.personservice.repository.extensions.AuditTrailListener
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.TenantId
 
 
 @Entity
 @Table(name = "person")
+@EntityListeners(AuditTrailListener::class)
 class PersonEo (
     @Id
     @GeneratedValue(generator = "uuid")
@@ -26,8 +27,4 @@ class PersonEo (
 
     @Version //optimistic locking
     val version: Long? = null
-) : AuditListener.AuditAware() {
-    override fun getMyId(): String {
-        return id ?: ""
-    }
-}
+)
