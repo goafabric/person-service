@@ -44,9 +44,7 @@ spring.datasource.hikari.connection-timeout: "10000"
 
 multi-tenancy.tenants: "0,5"
 multi-tenancy.schema-prefix: "core_"
-multi-tenancy.migration.enabled: "true"
-
-database.provisioning.goals: "-import-demo-data"
+database.provisioning.goals: "-migrate -import-demo-data"
 
 #mongo
 spring.autoconfigure.exclude: ${mongodb.autoconfiguration}
