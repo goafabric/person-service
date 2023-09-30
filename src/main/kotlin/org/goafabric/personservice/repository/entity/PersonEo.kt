@@ -4,10 +4,12 @@ import jakarta.persistence.*
 import org.goafabric.personservice.repository.extensions.AuditTrailListener
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.TenantId
+import org.springframework.data.mongodb.core.mapping.Document
 
 
 @Entity
 @Table(name = "person")
+@Document("person")
 @EntityListeners(AuditTrailListener::class)
 class PersonEo (
     @Id

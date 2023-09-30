@@ -8,12 +8,14 @@ import org.slf4j.MDC
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.server.observation.ServerRequestObservationContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.web.filter.ServerHttpObservationFilter
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
+@Component
 class HttpInterceptor : HandlerInterceptor {
     private val log = LoggerFactory.getLogger(this.javaClass.name)
 

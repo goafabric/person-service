@@ -72,6 +72,9 @@ dependencies {
 	implementation("org.postgresql:postgresql")
 	implementation("org.flywaydb:flyway-core")
 
+	//mongodb
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
