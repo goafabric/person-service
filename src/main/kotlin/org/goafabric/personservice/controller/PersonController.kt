@@ -32,7 +32,7 @@ class PersonController (
     }
 
     @PostMapping(value = ["save"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun save(@RequestBody @Valid person : Person): Person? {
+    fun save(@RequestBody person : Person): Person? {
         return personLogic.save(person);
     }
 
