@@ -18,13 +18,13 @@ class PersonEo (
     val id: String? = "",
 
     @TenantId
-    var companyId: String? = null,
+    var orgunitId: String? = null,
 
     val firstName: String,
     val lastName: String,
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "person_id")
     val address: List<AddressEo>,
 
     @Version //optimistic locking

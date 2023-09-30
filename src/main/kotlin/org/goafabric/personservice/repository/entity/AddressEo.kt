@@ -15,7 +15,7 @@ class AddressEo (
     val id: String? = null,
 
     @TenantId
-    var companyId: String? = null,
+    var orgunitId: String? = null,
 
     val street: String,
     val city: String,
