@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '20'
 
       - name: Test
         uses: gradle/gradle-build-action@v2
