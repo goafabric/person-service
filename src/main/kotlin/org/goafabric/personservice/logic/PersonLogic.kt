@@ -18,7 +18,7 @@ class PersonLogic (
 
     fun getById(@PathVariable("id") id: String) : Person {
         return personMapper.map(
-            personRepository.getReferenceById(id))
+            personRepository.findById(id).get())
     }
 
     @GetMapping("findAll")

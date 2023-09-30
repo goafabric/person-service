@@ -10,4 +10,5 @@ interface PersonMapper {
     fun map(person: PersonEo): Person
     fun map(person: Person): PersonEo
     fun map(countries: List<PersonEo>): List<Person>
+    fun map(countries: Iterable<PersonEo>): List<Person>
 }
