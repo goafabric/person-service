@@ -25,7 +25,7 @@ class PersonEo (
 
     @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "address_id", referencedColumnName = "id")
-    val address: AddressEo,
+    val address: List<AddressEo>,
 
     @Version //optimistic locking
     val version: Long? = null

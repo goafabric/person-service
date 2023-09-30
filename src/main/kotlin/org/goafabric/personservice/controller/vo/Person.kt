@@ -5,5 +5,5 @@ data class Person (
     val version:  String? = null,
     val firstName: String,
     val lastName: String,
-    val address: Address?
+    val address: List<Address?>
 )

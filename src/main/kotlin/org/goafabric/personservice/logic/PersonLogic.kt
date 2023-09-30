@@ -48,6 +48,6 @@ class PersonLogic (
 
     @GetMapping("sayMyName")
     fun sayMyName (@RequestParam("name") name : String) : Person {
-        return Person(firstName = calleeServiceAdapter.sayMyName(name)!!.message, lastName = "", address = null)
+        return Person(firstName = calleeServiceAdapter.sayMyName(name)!!.message, lastName = "", address = emptyList())
     }
 }

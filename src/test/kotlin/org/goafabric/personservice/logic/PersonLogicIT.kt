@@ -52,7 +52,7 @@ internal class PersonLogicIT (
     fun save() {
         val person = personLogic.save(
             Person(firstName = "Homer", lastName = "Simpson",
-                    address = Address(street = "Evergreeen ", city = "Springfield " + HttpInterceptor.getTenantId())
+                    address = listOf(Address(street = "Evergreeen ", city = "Springfield " + HttpInterceptor.getTenantId()))
             )
         )
 

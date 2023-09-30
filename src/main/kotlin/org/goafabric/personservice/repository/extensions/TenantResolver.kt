@@ -8,16 +8,22 @@ import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.ApplicationArguments
+import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.ExitCodeGenerator
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import java.sql.Connection
 import java.sql.SQLException
 import java.util.*
 import java.util.Map
+import java.util.function.Consumer
 import javax.sql.DataSource
 import kotlin.collections.MutableMap
 import kotlin.collections.forEach
@@ -98,24 +104,27 @@ class TenantResolver(
     }
 
     @Bean
-    fun schemas(
+    fun schemaCreator(
         flyway: Flyway,
-        @Value("\${multi-tenancy.migration.enabled}") enabled: Boolean,
-        @Value("\${multi-tenancy.tenants}") schemas: String
-    ): CommandLineRunner {
-        return CommandLineRunner { args: Array<String> ->
-            if (enabled && !(args.isNotEmpty() && "-check-integrity" == args[0])) {
-                schemas.split(",").forEach {schema ->
-                    Flyway.configure()
-                        .configuration(flyway.configuration)
-                        .schemas(schemaPrefix + schema)
-                        .defaultSchema(schemaPrefix + schema)
-                        .placeholders(Map.of("tenantId", schema))
-                        .load()
-                        .migrate()
-                }
+        @Value("\${database.provisioning.goals}") goals: String,
+        @Value("\${multi-tenancy.tenants}") tenants: String,
+        @Value("\${multi-tenancy.schema-prefix:_}") schemaPrefix: String,
+        context: ApplicationContext?
+    ): ApplicationRunner {
+        return ApplicationRunner { args: ApplicationArguments? ->
+            if (goals.contains("-migrate")) {
+                Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
+                    Consumer { tenant: String ->
+                        Flyway.configure().configuration(flyway.configuration)
+                            .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                            .placeholders(Map.of("tenantId", tenant))
+                            .load().migrate()
+                    }
+                )
+            }
+            if (goals.contains("-terminate") && !goals.contains("-import")) {
+                SpringApplication.exit(context, ExitCodeGenerator { 0 })
             }
         }
     }
-
 }
