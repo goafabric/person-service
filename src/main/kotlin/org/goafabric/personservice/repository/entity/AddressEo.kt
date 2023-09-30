@@ -8,7 +8,7 @@ import org.hibernate.annotations.TenantId
 @Entity
 @Table(name = "address")
 @EntityListeners(AuditTrailListener::class)
-class AddressEo (
+data class AddressEo (
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
