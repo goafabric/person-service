@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.server.observation.ServerRequestObservationContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,6 +16,7 @@ import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
 
 @Component
 class HttpInterceptor : HandlerInterceptor {
@@ -71,4 +74,12 @@ class HttpInterceptor : HandlerInterceptor {
             tenantId.set(tenant)
         }
     }
+
+    @Value("\${multi-tenancy.schema-prefix}")
+    private val schemaPrefix: String? = null
+    @RegisterReflectionForBinding(HttpInterceptor::class)
+    fun getPrefix(): String {
+        return (schemaPrefix + getTenantId()).toString() + "_"
+    }
+
 }

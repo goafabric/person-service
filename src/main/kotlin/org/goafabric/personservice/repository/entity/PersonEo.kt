@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Entity
 @Table(name = "person")
-@Document("person")
+@Document("#{@httpInterceptor.getPrefix()}person")
 @EntityListeners(AuditTrailListener::class)
 class PersonEo (
     @Id
