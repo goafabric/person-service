@@ -46,7 +46,9 @@ services:
       spring.datasource.hikari.maximum-pool-size: "10"
       spring.datasource.hikari.connection-timeout: "10000"
 
-      database.provisioning.goals: "-import-demo-data"
+      multi-tenancy.tenants: "0,5"
+      multi-tenancy.schema-prefix: "core_"
+      database.provisioning.goals: "-migrate -import-demo-data"
 
       #adapter
       adapter.calleeservice.url: "http://host.docker.internal:50900"
@@ -66,13 +68,14 @@ services:
       logging.level.org.flywaydb.core: "INFO"
       logging.level.org.hibernate.SQL: "INFO"
 
+
     depends_on:
       postgres:
         condition: service_healthy
 
   postgres:
     container_name: ${_Values_root_name}-postgres
-    image: postgres:15.3
+    image: postgres:16.0
     restart: 'no'
     ports:
       - 50810:5432
@@ -102,7 +105,7 @@ services:
     restart: 'no'
     ports:
       - 8080:80
-    #      - 444:443
+#      - 444:443
     networks:
       - ${_Values_root_name}-net
     volumes:
@@ -113,9 +116,9 @@ services:
         condition: service_started
 
 volumes:
-  tmp:
-  applogs:
-  pgdata:
+    tmp:
+    applogs:
+    pgdata:
 
 networks:
   person-service-net:
