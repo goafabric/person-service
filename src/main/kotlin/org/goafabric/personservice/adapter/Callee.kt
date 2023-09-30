@@ -1,3 +1,3 @@
 package org.goafabric.personservice.adapter
 
-data class Callee(val message: String)
+data class Callee(val id: String, val message: String)
