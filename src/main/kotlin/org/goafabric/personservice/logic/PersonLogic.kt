@@ -16,38 +16,33 @@ class PersonLogic (
     private val personRepository: PersonRepository,
     private val calleeServiceAdapter: CalleeServiceAdapter) {
 
-    fun getById(@PathVariable("id") id: String) : Person {
+    fun getById(id: String) : Person {
         return personMapper.map(
             personRepository.findById(id).get())
     }
 
-    @GetMapping("findAll")
     fun findAll() : List<Person> {
         return personMapper.map(
             personRepository.findAll())
     }
 
-    @GetMapping("findByFirstName")
-    fun findByFirstName(@RequestParam("firstName") firstName : String) : List<Person> {
+    fun findByFirstName(firstName : String) : List<Person> {
         return personMapper.map(
             personRepository.findByFirstName(firstName))
     }
 
-    @GetMapping("findByLastName")
-    fun findByLastName(@RequestParam("lastName") lastName : String) : List<Person> {
+    fun findByLastName(lastName : String) : List<Person> {
         return personMapper.map(
             personRepository.findByLastName(lastName))
     }
 
-    @PostMapping(value = ["save"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun save(@RequestBody @Valid person : Person): Person? {
+    fun save(person : Person): Person? {
         return personMapper.map(personRepository.save(
                 personMapper.map(person))
         )
     }
 
-    @GetMapping("sayMyName")
-    fun sayMyName (@RequestParam("name") name : String) : Person {
+    fun sayMyName (name : String) : Person {
         return Person(firstName = calleeServiceAdapter.sayMyName(name)!!.message, lastName = "", address = emptyList())
     }
 }
