@@ -61,7 +61,7 @@ dependencies {
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
-	//annotationProcessor("org.mapstruct:mapstruct-processor")
+	kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
 	//persistence
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -80,7 +80,6 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 }
 
 tasks.withType<Test> {
