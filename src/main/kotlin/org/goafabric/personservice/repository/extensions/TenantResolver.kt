@@ -22,11 +22,9 @@ import org.springframework.stereotype.Component
 import java.sql.Connection
 import java.sql.SQLException
 import java.util.*
-import java.util.Map
 import java.util.function.Consumer
 import javax.sql.DataSource
 import kotlin.collections.MutableMap
-import kotlin.collections.forEach
 import kotlin.collections.set
 
 // Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
@@ -111,13 +109,13 @@ class TenantResolver(
         @Value("\${multi-tenancy.schema-prefix:_}") schemaPrefix: String,
         context: ApplicationContext?
     ): ApplicationRunner {
-        return ApplicationRunner { args: ApplicationArguments? ->
+        return ApplicationRunner {
             if (goals.contains("-migrate")) {
-                Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
+                listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
                     Consumer { tenant: String ->
                         Flyway.configure().configuration(flyway.configuration)
                             .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                            .placeholders(Map.of("tenantId", tenant))
+                            .placeholders(mapOf("tenantId" to tenant))
                             .load().migrate()
                     }
                 )
