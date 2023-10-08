@@ -57,7 +57,7 @@ class HttpInterceptor : HandlerInterceptor {
             ServerHttpObservationFilter.findObservationContext(request)
                 .ifPresent { context: ServerRequestObservationContext ->
                     context.addHighCardinalityKeyValue(
-                        KeyValue.of("tenant.id", getTenantId()!!)
+                        KeyValue.of("tenant.id", getTenantId())
                     )
                 }
         }
