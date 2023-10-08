@@ -17,10 +17,10 @@ plugins {
 	id("org.graalvm.buildtools.native") version "0.9.24"
 	id("com.google.cloud.tools.jib") version "3.3.2"
 
-	kotlin("jvm") version "1.8.20"
-	kotlin("plugin.spring") version "1.8.20"
-	kotlin("plugin.jpa") version "1.8.20"
-	kotlin("kapt") version "1.8.20"
+	kotlin("jvm") version "1.9.10"
+	kotlin("plugin.spring") version "1.9.10"
+	kotlin("plugin.jpa") version "1.9.10"
+	kotlin("kapt") version "1.9.10"
 }
 
 repositories {
@@ -57,12 +57,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
 	//adapter
-	//implementation("io.github.resilience4j:resilience4j-spring-boot3")
 	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
-	annotationProcessor("org.mapstruct:mapstruct-processor")
+	//annotationProcessor("org.mapstruct:mapstruct-processor")
 
 	//persistence
 	implementation("org.springframework.boot:spring-boot-starter-validation")
