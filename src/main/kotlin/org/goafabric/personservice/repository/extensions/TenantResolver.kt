@@ -113,6 +113,9 @@ class TenantResolver(
     ): CommandLineRunner {
         return object : CommandLineRunner {
             override fun run(vararg args: String) {
+                if (args.size >= 0 && "-check-integrity" == args[0]) {
+                    return
+                }
                 if (goals.contains("-migrate")) {
                     listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
                         Consumer { tenant: String ->
@@ -126,7 +129,7 @@ class TenantResolver(
                 if (goals.contains("-terminate") && !goals.contains("-import")) {
                     SpringApplication.exit(context, ExitCodeGenerator { 0 })
                 }
-                if (args.size == 0 || "-check-integrity" != args.get(0)) {
+                if (args.size == 0 || "-check-integrity" != args[0]) {
                     context!!.getBean(DemoDataImporter::class.java).run()
                 }
             }
