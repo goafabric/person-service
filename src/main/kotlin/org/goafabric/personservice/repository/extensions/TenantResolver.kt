@@ -2,6 +2,7 @@ package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
 import org.goafabric.personservice.extensions.HttpInterceptor
+import org.goafabric.personservice.repository.extensions.DemoDataImporter
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
@@ -87,9 +88,10 @@ class TenantResolver(
         return false
     }
 
-    override fun isUnwrappableAs(unwrapType: Class<*>?): Boolean {
+    override fun isUnwrappableAs(unwrapType: Class<*>): Boolean {
         return false
     }
+
 
     override fun <T> unwrap(unwrapType: Class<T>): T? {
         return null
@@ -108,20 +110,25 @@ class TenantResolver(
         @Value("\${multi-tenancy.tenants}") tenants: String,
         @Value("\${multi-tenancy.schema-prefix:_}") schemaPrefix: String,
         context: ApplicationContext?
-    ): ApplicationRunner {
-        return ApplicationRunner {
-            if (goals.contains("-migrate")) {
-                listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
-                    Consumer { tenant: String ->
-                        Flyway.configure().configuration(flyway.configuration)
-                            .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                            .placeholders(mapOf("tenantId" to tenant))
-                            .load().migrate()
-                    }
-                )
-            }
-            if (goals.contains("-terminate") && !goals.contains("-import")) {
-                SpringApplication.exit(context, ExitCodeGenerator { 0 })
+    ): CommandLineRunner {
+        return object : CommandLineRunner {
+            override fun run(vararg args: String) {
+                if (goals.contains("-migrate")) {
+                    listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
+                        Consumer { tenant: String ->
+                            Flyway.configure().configuration(flyway.configuration)
+                                .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                                .placeholders(mapOf("tenantId" to tenant))
+                                .load().migrate()
+                        }
+                    )
+                }
+                if (goals.contains("-terminate") && !goals.contains("-import")) {
+                    SpringApplication.exit(context, ExitCodeGenerator { 0 })
+                }
+                if (args.size == 0 || "-check-integrity" != args.get(0)) {
+                    context!!.getBean(DemoDataImporter::class.java).run()
+                }
             }
         }
     }

@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 group = "org.goafabric"
-version = "3.1.5-kotlin-SNAPSHOT"
+version = "3.2.0-kotlin-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 val dockerRegistry = "goafabric"
@@ -12,15 +12,15 @@ jacoco.toolVersion = "0.8.10"
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.1.4"
+	id("org.springframework.boot") version "3.2.0-RC1"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("org.graalvm.buildtools.native") version "0.9.24"
 	id("com.google.cloud.tools.jib") version "3.3.2"
 
-	kotlin("jvm") version "1.9.10"
-	kotlin("plugin.spring") version "1.9.10"
-	kotlin("plugin.jpa") version "1.9.10"
-	kotlin("kapt") version "1.9.10"
+	kotlin("jvm") version "1.9.20-RC"
+	kotlin("plugin.spring") version "1.9.20-RC"
+	kotlin("plugin.jpa") version "1.9.20-RC"
+	kotlin("kapt") version "1.9.20-RC"
 }
 
 repositories {
