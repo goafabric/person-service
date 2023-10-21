@@ -113,7 +113,7 @@ class TenantResolver(
     ): CommandLineRunner {
         return object : CommandLineRunner {
             override fun run(vararg args: String) {
-                if (args.size >= 0 && "-check-integrity" == args[0]) {
+                if (args.size > 0 && "-check-integrity" == args[0]) {
                     return
                 }
                 if (goals.contains("-migrate")) {
