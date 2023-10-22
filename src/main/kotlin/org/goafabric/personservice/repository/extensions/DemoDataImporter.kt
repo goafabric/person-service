@@ -11,8 +11,8 @@ import org.springframework.boot.ExitCodeGenerator
 import org.springframework.boot.SpringApplication
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
-import java.lang.Runnable
 import java.util.*
+import java.util.List
 import java.util.function.Consumer
 import java.util.stream.IntStream
 
@@ -22,10 +22,12 @@ class DemoDataImporter(
         "\${multi-tenancy.tenants}"
     ) private val tenants: String,
     private val applicationContext: ApplicationContext
-) : Runnable {
+) : CommandLineRunner {
     private val log = LoggerFactory.getLogger(this.javaClass)
-    override fun run() {
-        //if (args.size > 0 && "-check-integrity" == args[0]) { return }
+    override fun run(vararg args: String) {
+        if (args.size > 0 && "-check-integrity" == args[0]) {
+            return
+        }
         if (goals.contains("-import-demo-data")) {
             log.info("Importing demo data ...")
             importDemoData()
@@ -54,12 +56,12 @@ class DemoDataImporter(
         IntStream.range(0, 1).forEach { i: Int ->
             applicationContext.getBean(PersonLogic::class.java).save(
                 Person(
-                    null, null, "Homer", "Simpson", listOf(createAddress("Evergreen Terrace No. $i"))
+                    null, null, "Homer", "Simpson", List.of(createAddress("Evergreen Terrace No. $i"))
                 )
             )
             applicationContext.getBean(PersonLogic::class.java).save(
                 Person(
-                    null, null, "Bart", "Simpson", listOf(createAddress("Everblue Terrace No. $i"))
+                    null, null, "Bart", "Simpson", List.of(createAddress("Everblue Terrace No. $i"))
                 )
             )
             applicationContext.getBean(PersonLogic::class.java).save(
@@ -68,7 +70,7 @@ class DemoDataImporter(
                     null,
                     "Monty",
                     "Burns",
-                    listOf(createAddress("Mammon Street No. 1000 on the corner of Croesus"))
+                    List.of(createAddress("Mammon Street No. 1000 on the corner of Croesus"))
                 )
             )
         }

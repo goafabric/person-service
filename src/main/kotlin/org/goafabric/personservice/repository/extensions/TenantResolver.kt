@@ -110,29 +110,17 @@ class TenantResolver(
         @Value("\${multi-tenancy.tenants}") tenants: String,
         @Value("\${multi-tenancy.schema-prefix:_}") schemaPrefix: String,
         context: ApplicationContext?
-    ): CommandLineRunner {
-        return object : CommandLineRunner {
-            override fun run(vararg args: String) {
-                if (args.size > 0 && "-check-integrity" == args[0]) {
-                    return
+    ): Boolean {
+        if (goals.contains("-migrate")) {
+            listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
+                Consumer { tenant: String ->
+                    Flyway.configure().configuration(flyway.configuration)
+                        .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                        .placeholders(mapOf("tenantId" to tenant))
+                        .load().migrate()
                 }
-                if (goals.contains("-migrate")) {
-                    listOf(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
-                        Consumer { tenant: String ->
-                            Flyway.configure().configuration(flyway.configuration)
-                                .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                                .placeholders(mapOf("tenantId" to tenant))
-                                .load().migrate()
-                        }
-                    )
-                }
-                if (goals.contains("-terminate") && !goals.contains("-import")) {
-                    SpringApplication.exit(context, ExitCodeGenerator { 0 })
-                }
-                if (args.size == 0 || "-check-integrity" != args[0]) {
-                    context!!.getBean(DemoDataImporter::class.java).run()
-                }
-            }
+            )
         }
+        return true
     }
 }
