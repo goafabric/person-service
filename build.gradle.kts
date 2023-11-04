@@ -17,10 +17,10 @@ plugins {
 	id("org.graalvm.buildtools.native") version "0.9.27"
 	id("com.google.cloud.tools.jib") version "3.3.2"
 
-	kotlin("jvm") version "1.9.20-RC"
-	kotlin("plugin.spring") version "1.9.20-RC"
-	kotlin("plugin.jpa") version "1.9.20-RC"
-	kotlin("kapt") version "1.9.20-RC"
+	kotlin("jvm") version "1.9.20"
+	kotlin("plugin.spring") version "1.9.20"
+	kotlin("plugin.jpa") version "1.9.20"
+	kotlin("kapt") version "1.9.20"
 }
 
 repositories {
