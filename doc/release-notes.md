@@ -1,4 +1,5 @@
 # 3.2.1
+- upgrade to springdoc 2.3.0               
 
 # 3.2.0
 - upgrade to Spring Boot 3.2.0
