@@ -8,8 +8,9 @@ It also follows a pragmatic "hexagonal architecture", by decoupling most of the 
 - Persistence: Spring Data JPA to access the Database
   - Mapstruct to map the database Entities to REST DTOs
 - Adapter: Connect to other Services via Declarative REST Clients
-
-## Controller 
+                
+## Basic Layers
+### Controller 
  
 The Controller is a thin layer for the REST API via Spring WEB Annotations.
 With Quarkus similar Results can be achieved by leveraging JaxRS annotations.
@@ -23,7 +24,7 @@ Making it easy to create immutable objects, with Getters/Setters/Equals Hashcode
 In contrast to Kotlin or the Builder Pattern, there is however the drawback that the Records construct cannot have
 named Arguments.
 
-## Logic
+### Logic
 
 The logic is the layer that ... well implements the business logic.
 It also connects to the database via repositories.
@@ -33,7 +34,7 @@ To map the data from repositories to the controller, mapstruct is leveraged.
 Mapstruct has the clear advantage over other mapping frame works, that use reflection,
 that compile safe code is generated during the build phase
                                                                 
-## Adapter
+### Adapter
 
 The Adapter connects to other rest services.
 From Spring Boot 3.2.0 on ... it is now finally possible to leverage a Declarative, non reactive REST Client.
@@ -42,8 +43,9 @@ The declarative approach eliminates the requirement of tediously writing your ow
 It will just require an interface, with annoations simmilar (!= equal) to Spring MVC.
 And a Factory Class that creates and configures these interfaces.
 Also authentication / setting http headers to other backend services will go to the configuration class.
-
-## Repository
+    
+## Persistence Layer 
+### Repository
 
 The Repository Layer leverages Spring Data JPA to communicate with the database.
 The repository abstraction just defines Method names like "findByFirstName", that then will be automatically converted
@@ -57,7 +59,7 @@ With Spring Data in places it is also theoretically possible, to replaces Spring
 with something like Spring Data Mongo ... to even replaces postgres with a mongodb.
 However these abstractions usually only work for a limited set of CRUD operations.
                     
-## Performance
+### Performance
 For performance reasons please keep in mind the n+1 problems when working with jpa/hibernate.
 In default mode, hibernate will create a separate select for each row inside the n relation.
 For large result sets (> 100) this will very easily introduce a performance problem.
@@ -66,7 +68,7 @@ There are solutions like @EntityGraph for this, that unfortunately could also im
 As a rule of thumb, queries should return in < 100 ms ... and you should always activate logging of the SQLs.
 "logging.level.org.hibernate.SQL: "DEBUG" inside application.yml.
 
-## Entities
+### Entities
 Entities are just defined as JPA Entities.
 Unfortunately we cannot leverage Java Records here, as JPA Entities have to be mutable.
 Also Mapstruct needs to be able to access and construct the Entities without reflection.
@@ -81,7 +83,7 @@ Though without Lombok and without generating getters/setters .. by hand .. the o
 The suggestion here is, to NOT DIRECTLY manipulate the entities inside the logic layer,
 but to always create new Java Records and then just convert them via Mapstruct to entities.
 
-## Multi Tenancy by Schema
+### Multi Tenancy by Schema
 Multi Tenancy is taken care of by the "TenantResolver" in Tandem with the "HttpInterceptor".
 While the HttpInterceptor is reponsible to retrieve the TenantId from the Frontend,
 the TenantResolver is repsonsible to retrieve the tenant specific data from the database.
@@ -111,7 +113,7 @@ While Multi Tenancy by Schema has the Drawback of having to update multiple sche
 - Deletion or Carve out of separate Customers is much easier in this scenario, than with a discriminator
 - Having 100s of Tenants inside the Same Table by Discriminator, could lead easy lead full table scans of the DB 
                                                                                     
-## Organization by Discriminator
+### Organization by Discriminator
 In the case of our application, where we need a Tenant, representing the customer, and an Organization,
 which is a sub group below the customer ... we need both.
 This is why besides the TenantResolver the PersonEo also carries a @TenantId for the organization.
@@ -120,7 +122,7 @@ or also should go to the :n relation.
 Both is possible, as both entities are linked by unique UUIDs.
 While the first approach has to advantage of less "polution" the tables, it has to be verified if there is an import an the performance.
                  
-## Auditing
+### Auditing
 Auditing is a GDPR constraint that roughly requires for each person related data change to be "audited".
 Which means to have a protocol table, that stores every CRUD Operation including the Data change.
 And also the "person" that did the change.
@@ -133,12 +135,14 @@ Additionally Multi Schema Support is not supported out of the box and has to be 
 For that reason we have a simple AuditTrailListener Custom Code here, that writes to a single table like Javers.
 If however the Drawbacks mentioned above can be solved or mitigated, Javers could be a superior choice.
 
-## Demo Data
+### Demo Data
 Demo Data is imported by a simple DemoDataImporter Class, that again has to be activated by a swith "-import-demo-data".
 While is also possible to just have Demodata as scripts inside the Database, avoiding this custom code.
 Handling with pure Code is much more natural, verifies the existing APIs and also makes it much easer to deal with multi tenancy.
+     
 
-## Security
+## Cross Cutting Concstraints
+### Security
 
 In this small example for Authentication we just leverage Basic Authentication.
 For production ready applications, more sophisticated solutions like OpenID Connect are usually required.
@@ -149,12 +153,12 @@ There could be other examples to showcase this further.
 Our final goal however, is that authentication will be mostly handle by the API Gateway outside the application.
 And that the application will just retrieve all required information (user, tenant, organization) from a supplied JWT.
 
-## ExceptionHandler
+### ExceptionHandler
 
 The ExceptionHandler is a standard Spring Exception Handler, that catches all exceptions at a central place.
 And also maps it to an HTTP Code and logs the exceptions
 
-## Monitoring
+### Monitoring
 Spring supplies standard solutions for enabling monitoring solutions (like Grafana OS) inside a container world.
 Most of these just need a spring library on the classpath and little bit of configuration inside the application.yml
 
@@ -164,7 +168,7 @@ Currently this involves
 - Opentelemetry for displaying Traces
 - Logging, purely by leveraging SLF4J and logging to Stdout
 
-## Swagger OpenAPI
+### Swagger OpenAPI
 As with monitoring, the example also exposes an OpenAPI Endpoint for API Documentation.
 This can also be used by external rest clients or the fronted to generate client stubs.
 It can be leveraged by just having the springdoc-openapi on the classpath.
@@ -177,8 +181,9 @@ So usually it is enough just to upgrade the Spring Boot Version.
 
 There are a couple of dependencies that have to be handled additionally inside the constraints {} section.
 Usage of further Dependencies outside what is managed here, should always have a cause and reason.
-
-## Docker Containers
+        
+## Containers
+### Docker Containers
 The build process will also create a MultiArch JVM Container.
 This is done by leveraging Google Jib, which needs no Docker installed and no Dockerfile.
 
@@ -186,7 +191,7 @@ This containers can then by run by a simple docker run command.
 Or by a docker compose file inside src/deploy/docker.
 The MultiArch Nature makes it possible for the images to run on Intel as well as Apple Silicon Machines.
 
-## Native Images
+### Native Images
 During the build, also a Native Image will be created.
 Build and Runtime of these Native image is also Architecture specific.
 So to create an Intel and an Apple Silicon ARM Image, two build processes have to be executed,
@@ -198,7 +203,7 @@ Dynamic Code like leveraging reflection should be avoided.
 And also including a multitude of unverified 3rd party libraries.
 This is also anyways a best practice, as the combination of these factor, higly decreases attack vectors.
 
-## Frontend Combination
+### Frontend Combination
 To combine the backend and frontend application(s) inside a container world there are at least two options.
 The required result will always be a NPM package.
 This NPM package could then be included inside the Microservice Tomcat,
@@ -215,18 +220,3 @@ will always be a giant Single Page Application inside the browser.
 That takes to a Giant Backend Application, where a Reverse Proxy Aggregates the Multiple Backends.
                                                                                                   
 So it should be an "it dependends" decision.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
