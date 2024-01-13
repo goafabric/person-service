@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "51ab05a1-d171-4d11-95b1-df2e896a2738",
+		"_postman_id": "75c78553-9055-4880-8424-c54556c3a578",
 		"name": "Person Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29832927"
@@ -9,6 +9,82 @@
 		{
 			"name": "persons",
 			"item": [
+				{
+					"name": "sayMyName",
+					"item": [
+						{
+							"name": "say My Name",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/persons/sayMyName?name=Heisenberg",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"persons",
+										"sayMyName"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Heisenberg",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/persons/sayMyName?name=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"persons",
+												"sayMyName"
+											],
+											"query": [
+												{
+													"key": "name",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<string>\",\n  \"version\": \"<string>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": [\n    {\n      \"id\": \"<string>\",\n      \"version\": \"<string>\",\n      \"street\": \"<string>\",\n      \"city\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"version\": \"<string>\",\n      \"street\": \"<string>\",\n      \"city\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
 				{
 					"name": "findByLastName",
 					"item": [
@@ -99,7 +175,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/persons/findByFirstName?firstName=Bart",
+									"raw": "{{baseUrl}}/persons/findByFirstName?firstName=Homer",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -110,7 +186,7 @@
 									"query": [
 										{
 											"key": "firstName",
-											"value": "Bart",
+											"value": "Homer",
 											"description": "(Required) "
 										}
 									]
