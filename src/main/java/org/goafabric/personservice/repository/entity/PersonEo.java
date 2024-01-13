@@ -14,20 +14,55 @@ import java.util.List;
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public String id;
+    private String id;
 
     @TenantId
-    public String orgunitId;
+    private String orgunitId;
 
-    public String firstName;
+    private String firstName;
 
-    public String lastName;
+    private String lastName;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
-    public List<AddressEo> address;
+    private List<AddressEo> address;
 
     @Version //optimistic locking
-    public Long version;
+    private Long version;
 
+
+    public PersonEo(String id, String orgunitId, String firstName, String lastName, List<AddressEo> address, Long version) {
+        this.id = id;
+        this.orgunitId = orgunitId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.version = version;
+    }
+
+    private PersonEo() {}
+
+    public String getId() {
+        return id;
+    }
+
+    public String getOrgunitId() {
+        return orgunitId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public List<AddressEo> getAddress() {
+        return address;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
 }
