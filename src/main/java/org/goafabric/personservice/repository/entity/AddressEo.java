@@ -10,11 +10,37 @@ import org.goafabric.personservice.repository.extensions.AuditTrailListener;
 public class AddressEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public String id;
+    private String id;
 
-    public String street;
-    public String city;
+    private String street;
+    private String city;
 
     @Version //optimistic locking
-    public Long version;
+    private Long version;
+
+    public AddressEo(String id, String street, String city, Long version) {
+        this.id = id;
+        this.street = street;
+        this.city = city;
+        this.version = version;
+    }
+
+    private AddressEo() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
 }
