@@ -1,0 +1,4 @@
+#!/bin/bash
+npm init -y
+npm install @jordanwalsh23/postman-local-mock-server
+node index.js
