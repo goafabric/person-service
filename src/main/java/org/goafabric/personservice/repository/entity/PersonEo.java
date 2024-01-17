@@ -31,9 +31,8 @@ public class PersonEo {
     private Long version;
 
 
-    public PersonEo(String id, String orgunitId, String firstName, String lastName, List<AddressEo> address, Long version) {
+    public PersonEo(String id, String firstName, String lastName, List<AddressEo> address, Long version) {
         this.id = id;
-        this.orgunitId = orgunitId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -44,10 +43,6 @@ public class PersonEo {
 
     public String getId() {
         return id;
-    }
-
-    public String getOrgunitId() {
-        return orgunitId;
     }
 
     public String getFirstName() {
