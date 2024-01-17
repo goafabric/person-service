@@ -3,7 +3,7 @@ create table person
 	id varchar(36) not null
 		constraint pk_person
 			primary key,
-    orgunit_id varchar(36),
+    orgunit_id varchar(36) not null,
 
 	first_name varchar(255),
 	last_name varchar(255),
