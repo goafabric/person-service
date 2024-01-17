@@ -6,7 +6,7 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
 val nativeBuilder = "dashaun/builder:20231204"
-val baseImage = "ibm-semeru-runtimes:open-21.0.1_12-jre-focal" //"ibm-semeru-runtimes:open-20.0.1_9-jre-focal@sha256:f1a10da50d02f51e79e3c9604ed078a39c19cd2711789cab7aa5d11071482a7e"
+val baseImage = "ibm-semeru-runtimes:open-21.0.1_12-jre-focal@sha256:24d43669156684f7bc28536b22537a7533ab100bf0a5a89702b987ebb53215be"
 
 plugins {
 	java
