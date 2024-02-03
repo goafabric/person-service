@@ -19,13 +19,9 @@ create table address
 		constraint pk_address
 			primary key,
 
-    orgunit_id varchar(36),
     person_id varchar(36),
-
 
 	street varchar(255) NULL,
 	city varchar(255) NULL,
 	version bigint default 0
 );
-
-create index idx_address_orgunit_id on address(orgunit_id);

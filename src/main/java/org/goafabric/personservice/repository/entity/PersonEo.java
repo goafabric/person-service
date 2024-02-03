@@ -60,4 +60,8 @@ public class PersonEo {
     public Long getVersion() {
         return version;
     }
+
+    public String getOrgunitId() {
+        return orgunitId;
+    }
 }
