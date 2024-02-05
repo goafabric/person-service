@@ -21,6 +21,7 @@ import java.util.List;
 public class UserNameAuditRevisionListener implements RevisionListener {
     //TODO: orgunit needs to be handled differently on envers delete, otherwise it will be nulled, could be part of this CustomListener
     //Gradle: implementation("org.hibernate.orm:hibernate-envers") Plugin: id("org.hibernate.orm") version "6.3.1.Final" +  hibernate { enhancement { lazyInitialization(true) } }
+    //Entities have to be annotated with @Audit
 
     @Override
     public void newRevision(Object revisionEntity) {
