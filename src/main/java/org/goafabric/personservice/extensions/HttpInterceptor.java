@@ -34,8 +34,8 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        tenantId.set(request.getHeader("X-TenantId"));
-        organizationId.set(request.getHeader("X-OrganizationId"));
+        setTenantId(request.getHeader("X-TenantId"));
+        setOrganizationId(request.getHeader("X-OrganizationId"));
         userName.set(request.getHeader("X-Auth-Request-Preferred-Username"));
         configureLogsAndTracing(request);
 
@@ -72,6 +72,11 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     public static void setTenantId(String tenant) {
         tenantId.set(tenant);
+    }
+
+    public static void setOrganizationId(String organization) {
+        //tdo: verify if user is eligible for organization
+        organizationId.set(organization);
     }
 
     @Value("${multi-tenancy.schema-prefix}") private String schemaPrefix;
