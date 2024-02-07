@@ -33,7 +33,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     record AuditTrail(
             String id,
-            String orgunitId,
+            String organizationId,
             String objectType,
             String objectId,
             DbOperation operation,
@@ -82,7 +82,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
                 UUID.randomUUID().toString(),
-                TenantResolver.getOrgunitId(),
+                HttpInterceptor.getOrganizationId(),
                 getTableName(newObject != null ? newObject : oldObject),
                 referenceId,
                 dbOperation,

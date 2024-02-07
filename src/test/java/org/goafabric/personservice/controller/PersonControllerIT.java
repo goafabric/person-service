@@ -41,7 +41,7 @@ class PersonControllerIT {
         assertThat(person.firstName()).isEqualTo(persons.get(0).firstName());
         assertThat(person.lastName()).isEqualTo(persons.get(0).lastName());
 
-        assertThat(personRepository.findById(persons.get(0).id()).get().getOrgunitId()).isEqualTo("1");
+        assertThat(personRepository.findById(persons.get(0).id()).get().getOrganizationId()).isEqualTo("1");
     }
 
     @Test

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class HttpInterceptor implements HandlerInterceptor {
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
     private static final ThreadLocal<String> tenantId = new ThreadLocal<>();
+    private static final ThreadLocal<String> organizationId = new ThreadLocal<>();
     private static final ThreadLocal<String> userName = new ThreadLocal<>();
 
     @Configuration
@@ -34,6 +35,7 @@ public class HttpInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         tenantId.set(request.getHeader("X-TenantId"));
+        organizationId.set(request.getHeader("X-OrganizationId"));
         userName.set(request.getHeader("X-Auth-Request-Preferred-Username"));
         configureLogsAndTracing(request);
 
@@ -57,6 +59,10 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     public static String getTenantId() {
         return tenantId.get() != null ? tenantId.get() : "0"; //tdo
+    }
+
+    public static String getOrganizationId() {
+        return organizationId.get() != null ? organizationId.get() : "1"; //tdo
     }
 
     public static String getUserName() {

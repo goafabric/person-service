@@ -17,7 +17,7 @@ public class PersonEo {
     private String id;
 
     @TenantId
-    private String orgunitId;
+    private String organizationId;
 
     private String firstName;
 
@@ -61,7 +61,7 @@ public class PersonEo {
         return version;
     }
 
-    public String getOrgunitId() {
-        return orgunitId;
+    public String getOrganizationId() {
+        return organizationId;
     }
 }
