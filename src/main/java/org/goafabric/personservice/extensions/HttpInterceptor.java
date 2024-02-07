@@ -40,7 +40,7 @@ public class HttpInterceptor implements HandlerInterceptor {
         configureLogsAndTracing(request);
 
         if (handler instanceof HandlerMethod) {
-            log.info(" {} method called for user {} ", ((HandlerMethod) handler).getShortLogMessage(), getUserName());
+            log.info(" {} method called for user {} and tenant {} ", ((HandlerMethod) handler).getShortLogMessage(), getUserName(), getTenantId());
         }
         return true;
     }
