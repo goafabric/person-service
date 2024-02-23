@@ -2,18 +2,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 group = "org.goafabric"
-version = "3.2.0-kotlin-SNAPSHOT"
+version = "3.2.3-kotlin-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
-val nativeBuilder = "dashaun/builder:20231204"
-val baseImage = "eclipse-temurin:21.0.1_12-jre@sha256:5f23c8fa909c5189c5f267447be5d8c3ffb031f4644958d868bfbf180fab44e5" //"ibm-semeru-runtimes:open-20.0.1_9-jre-focal@sha256:f1a10da50d02f51e79e3c9604ed078a39c19cd2711789cab7aa5d11071482a7e"
-jacoco.toolVersion = "0.8.10"
+val nativeBuilder = "dashaun/builder:20240205"
+val baseImage = "ibm-semeru-runtimes:open-21.0.1_12-jre-focal@sha256:24d43669156684f7bc28536b22537a7533ab100bf0a5a89702b987ebb53215be"
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.2.0"
+	java
+	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
+	id("org.hibernate.orm") version "6.4.2.Final" //TODO: downgrade forced for stupid hibernate native bug
 	id("org.graalvm.buildtools.native") version "0.9.28"
 	id("com.google.cloud.tools.jib") version "3.4.0"
 
@@ -31,11 +32,11 @@ repositories {
 
 dependencies {
 	constraints {
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 		implementation("org.mapstruct:mapstruct:1.5.5.Final")
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.2")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.3")
 	}
 }
 
