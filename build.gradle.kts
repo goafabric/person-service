@@ -11,9 +11,9 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.1_12-jre-focal@sha256:24d43669156
 
 plugins {
 	jacoco
-	java
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
+	java
 	id("org.hibernate.orm") version "6.4.2.Final" //TODO: downgrade forced for stupid hibernate native bug
 	id("org.graalvm.buildtools.native") version "0.9.28"
 	id("com.google.cloud.tools.jib") version "3.4.0"
