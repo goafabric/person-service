@@ -36,7 +36,7 @@ class TenantResolver(
     private val dataSource: DataSource,
     @param:Value("\${multi-tenancy.default-schema:PUBLIC}") private val defaultSchema: String,
     @param:Value("\${multi-tenancy.schema-prefix:_}") private val schemaPrefix: String
-) : CurrentTenantIdentifierResolver, MultiTenantConnectionProvider, HibernatePropertiesCustomizer {
+) : CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     /** Resolver for optional CompanyId via @TenantId Discriminator  */
