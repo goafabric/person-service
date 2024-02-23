@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Table(name = "person")
 @Document("#{@httpInterceptor.getPrefix()}person")
 @EntityListeners(AuditTrailListener::class)
-data class PersonEo (
+class PersonEo (
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
