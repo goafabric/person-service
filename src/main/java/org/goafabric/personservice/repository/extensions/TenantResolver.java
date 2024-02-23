@@ -60,7 +60,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
     /** Tenant Resolver for Schema **/
 
     @Override
-    public Connection getConnection(String schema) throws SQLException {
+    public Connection getConnection(Object schema) throws SQLException {
         var connection = dataSource.getConnection();
         connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + HttpInterceptor.getTenantId());
         return connection;
@@ -78,7 +78,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
 
 
     @Override
-    public void releaseConnection(String s, Connection connection) throws SQLException {
+    public void releaseConnection(Object s, Connection connection) throws SQLException {
         connection.setSchema(defaultSchema);
         connection.close();
     }
