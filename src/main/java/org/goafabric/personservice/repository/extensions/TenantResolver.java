@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @RegisterReflectionForBinding({org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
-public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTenantConnectionProvider, HibernatePropertiesCustomizer {
+public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
     private final DataSource dataSource;
     private final String schemaPrefix;
@@ -60,7 +60,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
     /** Tenant Resolver for Schema **/
 
     @Override
-    public Connection getConnection(Object schema) throws SQLException {
+    public Connection getConnection(String schema) throws SQLException {
         var connection = dataSource.getConnection();
         connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + HttpInterceptor.getTenantId());
         return connection;
@@ -78,7 +78,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
 
 
     @Override
-    public void releaseConnection(Object s, Connection connection) throws SQLException {
+    public void releaseConnection(String s, Connection connection) throws SQLException {
         connection.setSchema(defaultSchema);
         connection.close();
     }
