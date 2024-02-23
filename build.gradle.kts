@@ -13,6 +13,7 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
+	id("org.hibernate.orm") version "6.4.2.Final" //TODO: downgrade forced for stupid hibernate native bug
 	id("org.graalvm.buildtools.native") version "0.9.28"
 	id("com.google.cloud.tools.jib") version "3.4.0"
 }
@@ -29,7 +30,7 @@ dependencies {
 		implementation("org.mapstruct:mapstruct:1.5.5.Final")
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.2")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.3")
 	}
 }
 
