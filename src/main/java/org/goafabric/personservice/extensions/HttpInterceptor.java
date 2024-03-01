@@ -48,6 +48,8 @@ public class HttpInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         tenantId.remove();
+        userName.remove();
+        organizationId.remove();
         MDC.remove("tenantId");
     }
 
