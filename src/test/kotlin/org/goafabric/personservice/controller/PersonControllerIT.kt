@@ -58,15 +58,13 @@ internal class PersonControllerIT(
         assertThat(persons[0].address).isNotEmpty()
     }
 
-    /*
     @Test
     fun findByAddressCity() {
         val persons: List<Person> = personController.findByStreet("Evergreen Terrace")
         assertThat(persons).isNotNull().isNotEmpty()
-        assertThat(persons[0].address.get(0).street).startsWith("Evergreen Terrace No.")
+        assertThat(persons.first().address.first()!!.street).startsWith("Evergreen Terrace No.")
     }
     
-     */
 
     @Test
     fun save() {
