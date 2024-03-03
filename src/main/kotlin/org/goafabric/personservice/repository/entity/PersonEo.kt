@@ -18,7 +18,7 @@ class PersonEo (
     val id: String? = "",
 
     @TenantId
-    var orgunitId: String? = null,
+    var organizationId: String? = null,
 
     val firstName: String,
     val lastName: String,

@@ -14,9 +14,6 @@ class AddressEo (
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     val id: String? = null,
 
-    @TenantId
-    var orgunitId: String? = null,
-
     val street: String,
     val city: String,
 

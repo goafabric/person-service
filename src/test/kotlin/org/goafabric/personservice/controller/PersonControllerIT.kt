@@ -31,7 +31,7 @@ internal class PersonControllerIT(
         assertThat(person.firstName).isEqualTo(persons[0].firstName)
         assertThat(person.lastName).isEqualTo(persons[0].lastName)
 
-        assertThat(personRepository.findById(persons[0].id!!).get().orgunitId).isEqualTo("1")
+        assertThat(personRepository.findById(persons[0].id!!).get().organizationId).isEqualTo("1")
     }
 
     @Test
