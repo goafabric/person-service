@@ -9,7 +9,7 @@ import org.mockito.Mockito.*
 import org.mockito.kotlin.whenever
 
 internal class PersonControllerTest {
-    private val personLogic: PersonLogic = mock(PersonLogic::class.java)
+    private val personLogic: PersonLogic = mock()
     private val personController = PersonController(personLogic)
     
     @Test
