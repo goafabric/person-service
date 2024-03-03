@@ -16,7 +16,7 @@ class ExceptionHandler {
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException::class)
-    fun handleIllegalArgumentException(ex: IllegalStateException): ResponseEntity<String?> {
+    fun handleIllegalStateException(ex: IllegalStateException): ResponseEntity<String?> {
         log.warn(ex.message, ex)
         return ResponseEntity(ex.message, HttpStatus.PRECONDITION_FAILED)
     }
