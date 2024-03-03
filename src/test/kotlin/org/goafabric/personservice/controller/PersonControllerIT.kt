@@ -26,12 +26,12 @@ internal class PersonControllerIT(
         assertThat(persons).isNotNull().hasSize(3)
 
         val person
-                : Person = personController.getById(persons[0].id!!)
+                : Person = personController.getById(persons.first().id!!)
         assertThat(person).isNotNull()
-        assertThat(person.firstName).isEqualTo(persons[0].firstName)
-        assertThat(person.lastName).isEqualTo(persons[0].lastName)
+        assertThat(person.firstName).isEqualTo(persons.first().firstName)
+        assertThat(person.lastName).isEqualTo(persons.first().lastName)
 
-        assertThat(personRepository.findById(persons[0].id!!).get().organizationId).isEqualTo("1")
+        assertThat(personRepository.findById(persons.first().id!!).get().organizationId).isEqualTo("1")
     }
 
     @Test
@@ -45,17 +45,17 @@ internal class PersonControllerIT(
     fun findByFirstName() {
         val persons: List<Person> = personController.findByFirstName("Monty")
         assertThat(persons).isNotNull().hasSize(1)
-        assertThat(persons[0].firstName).isEqualTo("Monty")
-        assertThat(persons[0].lastName).isEqualTo("Burns")
-        assertThat(persons[0].address).isNotEmpty()
+        assertThat(persons.first().firstName).isEqualTo("Monty")
+        assertThat(persons.first().lastName).isEqualTo("Burns")
+        assertThat(persons.first().address).isNotEmpty()
     }
 
     @Test
     fun findByLastName() {
         val persons: List<Person> = personController.findByLastName("Simpson")
         assertThat(persons).isNotNull().isNotEmpty// hasSize(2)
-        assertThat(persons[0].lastName).isEqualTo("Simpson")
-        assertThat(persons[0].address).isNotEmpty()
+        assertThat(persons.first().lastName).isEqualTo("Simpson")
+        assertThat(persons.first().address).isNotEmpty()
     }
 
     @Test
