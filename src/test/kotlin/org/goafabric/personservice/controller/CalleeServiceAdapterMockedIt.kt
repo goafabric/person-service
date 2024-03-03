@@ -1,4 +1,3 @@
-/*
 package org.goafabric.personservice.controller
 
 import org.assertj.core.api.Assertions.assertThat
@@ -15,14 +14,15 @@ import org.springframework.test.context.aot.DisabledInAotMode
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisabledInAotMode
 class CalleeServiceAdapterMockedIt(
-    @Autowired private val personController: PersonController,
-    @MockBean private val calleeServiceAdapter: CalleeServiceAdapter) {
+    @Autowired private val personController: PersonController) {
+
+    @MockBean private val calleeServiceAdapter: CalleeServiceAdapter? = null //does not work via constructor injection
 
     @Test
     fun sayMyName() {
-        `when`(calleeServiceAdapter.sayMyName(eq("Heisenberg"))).thenReturn(Callee("", "Heisenberg"))
+        `when`(calleeServiceAdapter!!.sayMyName(eq("Heisenberg"))).thenReturn(Callee("", "Heisenberg"))
         assertThat(personController.sayMyName(eq("Heisenberg"))).isNotNull
     }
 }
 
- */
+
