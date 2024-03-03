@@ -83,21 +83,19 @@ internal class PersonControllerIT(
 
         assertThat(person).isNotNull()
 
-        /*
-        val person2: Person = personController.getById(person.id!!)
+        val person2: Person = personController.getById(person!!.id!!)
         assertThat(person2).isNotNull()
         assertThat(person2.address).hasSize(2)
 
         //update
         assertThat(
             personController.save(
-                Person(person.id, person.version, person.firstName, person.lastName, person.address())
-            )!!.id()
-        ).isEqualTo(person.id())
+                Person(person.id, person.version, person.firstName, person.lastName, person.address)
+            )!!.id
+        ).isEqualTo(person.id!!)
 
         personRepository.deleteById(person.id!!)
 
-         */
     }
 
     @Test
