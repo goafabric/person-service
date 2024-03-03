@@ -1,4 +1,4 @@
-package org.goafabric.calleeservice.extensions
+package org.goafabric.personservice.extensions
 
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.extensions.ExceptionHandler
