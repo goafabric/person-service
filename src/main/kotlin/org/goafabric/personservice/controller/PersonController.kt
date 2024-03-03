@@ -1,9 +1,10 @@
 package org.goafabric.personservice.controller
 
-import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.vo.Person
 import org.goafabric.personservice.logic.PersonLogic
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+
 
 @RequestMapping(value = ["/persons"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
@@ -28,6 +29,11 @@ class PersonController (
     @GetMapping("findByLastName")
     fun findByLastName(@RequestParam("lastName") lastName : String) : List<Person> {
         return personLogic.findByLastName(lastName);
+    }
+
+    @GetMapping("findByStreet")
+    fun findByStreet(street: String?): List<Person> {
+        return personLogic.findByStreet(street)
     }
 
     @PostMapping(value = ["save"], consumes = [MediaType.APPLICATION_JSON_VALUE])

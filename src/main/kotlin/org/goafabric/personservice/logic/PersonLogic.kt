@@ -1,11 +1,12 @@
 package org.goafabric.personservice.logic
 
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
-import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.vo.Person
 import org.goafabric.personservice.persistence.PersonRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
+
 
 @Component
 @Transactional
@@ -37,6 +38,12 @@ class PersonLogic (
     fun save(person : Person): Person? {
         return personMapper.map(personRepository.save(
                 personMapper.map(person))
+        )
+    }
+
+    fun findByStreet(street: String?): List<Person> {
+        return personMapper.map(
+            personRepository.findByAddress_StreetContainsIgnoreCase(street)
         )
     }
 
