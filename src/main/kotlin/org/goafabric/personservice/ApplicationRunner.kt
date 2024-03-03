@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
+import org.springframework.http.server.observation.ServerRequestObservationContext
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer
@@ -52,8 +53,10 @@ class ApplicationRunner {
 
 
     @Bean
-    fun disableHttpServerObservationsFromName(): ObservationPredicate? {
-        return ObservationPredicate { name: String, _: Observation.Context? -> !name.startsWith("spring.security.") }
+    fun disableHttpServerObservationsFromName(): ObservationPredicate {
+        return ObservationPredicate { name: String, context: Observation.Context? ->
+            !(name.startsWith("spring.security.") || (context is ServerRequestObservationContext && context.carrier.requestURI.startsWith("/actuator")))
+        }
     }
 
     internal class ApplicationRuntimeHints : RuntimeHintsRegistrar {
