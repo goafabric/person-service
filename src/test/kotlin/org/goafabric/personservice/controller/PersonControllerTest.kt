@@ -21,21 +21,21 @@ internal class PersonControllerTest {
     fun findAll() {
         `when`(personLogic.findAll()).thenReturn(listOf(createPerson()))
         assertThat(personController.findAll()).isNotNull().isNotEmpty
-        assertThat(personController.findAll()[0].lastName).isEqualTo("Simpson")
+        assertThat(personController.findAll().first().lastName).isEqualTo("Simpson")
     }
 
     @Test
     fun findByFirstName() {
         `when`(personLogic.findByFirstName("Homer")).thenReturn(listOf(createPerson()))
         assertThat(personController.findByFirstName("Homer")).isNotNull().isNotEmpty
-        assertThat(personController.findByFirstName("Homer")[0].firstName).isEqualTo("Homer")
+        assertThat(personController.findByFirstName("Homer").first().firstName).isEqualTo("Homer")
     }
 
     @Test
     fun findByLastName() {
         `when`(personLogic.findByLastName("Simpson")).thenReturn(listOf(createPerson()))
         assertThat(personController.findByLastName("Simpson")).isNotNull().isNotEmpty
-        assertThat(personController.findByLastName("Simpson")[0].lastName).isEqualTo("Simpson")
+        assertThat(personController.findByLastName("Simpson").first().lastName).isEqualTo("Simpson")
     }
 
     @Test
