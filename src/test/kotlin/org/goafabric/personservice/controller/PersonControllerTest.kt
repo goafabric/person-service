@@ -6,6 +6,7 @@ import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.logic.PersonLogic
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
+import org.mockito.kotlin.whenever
 
 internal class PersonControllerTest {
     private val personLogic: PersonLogic = mock<PersonLogic>(PersonLogic::class.java)
@@ -13,27 +14,27 @@ internal class PersonControllerTest {
     
     @Test
     fun getById() {
-        `when`(personLogic.getById("0")).thenReturn(createPerson())
+        whenever(personLogic.getById("0")).thenReturn(createPerson())
         assertThat(personController.getById("0").lastName).isEqualTo("Simpson")
     }
 
     @Test
     fun findAll() {
-        `when`(personLogic.findAll()).thenReturn(listOf(createPerson()))
+        whenever(personLogic.findAll()).thenReturn(listOf(createPerson()))
         assertThat(personController.findAll()).isNotNull().isNotEmpty
         assertThat(personController.findAll().first().lastName).isEqualTo("Simpson")
     }
 
     @Test
     fun findByFirstName() {
-        `when`(personLogic.findByFirstName("Homer")).thenReturn(listOf(createPerson()))
+        whenever(personLogic.findByFirstName("Homer")).thenReturn(listOf(createPerson()))
         assertThat(personController.findByFirstName("Homer")).isNotNull().isNotEmpty
         assertThat(personController.findByFirstName("Homer").first().firstName).isEqualTo("Homer")
     }
 
     @Test
     fun findByLastName() {
-        `when`(personLogic.findByLastName("Simpson")).thenReturn(listOf(createPerson()))
+        whenever(personLogic.findByLastName("Simpson")).thenReturn(listOf(createPerson()))
         assertThat(personController.findByLastName("Simpson")).isNotNull().isNotEmpty
         assertThat(personController.findByLastName("Simpson").first().lastName).isEqualTo("Simpson")
     }
