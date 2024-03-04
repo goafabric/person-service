@@ -8,6 +8,7 @@ import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.persistence.PersonRepository
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -100,7 +101,7 @@ internal class PersonControllerIT(
 
     @Test
     fun sayMyName() {
-        `when`<Callee>(calleeServiceAdapter!!.sayMyName("Heisenberg")).thenReturn(Callee("", "Heisenberg"))
+        whenever(calleeServiceAdapter!!.sayMyName("Heisenberg")).thenReturn(Callee("", "Heisenberg"))
         assertThat(personController.sayMyName("Heisenberg")).isNotNull()
     }
 
