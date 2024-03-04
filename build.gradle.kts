@@ -13,7 +13,7 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
-	java //TODO: see neyt comment, only works when we configure java here
+	java //TODO: see next comment, only works when we configure java here
 	id("org.hibernate.orm") version "6.4.2.Final" //TODO: downgrade forced for stupid hibernate native bug
 	id("org.graalvm.buildtools.native") version "0.9.28"
 	id("com.google.cloud.tools.jib") version "3.4.0"
