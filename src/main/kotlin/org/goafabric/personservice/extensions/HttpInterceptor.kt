@@ -46,6 +46,7 @@ class HttpInterceptor : HandlerInterceptor {
         ex: Exception?
     ) {
         tenantId.remove()
+        userName.remove()
         MDC.remove("tenantId")
     }
 
