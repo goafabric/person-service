@@ -23,7 +23,6 @@ import org.springframework.security.web.SecurityFilterChain
 
 
 @Configuration
-@ImportRuntimeHints(ApplicationRunner.ApplicationRuntimeHints::class)
 class ApplicationRunner {
     @Bean
     fun runner(context: ApplicationContext?): CommandLineRunner? {
@@ -56,12 +55,6 @@ class ApplicationRunner {
     fun disableHttpServerObservationsFromName(): ObservationPredicate {
         return ObservationPredicate { name: String, context: Observation.Context? ->
             !(name.startsWith("spring.security.") || (context is ServerRequestObservationContext && context.carrier.requestURI.startsWith("/actuator")))
-        }
-    }
-
-    internal class ApplicationRuntimeHints : RuntimeHintsRegistrar {
-        override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-            hints.reflection().registerType(io.github.resilience4j.spring6.circuitbreaker.configure.CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
         }
     }
 

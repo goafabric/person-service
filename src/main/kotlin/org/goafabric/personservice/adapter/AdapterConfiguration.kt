@@ -1,9 +1,13 @@
 package org.goafabric.personservice.adapter
 
 import org.goafabric.personservice.extensions.HttpInterceptor
+import org.springframework.aot.hint.MemberCategory
+import org.springframework.aot.hint.RuntimeHints
+import org.springframework.aot.hint.RuntimeHintsRegistrar
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.http.HttpHeaders
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestClient
@@ -11,6 +15,7 @@ import org.springframework.web.client.support.RestClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 @Configuration
+@ImportRuntimeHints(AdapterConfiguration.AdapterRuntimeHints::class)
 class AdapterConfiguration {
     @Bean
     fun calleeServiceAdapter( //ReactorLoadBalancerExchangeFilterFunction lbFunction,
@@ -61,5 +66,11 @@ class AdapterConfiguration {
             .requestFactory(requestFactory)
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
             .createClient(adapterType!!)
+    }
+
+    internal class AdapterRuntimeHints : RuntimeHintsRegistrar {
+        override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
+            hints.reflection().registerType(io.github.resilience4j.spring6.circuitbreaker.configure.CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
+        }
     }
 }
