@@ -31,7 +31,7 @@ public class AdapterConfiguration {
                 .defaultHeaders(httpHeaders -> {
                     httpHeaders.setBasicAuth("admin", "admin"); //for OIDC this would be the jwt
                     httpHeaders.add("X-TenantId", HttpInterceptor.getTenantId());
-                    httpHeaders.add("X-OrganizationId", HttpInterceptor.getTenantId());
+                    httpHeaders.add("X-OrganizationId", HttpInterceptor.getOrganizationId());
                 })
                 .requestFactory(requestFactory);
                 //.clientConnector(new ReactorClientHttpConnector(HttpClient.create(ConnectionProvider.builder("custom").maxLifeTime(Duration.ofMillis(maxLifeTime)).build())));
