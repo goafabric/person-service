@@ -34,7 +34,6 @@ public class AdapterConfiguration {
                     httpHeaders.add("X-OrganizationId", HttpInterceptor.getOrganizationId());
                 })
                 .requestFactory(requestFactory);
-                //.clientConnector(new ReactorClientHttpConnector(HttpClient.create(ConnectionProvider.builder("custom").maxLifeTime(Duration.ofMillis(maxLifeTime)).build())));
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
                 .createClient(adapterType);
     }
