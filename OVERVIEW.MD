@@ -8,7 +8,11 @@ It also follows a pragmatic "hexagonal architecture", by decoupling most of the 
 - Persistence: Spring Data JPA to access the Database
   - Mapstruct to map the database Entities to REST DTOs
 - Adapter: Connect to other Services via Declarative REST Clients
-                
+
+# General
+- Usage of Lombok is strongly discouraged, as there are now far superior options, see sections below.
+- Usage of Reflection is strongly discouraged, as it will break native images, make the code very hard to understand and imposes additional attack vectors.
+
 ## Basic Layers
 ### Controller 
  
