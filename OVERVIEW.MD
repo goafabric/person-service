@@ -11,7 +11,8 @@ It also follows a pragmatic "hexagonal architecture", by decoupling most of the 
 
 # General
 - Usage of Lombok is strongly discouraged, as there are now far superior options, see sections below.
-- Usage of Reflection is strongly discouraged, as it will break native images, make the code very hard to understand and imposes additional attack vectors.
+- Usage of Reflection is strongly discouraged, as it will break native images, make the code very hard to understand and imposes additional attack vectors.#
+- Usage of RestTemplate or WebClient is discouraged. For imperative Rest clients the way to go is now the declarative RestCLIENT.
 
 ## Basic Layers
 ### Controller 
