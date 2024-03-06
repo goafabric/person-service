@@ -1,4 +1,4 @@
-package org.goafabric.personservice.repository.extensions;
+package org.goafabric.personservice.persistence.extensions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

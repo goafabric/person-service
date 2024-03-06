@@ -1,7 +1,7 @@
-package org.goafabric.personservice.repository.entity;
+package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.repository.extensions.AuditTrailListener;
+import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 
 
 @Entity

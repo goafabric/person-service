@@ -1,7 +1,7 @@
-package org.goafabric.personservice.repository.entity;
+package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.repository.extensions.AuditTrailListener;
+import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 import org.hibernate.annotations.TenantId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
