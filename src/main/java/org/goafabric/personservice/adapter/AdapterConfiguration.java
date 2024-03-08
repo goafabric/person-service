@@ -31,9 +31,6 @@ public class AdapterConfiguration {
                 .defaultHeaders(httpHeaders -> {
                     httpHeaders.setBasicAuth("admin", "admin"); //for OIDC this would be the jwt
                     HttpInterceptor.getMap().forEach(httpHeaders::add);
-
-                    httpHeaders.add("X-TenantId", HttpInterceptor.getTenantId());
-                    httpHeaders.add("X-OrganizationId", HttpInterceptor.getOrganizationId());
                 })
                 .requestFactory(requestFactory);
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()

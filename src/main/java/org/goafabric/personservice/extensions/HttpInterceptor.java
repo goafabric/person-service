@@ -19,8 +19,9 @@ import java.util.Map;
 
 public class HttpInterceptor implements HandlerInterceptor {
     record TenantContext(String tenantId, String organizationId, String userName) {
-        public String tenantId() { return tenantId != null ? tenantId : "0"; }
-        public String organizationId() { return organizationId != null ? organizationId : "0"; }
+        public TenantContext(HttpServletRequest request) {
+            this(request.getHeader("X-TenantId"), request.getHeader("X-OrganizationId"), request.getHeader("X-Auth-Request-Preferred-Username"));
+        }
         public Map<String, String> toMap() {
             return Map.of("X-TenantId", tenantId, "X-OrganizationId", organizationId, "X-Auth-Request-Preferred-Username", userName);
         }
@@ -39,9 +40,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        tenantContext.set(new TenantContext(
-                request.getHeader("X-TenantId"), request.getHeader("X-OrganizationId"), request.getHeader("X-Auth-Request-Preferred-Username")));
-        
+        setTenantContext(request);
         configureLogsAndTracing(request);
 
         if (handler instanceof HandlerMethod) {
@@ -62,9 +61,21 @@ public class HttpInterceptor implements HandlerInterceptor {
                 context -> context.addHighCardinalityKeyValue(KeyValue.of("tenant.id", getTenantId())));
     }
 
-    public static String getTenantId() { return tenantContext.get().tenantId; }
-    public static String getOrganizationId() { return tenantContext.get().organizationId; }
-    public static Map<String, String> getMap() { return tenantContext.get().toMap();}
+    private static void setTenantContext(HttpServletRequest request) {
+        tenantContext.set(new TenantContext(request));
+    }
+
+    public static String getTenantId() {
+        return tenantContext.get().tenantId() != null ? tenantContext.get().tenantId() : "0";
+    }
+
+    public static String getOrganizationId() {
+        return tenantContext.get().organizationId() != null ? tenantContext.get().organizationId() : "1";
+    }
+
+    public static Map<String, String> getMap() {
+        return tenantContext.get().toMap();
+    }
 
     public static String getUserName() {
         return tenantContext.get().userName != null ? tenantContext.get().userName
@@ -73,7 +84,7 @@ public class HttpInterceptor implements HandlerInterceptor {
 
 
     public static void setTenantId(String tenant) {
-
+        //todo
     }
 
 
