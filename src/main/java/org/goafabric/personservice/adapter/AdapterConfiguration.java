@@ -28,12 +28,14 @@ public class AdapterConfiguration {
         requestFactory.setConnectTimeout(timeout.intValue());
         requestFactory.setReadTimeout(timeout.intValue());
         builder.baseUrl(url)
-                .defaultHeaders(httpHeaders -> {
-                    httpHeaders.setBasicAuth("admin", "admin"); //for OIDC this would be the jwt
-                    httpHeaders.add("X-TenantId", HttpInterceptor.getTenantId());
-                    httpHeaders.add("X-OrganizationId", HttpInterceptor.getOrganizationId());
+                .requestInterceptor((request, body, execution) -> {
+                    request.getHeaders().setBasicAuth("admin", "admin");
+                    request.getHeaders().set("X-TenantId", HttpInterceptor.getTenantId());
+                    request.getHeaders().set("X-OrganizationId", HttpInterceptor.getOrganizationId());
+                    return execution.execute(request, body);
                 })
                 .requestFactory(requestFactory);
+
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
                 .createClient(adapterType);
     }
