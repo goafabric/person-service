@@ -6,23 +6,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.ServerHttpObservationFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Component
+import java.util.Map;
+
+
 public class HttpInterceptor implements HandlerInterceptor {
+    record TenantContext(String tenantId, String organizationId, String userName) {
+        public String tenantId() { return tenantId != null ? tenantId : "0"; }
+        public String organizationId() { return organizationId != null ? organizationId : "0"; }
+        public Map<String, String> toMap() {
+            return Map.of("X-TenantId", tenantId, "X-OrganizationId", organizationId, "X-Auth-Request-Preferred-Username", userName);
+        }
+    }
+
     private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
-    private static final ThreadLocal<String> tenantId = new ThreadLocal<>();
-    private static final ThreadLocal<String> organizationId = new ThreadLocal<>();
-    private static final ThreadLocal<String> userName = new ThreadLocal<>();
+    private static final ThreadLocal<TenantContext> tenantContext = ThreadLocal.withInitial(() -> new TenantContext(null, null, null));
 
     @Configuration
     static class Configurer implements WebMvcConfigurer {
@@ -34,22 +39,20 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        setTenantId(request.getHeader("X-TenantId"));
-        setOrganizationId(request.getHeader("X-OrganizationId"));
-        userName.set(request.getHeader("X-Auth-Request-Preferred-Username"));
+        tenantContext.set(new TenantContext(
+                request.getHeader("X-TenantId"), request.getHeader("X-OrganizationId"), request.getHeader("X-Auth-Request-Preferred-Username")));
+        
         configureLogsAndTracing(request);
 
         if (handler instanceof HandlerMethod) {
-            log.info(" {} method called for user {} and tenant {} ", ((HandlerMethod) handler).getShortLogMessage(), getUserName(), getTenantId());
+            log.info(" {} method called for user {} ", ((HandlerMethod) handler).getShortLogMessage(), getUserName());
         }
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        tenantId.remove();
-        userName.remove();
-        organizationId.remove();
+        tenantContext.remove();
         MDC.remove("tenantId");
     }
 
@@ -59,30 +62,19 @@ public class HttpInterceptor implements HandlerInterceptor {
                 context -> context.addHighCardinalityKeyValue(KeyValue.of("tenant.id", getTenantId())));
     }
 
-    public static String getTenantId() {
-        return tenantId.get() != null ? tenantId.get() : "0"; //tdo
-    }
-
-    public static String getOrganizationId() {
-        return organizationId.get() != null ? organizationId.get() : "1"; //tdo
-    }
+    public static String getTenantId() { return tenantContext.get().tenantId; }
+    public static String getOrganizationId() { return tenantContext.get().organizationId; }
+    public static Map<String, String> getMap() { return tenantContext.get().toMap();}
 
     public static String getUserName() {
-        return userName.get() != null ? userName.get()
+        return tenantContext.get().userName != null ? tenantContext.get().userName
                 : SecurityContextHolder.getContext().getAuthentication() != null ? SecurityContextHolder.getContext().getAuthentication().getName() : "";
     }
 
+
     public static void setTenantId(String tenant) {
-        tenantId.set(tenant);
+
     }
 
-    public static void setOrganizationId(String organization) {
-        //tdo: verify if user is eligible for organization
-        organizationId.set(organization);
-    }
-
-    @Value("${multi-tenancy.schema-prefix}") private String schemaPrefix;
-    @RegisterReflectionForBinding(HttpInterceptor.class)
-    public String getPrefix() { return schemaPrefix + HttpInterceptor.getTenantId() + "_"; }
 
 }

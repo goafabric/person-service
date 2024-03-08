@@ -30,6 +30,8 @@ public class AdapterConfiguration {
         builder.baseUrl(url)
                 .defaultHeaders(httpHeaders -> {
                     httpHeaders.setBasicAuth("admin", "admin"); //for OIDC this would be the jwt
+                    HttpInterceptor.getMap().forEach(httpHeaders::add);
+
                     httpHeaders.add("X-TenantId", HttpInterceptor.getTenantId());
                     httpHeaders.add("X-OrganizationId", HttpInterceptor.getOrganizationId());
                 })
