@@ -57,6 +57,7 @@ class AdapterConfiguration {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
         requestFactory.setReadTimeout(timeout.toInt())
+        //Todo: this is wrong and has to be a RequestInterceptor !
         builder.baseUrl(url!!)
             .defaultHeaders { httpHeaders: HttpHeaders ->
                 httpHeaders.setBasicAuth("admin", "admin") //for OIDC this would be the jwt
