@@ -40,7 +40,7 @@ class AdapterConfiguration {
         requestFactory.setConnectTimeout(timeout.toInt())
         requestFactory.setReadTimeout(timeout.toInt())
         builder.baseUrl(url!!)
-            .requestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
+            .requestInterceptor { request, body, execution ->
                 request.headers.setBasicAuth("admin", "admin")
                 request.headers.add("X-TenantId", HttpInterceptor.getTenantId())
                 request.headers.add("X-OrganizationId", HttpInterceptor.getTenantId())
