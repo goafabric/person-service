@@ -1,6 +1,8 @@
 # 3.2.3
 - upgrade to Spring Boot 3.2.3
 - upgrade to springdoc 2.3.0
+- TenantContext added
+- Adapter Header Forwarding fixed
 
 # 3.2.0
 - upgrade to Spring Boot 3.2.0
