@@ -1,6 +1,6 @@
 package org.goafabric.personservice.adapter;
 
-import org.goafabric.personservice.extensions.HttpInterceptor;
+import org.goafabric.personservice.extensions.TenantContext;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
@@ -30,12 +30,10 @@ public class AdapterConfiguration {
         builder.baseUrl(url)
                 .requestInterceptor((request, body, execution) -> {
                     request.getHeaders().setBasicAuth("admin", "admin");
-                    request.getHeaders().set("X-TenantId", HttpInterceptor.getTenantId());
-                    request.getHeaders().set("X-OrganizationId", HttpInterceptor.getOrganizationId());
+                    TenantContext.getMap().forEach((key, value) -> request.getHeaders().set(key, value));
                     return execution.execute(request, body);
                 })
                 .requestFactory(requestFactory);
-
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
                 .createClient(adapterType);
     }
