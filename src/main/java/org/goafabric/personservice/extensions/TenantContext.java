@@ -23,7 +23,9 @@ public class TenantContext {
 
     public static void removeContext() {
         tenantContext.remove();
-    }public static void setTenantId(String tenant) {
+    }
+
+    public static void setTenantId(String tenant) {
         tenantContext.set(new TenantContextRecord(tenant, tenantContext.get().organizationId, tenantContext.get().userName));
     }
 
