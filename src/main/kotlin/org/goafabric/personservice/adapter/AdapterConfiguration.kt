@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpRequest
+import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.support.RestClientAdapter
@@ -27,26 +29,6 @@ class AdapterConfiguration {
         return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout, maxLifeTime)
     }
 
-    companion object {
-        fun <A> createAdapter(
-            adapterType: Class<A>,
-            builder: RestClient.Builder,
-            url: String?,
-            timeout: Long,
-            maxLifeTime: Long?
-        ): A {
-            val requestFactory = SimpleClientHttpRequestFactory()
-            requestFactory.setConnectTimeout(timeout.toInt())
-            requestFactory.setReadTimeout(timeout.toInt())
-            builder.baseUrl(url!!)
-                .defaultHeaders { header: HttpHeaders -> header.setBasicAuth("admin", "admin") }
-                .requestFactory(requestFactory)
-            //.clientConnector(new ReactorClientHttpConnector(HttpClient.create(ConnectionProvider.builder("custom").maxLifeTime(Duration.ofMillis(maxLifeTime)).build())));
-            return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
-                .createClient(adapterType)
-        }
-    }
-
     fun <A> createAdapter(
         adapterType: Class<A>?,
         builder: RestClient.Builder,
@@ -57,12 +39,13 @@ class AdapterConfiguration {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
         requestFactory.setReadTimeout(timeout.toInt())
-        //Todo: this is wrong and has to be a RequestInterceptor !
         builder.baseUrl(url!!)
-            .defaultHeaders { httpHeaders: HttpHeaders ->
-                httpHeaders.setBasicAuth("admin", "admin") //for OIDC this would be the jwt
-                httpHeaders.add("X-TenantId", HttpInterceptor.getTenantId())
-                httpHeaders.add("X-OrganizationId", HttpInterceptor.getTenantId())
+            .requestInterceptor { request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution ->
+                request.headers.setBasicAuth("admin", "admin")
+                request.headers.add("X-TenantId", HttpInterceptor.getTenantId())
+                request.headers.add("X-OrganizationId", HttpInterceptor.getTenantId())
+                //TenantContext.getMap().forEach { key, value -> request.headers[key] = value }
+                execution.execute(request, body)
             }
             .requestFactory(requestFactory)
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
