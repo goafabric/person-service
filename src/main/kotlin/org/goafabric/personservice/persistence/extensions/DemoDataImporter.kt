@@ -1,6 +1,6 @@
 package org.goafabric.personservice.persistence.extensions
 
-import org.goafabric.calleeservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.TenantContext
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.logic.PersonLogic

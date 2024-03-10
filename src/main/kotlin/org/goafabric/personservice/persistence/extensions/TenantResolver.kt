@@ -1,7 +1,7 @@
 package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
-import org.goafabric.calleeservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.TenantContext
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider

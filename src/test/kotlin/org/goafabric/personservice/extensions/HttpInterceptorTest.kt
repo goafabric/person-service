@@ -1,10 +1,6 @@
 package org.goafabric.personservice.extensions
 
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
-import org.goafabric.calleeservice.extensions.HttpInterceptor
-import org.goafabric.calleeservice.extensions.TenantContext
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 

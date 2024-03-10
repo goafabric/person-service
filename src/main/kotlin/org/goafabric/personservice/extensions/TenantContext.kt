@@ -1,4 +1,4 @@
-package org.goafabric.calleeservice.extensions
+package org.goafabric.personservice.extensions
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.Authentication

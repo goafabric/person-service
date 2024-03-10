@@ -1,6 +1,6 @@
 package org.goafabric.personservice.adapter
 
-import org.goafabric.calleeservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.TenantContext
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
