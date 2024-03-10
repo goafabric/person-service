@@ -30,7 +30,7 @@ public class AdapterConfiguration {
         builder.baseUrl(url)
                 .requestInterceptor((request, body, execution) -> {
                     request.getHeaders().setBasicAuth("admin", "admin");
-                    TenantContext.getMap().forEach((key, value) -> request.getHeaders().set(key, value));
+                    TenantContext.getAdapterHeaderMap().forEach((key, value) -> request.getHeaders().set(key, value));
                     return execution.execute(request, body);
                 })
                 .requestFactory(requestFactory);
