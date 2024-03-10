@@ -1,19 +1,13 @@
 package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
-import org.goafabric.personservice.extensions.HttpInterceptor
-import org.goafabric.personservice.repository.extensions.DemoDataImporter
+import org.goafabric.calleeservice.extensions.TenantContext
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.ApplicationArguments
-import org.springframework.boot.ApplicationRunner
-import org.springframework.boot.CommandLineRunner
-import org.springframework.boot.ExitCodeGenerator
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
@@ -46,7 +40,7 @@ class TenantResolver(
 
     companion object {
         fun getOrgunitId(): String {
-            return "1";
+            return TenantContext.organizationId;
         }
     }
 
@@ -64,7 +58,7 @@ class TenantResolver(
     override fun getConnection(schema: String): Connection {
         val connection = dataSource.connection
         connection.schema =
-            if (defaultSchema == schema) defaultSchema else schemaPrefix + HttpInterceptor.getTenantId()
+            if (defaultSchema == schema) defaultSchema else schemaPrefix + TenantContext.tenantId
         return connection
     }
 

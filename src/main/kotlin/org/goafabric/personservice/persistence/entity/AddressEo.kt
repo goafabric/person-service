@@ -2,8 +2,7 @@ package org.goafabric.personservice.repository.entity
 
 import org.hibernate.annotations.GenericGenerator
 import jakarta.persistence.*
-import org.goafabric.personservice.repository.extensions.AuditTrailListener
-import org.hibernate.annotations.TenantId
+import org.goafabric.personservice.persistence.extensions.AuditTrailListener
 
 @Entity
 @Table(name = "address")

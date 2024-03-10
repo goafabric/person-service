@@ -1,11 +1,10 @@
-package org.goafabric.personservice.repository.extensions
+package org.goafabric.personservice.persistence.extensions
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import jakarta.persistence.*
-import org.goafabric.personservice.extensions.HttpInterceptor
-import org.goafabric.personservice.persistence.extensions.TenantResolver
+import org.goafabric.calleeservice.extensions.TenantContext
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.BeansException
@@ -92,9 +91,9 @@ class AuditTrailListener : ApplicationContextAware {
             getTableName((newObject ?: oldObject)!!),
             referenceId,
             dbOperation,
-            if (dbOperation == DbOperation.CREATE) HttpInterceptor.getUserName() else null,
+            if (dbOperation == DbOperation.CREATE) TenantContext.userName else null,
             if (dbOperation == DbOperation.CREATE) date else null,
-            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) HttpInterceptor.getUserName() else null,
+            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) TenantContext.userName else null,
             if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) date else null,
             oldObject?.let { getJsonValue(it) },
             newObject?.let { getJsonValue(it) }
@@ -131,7 +130,7 @@ class AuditTrailListener : ApplicationContextAware {
     ) {
         fun insertAudit(auditTrail: AuditTrail?, `object`: Any?) { //we cannot use jpa because of the dynamic table name
             SimpleJdbcInsert(dataSource)
-                .withSchemaName(schemaPrefix + HttpInterceptor.getTenantId())
+                .withSchemaName(schemaPrefix + TenantContext.tenantId)
                 .withTableName("audit_trail")
                 .execute(BeanPropertySqlParameterSource(auditTrail!!))
         }

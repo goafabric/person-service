@@ -1,6 +1,6 @@
 package org.goafabric.personservice.adapter
 
-import org.goafabric.personservice.extensions.HttpInterceptor
+import org.goafabric.calleeservice.extensions.TenantContext
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpRequest
-import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.support.RestClientAdapter
@@ -42,9 +39,7 @@ class AdapterConfiguration {
         builder.baseUrl(url!!)
             .requestInterceptor { request, body, execution ->
                 request.headers.setBasicAuth("admin", "admin")
-                request.headers.add("X-TenantId", HttpInterceptor.getTenantId())
-                request.headers.add("X-OrganizationId", HttpInterceptor.getTenantId())
-                //TenantContext.getMap().forEach { key, value -> request.headers[key] = value }
+                TenantContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
                 execution.execute(request, body)
             }
             .requestFactory(requestFactory)

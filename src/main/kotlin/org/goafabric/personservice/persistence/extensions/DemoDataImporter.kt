@@ -1,8 +1,8 @@
-package org.goafabric.personservice.repository.extensions
+package org.goafabric.personservice.persistence.extensions
 
+import org.goafabric.calleeservice.extensions.TenantContext
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
-import org.goafabric.personservice.extensions.HttpInterceptor
 import org.goafabric.personservice.logic.PersonLogic
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -43,12 +43,12 @@ class DemoDataImporter(
     private fun importDemoData() {
         Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
             Consumer { tenant: String? ->
-                HttpInterceptor.setTenantId(tenant)
+                TenantContext.tenantId = tenant!!;
                 if (applicationContext.getBean(PersonLogic::class.java).findAll().isEmpty()) {
                     insertData()
                 }
             })
-        HttpInterceptor.setTenantId("0")
+        TenantContext.tenantId = "0";
     }
 
     private fun insertData() {
@@ -76,6 +76,6 @@ class DemoDataImporter(
     }
 
     private fun createAddress(street: String): Address {
-        return Address(null, null, street, "Springfield " + HttpInterceptor.getTenantId())
+        return Address(null, null, street, "Springfield " + TenantContext.tenantId)
     }
 }
