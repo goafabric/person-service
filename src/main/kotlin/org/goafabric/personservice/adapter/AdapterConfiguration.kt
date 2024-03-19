@@ -14,24 +14,21 @@ import org.springframework.web.client.support.RestClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 @Configuration
-@ImportRuntimeHints(AdapterConfiguration.AdapterRuntimeHints::class)
 class AdapterConfiguration {
     @Bean
-    fun calleeServiceAdapter( //ReactorLoadBalancerExchangeFilterFunction lbFunction,
+    fun calleeServiceAdapter(
         builder: RestClient.Builder,
         @Value("\${adapter.calleeservice.url}") url: String?,
-        @Value("\${adapter.timeout}") timeout: Long,
-        @Value("\${adapter.maxlifetime:-1}") maxLifeTime: Long?
+        @Value("\${adapter.timeout}") timeout: Long
     ): CalleeServiceAdapter {
-        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout, maxLifeTime)
+        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout)
     }
 
     fun <A> createAdapter(
         adapterType: Class<A>?,
         builder: RestClient.Builder,
         url: String?,
-        timeout: Long,
-        maxLifeTime: Long?
+        timeout: Long
     ): A {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
@@ -45,11 +42,5 @@ class AdapterConfiguration {
             .requestFactory(requestFactory)
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
             .createClient(adapterType!!)
-    }
-
-    internal class AdapterRuntimeHints : RuntimeHintsRegistrar {
-        override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-            hints.reflection().registerType(io.github.resilience4j.spring6.circuitbreaker.configure.CircuitBreakerAspect::class.java,  MemberCategory.INVOKE_DECLARED_METHODS)
-        }
     }
 }
