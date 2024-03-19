@@ -19,11 +19,11 @@ public class AdapterConfiguration {
 
     @Bean
     public CalleeServiceAdapter calleeServiceAdapter(RestClient.Builder builder,
-            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.maxlifetime:-1}") Long maxLifeTime) {
-        return createAdapter(CalleeServiceAdapter.class, builder, url, timeout, maxLifeTime);
+            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout) {
+        return createAdapter(CalleeServiceAdapter.class, builder, url, timeout);
     }
 
-    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout, Long maxLifeTime) {
+    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout) {
         var requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(timeout.intValue());
         requestFactory.setReadTimeout(timeout.intValue());
