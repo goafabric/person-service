@@ -31,6 +31,9 @@ internal class PersonControllerIT(
         assertThat(person.firstName).isEqualTo(persons.first().firstName)
         assertThat(person.lastName).isEqualTo(persons.first().lastName)
 
+        assertThat(person.id).isNotNull()
+        assertThat(person.version).isNotNull()
+
         assertThat(personRepository.findById(persons.first().id!!).get().organizationId).isEqualTo("0")
     }
 
