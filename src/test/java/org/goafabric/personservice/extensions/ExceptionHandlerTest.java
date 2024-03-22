@@ -20,12 +20,9 @@ class ExceptionHandlerTest {
                 .isEqualTo(HttpStatus.PRECONDITION_FAILED);
     }
 
-    /*
     @Test
     void handleGeneralException() {
         assertThat(exceptionHandler.handleGeneralException(new IllegalStateException("general failure")).getStatusCode())
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
-
-     */
 }

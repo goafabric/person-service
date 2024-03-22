@@ -1,8 +1,8 @@
-package org.goafabric.personservice.repository.extensions;
+package org.goafabric.personservice.persistence.extensions;
 
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.extensions.HttpInterceptor;
+import org.goafabric.personservice.extensions.TenantContext;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,12 +51,12 @@ public class DemoDataImporter implements CommandLineRunner {
 
     private void importDemoData() {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
-            HttpInterceptor.setTenantId(tenant);
+            TenantContext.setTenantId(tenant);
             if (applicationContext.getBean(PersonLogic.class).findAll().isEmpty()) {
                 insertData();
             }
         });
-        HttpInterceptor.setTenantId("0");
+        TenantContext.setTenantId("0");
     }
 
     private void insertData() {
@@ -74,7 +74,7 @@ public class DemoDataImporter implements CommandLineRunner {
     }
 
     private Address createAddress(String street) {
-        return new Address(null, null, street, "Springfield " + HttpInterceptor.getTenantId());
+        return new Address(null, null, street, "Springfield " + TenantContext.getTenantId());
     }
 
 }

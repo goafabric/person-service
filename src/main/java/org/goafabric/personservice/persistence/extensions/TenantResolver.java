@@ -1,7 +1,7 @@
-package org.goafabric.personservice.repository.extensions;
+package org.goafabric.personservice.persistence.extensions;
 
 import org.flywaydb.core.Flyway;
-import org.goafabric.personservice.extensions.HttpInterceptor;
+import org.goafabric.personservice.extensions.TenantContext;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @RegisterReflectionForBinding({org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
-public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTenantConnectionProvider, HibernatePropertiesCustomizer {
+public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
     private final DataSource dataSource;
     private final String schemaPrefix;
@@ -42,12 +42,9 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
 
     @Override
     public String resolveCurrentTenantIdentifier() {
-        return getOrgunitId();
+        return TenantContext.getOrganizationId();
     }
 
-    public static String getOrgunitId() {
-        return "1";
-    }
 
     @Override
     public boolean validateExistingCurrentSessions() {
@@ -65,7 +62,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, MultiTen
     @Override
     public Connection getConnection(String schema) throws SQLException {
         var connection = dataSource.getConnection();
-        connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + HttpInterceptor.getTenantId());
+        connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + TenantContext.getTenantId());
         return connection;
     }
 

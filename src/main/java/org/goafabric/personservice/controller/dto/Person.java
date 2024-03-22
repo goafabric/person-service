@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public record Person (
     String id,
-    String version,
+    Long version,
     String firstName,
     String lastName,
     List<Address> address) {

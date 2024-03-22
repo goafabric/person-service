@@ -25,21 +25,21 @@ class PersonControllerTest {
     void findAll() {
         when(personLogic.findAll()).thenReturn(Collections.singletonList(createPerson()));
         assertThat(personController.findAll()).isNotNull().isNotEmpty();
-        assertThat(personController.findAll().get(0).lastName()).isEqualTo("Simpson");
+        assertThat(personController.findAll().getFirst().lastName()).isEqualTo("Simpson");
     }
 
     @Test
     void findByFirstName() {
         when(personLogic.findByFirstName("Homer")).thenReturn(Collections.singletonList(createPerson()));
         assertThat(personController.findByFirstName("Homer")).isNotNull().isNotEmpty();
-        assertThat(personController.findByFirstName("Homer").get(0).firstName()).isEqualTo("Homer");
+        assertThat(personController.findByFirstName("Homer").getFirst().firstName()).isEqualTo("Homer");
     }
 
     @Test
     void findByLastName() {
         when(personLogic.findByLastName("Simpson")).thenReturn(Collections.singletonList(createPerson()));
         assertThat(personController.findByLastName("Simpson")).isNotNull().isNotEmpty();
-        assertThat(personController.findByLastName("Simpson").get(0).lastName()).isEqualTo("Simpson");
+        assertThat(personController.findByLastName("Simpson").getFirst().lastName()).isEqualTo("Simpson");
     }
 
     @Test

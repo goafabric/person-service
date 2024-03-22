@@ -82,11 +82,9 @@ We could opt for Lombok here, but with the introduction of Java Records, the usa
 Please also know, that Usage of @Data / @EqualsHashcode is discouraged for JPA Entities.
 
 Again, Kotlin has a solution for the whole dilemma ... with java it is more complicated.
-We could get away with "@Access(AccessType.FIELD)" and having everything private .. but this will break Mapstruct.
-
-Though without Lombok and without generating getters/setters .. by hand .. the only choice left ist to have pulic attributes.
-The suggestion here is, to NOT DIRECTLY manipulate the entities inside the logic layer,
-but to always create new Java Records and then just convert them via Mapstruct to entities.
+So we are opting here with an immutable approach, also leveraged by most other languages.
+The Entities contain a FullArgs Constructor + Getters, No Setters.
+These have to be generated via the IDE.
 
 ### Multi Tenancy by Schema
 Multi Tenancy is taken care of by the "TenantResolver" in Tandem with the "HttpInterceptor".

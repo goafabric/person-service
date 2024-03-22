@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public record Address (
         String id,
-        String version,
+        Long version,
         String street,
         String city) {
     public Address {

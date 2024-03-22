@@ -1,3 +1,9 @@
+# 3.2.4
+- upgrade to Spring Boot 3.2.4
+- upgrade to springdoc 2.3.0
+- TenantContext added
+- Adapter Header Forwarding fixed
+
 # 3.2.0
 - upgrade to Spring Boot 3.2.0
 - upgrade to jib 3.4.0
