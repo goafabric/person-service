@@ -1,5 +1,6 @@
 package org.goafabric.personservice.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
@@ -15,6 +16,7 @@ import org.springframework.test.context.aot.DisabledInAotMode;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,7 +33,7 @@ class PersonControllerIT {
     private CalleeServiceAdapter calleeServiceAdapter;
 
     @Test
-    public void findById() {
+    public void getById() {
         List<Person> persons = personController.findAll();
         assertThat(persons).isNotNull().hasSize(3);
 
@@ -41,7 +43,12 @@ class PersonControllerIT {
         assertThat(person.firstName()).isEqualTo(persons.getFirst().firstName());
         assertThat(person.lastName()).isEqualTo(persons.getFirst().lastName());
 
-        assertThat(personRepository.findById(persons.getFirst().id()).get().getOrganizationId()).isEqualTo("0");
+        assertThat(personRepository.getById(persons.getFirst().id()).getOrganizationId()).isEqualTo("0");
+    }
+
+    @Test
+    public void getByIdEntityNotFound() {
+        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test

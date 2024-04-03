@@ -39,7 +39,7 @@ public class PersonEo {
         this.version = version;
     }
 
-    private PersonEo() {}
+    PersonEo() {}
 
     public String getId() {
         return id;
