@@ -73,7 +73,6 @@ dependencies {
 
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-
 }
 
 tasks.withType<Test> {
@@ -102,8 +101,6 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 		exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
 	}
 }
-
-graalvmNative { binaries.named("main") { quickBuild.set(true) } }
 
 configure<net.researchgate.release.ReleaseExtension> {
 	buildTasks.set(listOf("build", "test", "jib", "dockerImageNative"))
