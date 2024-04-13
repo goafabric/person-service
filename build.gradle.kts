@@ -17,6 +17,7 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.4.2"
 	id("net.researchgate.release") version "3.0.2"
 	id("org.sonarqube") version "5.0.0.4638"
+	id("org.owasp.dependencycheck") version "9.1.0"
 }
 
 repositories {
