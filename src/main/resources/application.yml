@@ -53,8 +53,7 @@ adapter:
   timeout: 10000
   calleeservice:
     url: http://localhost:50900
-    user: YWRtaW4=
-    password: YWRtaW4=
+    authentication: YWRtaW4=
 
 #resilience4j
 resilience4j.circuitbreaker:
