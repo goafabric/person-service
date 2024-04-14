@@ -17,11 +17,16 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Test
-        uses: gradle/gradle-build-action@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.7
-          arguments: build test
+
+      - name: Test
+        run: gradle build test
+
+      - name: Sonar
+        run: gradle sonar -Dsonar.plugins.downloadOnlyRequired=true -Dsonar.host.url=https://v2202402203466256255.megasrv.de/sonar -Dsonar.login=admin -Dsonar.password=admin1
 
   snapshot:
     runs-on: ubuntu-latest
@@ -42,7 +47,7 @@ jobs:
           java-version: '21'
           
       - name: Container Images
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.7
           arguments: jib dockerImageNative
@@ -67,16 +72,18 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.7
+
       - name: Setup git config
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
 
       - name: Release
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: 8.7
-          arguments: release -Prelease.useAutomaticVersion=true
+        run: gradle release -Prelease.useAutomaticVersion=true
 
       - name: Get Latest Tag
         id: latest_tag
