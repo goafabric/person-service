@@ -25,9 +25,9 @@ public class TenantContext {
 
     static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
         CONTEXT.set(new TenantContextRecord(
-                getDefaultValue(tenantId, CONTEXT.get().tenantId),
-                getDefaultValue(organizationId, CONTEXT.get().organizationId),
-                getDefaultValue(getUserNameFromUserInfo(userInfo), getDefaultValue(userName, CONTEXT.get().userName))
+                getValue(tenantId, CONTEXT.get().tenantId),
+                getValue(organizationId, CONTEXT.get().organizationId),
+                getValue(getUserNameFromUserInfo(userInfo), getValue(userName, CONTEXT.get().userName))
         ));
 
     }
@@ -39,7 +39,7 @@ public class TenantContext {
         CONTEXT.remove();
     }
 
-    private static String getDefaultValue(String value, String defaultValue) {
+    private static String getValue(String value, String defaultValue) {
         return value != null ? value : defaultValue;
     }
 
