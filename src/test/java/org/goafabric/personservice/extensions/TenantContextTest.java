@@ -32,6 +32,13 @@ class TenantContextTest {
     }
 
     @Test
+    void getUserNameFromUserINfo() {
+        var userInfo = "eyJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIGRvZSIsImFsZyI6IkhTMjU2In0";
+        TenantContext.setContext("42", "44", "user", userInfo);
+        assertThat(TenantContext.getUserName()).isEqualTo("john doe");
+    }
+
+    @Test
     void getAll() {
         TenantContext.setContext("42", "44", "user", null);
         assertThat(TenantContext.getTenantId()).isEqualTo("42");
@@ -39,5 +46,6 @@ class TenantContextTest {
         assertThat(TenantContext.getUserName()).isEqualTo("user");
         assertThat(TenantContext.getAdapterHeaderMap()).isNotNull().isNotEmpty();
     }
+
 
 }

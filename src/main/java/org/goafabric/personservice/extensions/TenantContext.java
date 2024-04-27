@@ -25,11 +25,10 @@ public class TenantContext {
 
     static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
         CONTEXT.set(new TenantContextRecord(
-                getValue(tenantId, CONTEXT.get().tenantId),
-                getValue(organizationId, CONTEXT.get().organizationId),
-                getValue(getUserNameFromUserInfo(userInfo), getValue(userName, CONTEXT.get().userName))
+                getValue(tenantId, "0"),
+                getValue(organizationId, "0"),
+                getValue(getUserNameFromUserInfo(userInfo), getValue(userName, "anonymous"))
         ));
-
     }
 
     public static void removeContext() {
@@ -71,6 +70,4 @@ public class TenantContext {
             throw new IllegalStateException(ex);
         }
     }
-
-    //eyJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb24gZG9lIiwiYWxnIjoiSFMyNTYifQ.e30.OsLaWah2xLrm4GOGbR0OdZ0BCtPC6wHcQ_ipyuHIAsY
 }
