@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class TenantContext {
     private static final ThreadLocal<TenantContextRecord> CONTEXT =
-            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous"));
+            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous", null));
 
-    record TenantContextRecord(String tenantId, String organizationId, String userName) {
+    record TenantContextRecord(String tenantId, String organizationId, String userName, String userInfo) {
         public Map<String, String> toAdapterHeaderMap() {
             return Map.of("X-TenantId", getTenantId(), "X-OrganizationId", getOrganizationId(), "X-Auth-Request-Preferred-Username", getUserName());
         }
@@ -22,12 +22,10 @@ public class TenantContext {
         CONTEXT.set(new TenantContextRecord(
                 getDefaultValue(request.getHeader("X-TenantId"), CONTEXT.get().tenantId),
                 getDefaultValue(request.getHeader("X-OrganizationId"), CONTEXT.get().organizationId),
-                getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName))
-        );
-
-        if (request.getHeader("X-UserInfo") != null) {
-            var userName = decodeUserInfo(request.getHeader("X-UserInfo")).get("preferred_username");
-        }
+                getDefaultValue(getUserNameFromUserInfo(request.getHeader("X-UserInfo"))
+                        , getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName)),
+                request.getHeader("X-UserInfo")
+        ));
     }
 
     static void setContext(TenantContextRecord tenantContextRecord) {
@@ -60,9 +58,12 @@ public class TenantContext {
 
 
     public static void setTenantId(String tenant) {
-        CONTEXT.set(new TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName));
+        CONTEXT.set(new TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName, CONTEXT.get().userInfo));
     }
 
+    private static String getUserNameFromUserInfo(String userInfo) {
+        return userInfo != null ? (String) decodeUserInfo(userInfo).get("preferred_username") : null;
+    }
 
     private static Map<String, Object> decodeUserInfo(String userInfo) {
         try {
