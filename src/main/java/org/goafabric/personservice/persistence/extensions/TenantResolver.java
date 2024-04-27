@@ -60,6 +60,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
     /** Tenant Resolver for Schema **/
 
     @Override
+    @SuppressWarnings("java:S2095") //connection closig is handled by framework
     public Connection getConnection(String schema) throws SQLException {
         var connection = dataSource.getConnection();
         connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + TenantContext.getTenantId());
