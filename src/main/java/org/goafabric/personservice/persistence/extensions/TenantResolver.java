@@ -112,12 +112,11 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
                                            @Value("${multi-tenancy.tenants}") String tenants,
                                            @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
         if (goals.contains("-migrate")) {
-            Arrays.asList(tenants.split(",")).forEach(tenant -> {
-                        Flyway.configure().configuration(flyway.getConfiguration())
-                                .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                                .placeholders(Map.of("tenantId", tenant))
-                                .load().migrate();
-                    }
+            Arrays.asList(tenants.split(",")).forEach(tenant ->
+                    Flyway.configure().configuration(flyway.getConfiguration())
+                    .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                    .placeholders(Map.of("tenantId", tenant))
+                    .load().migrate()
             );
         }
         return true;

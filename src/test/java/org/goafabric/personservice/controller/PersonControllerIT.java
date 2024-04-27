@@ -33,7 +33,7 @@ class PersonControllerIT {
     private CalleeServiceAdapter calleeServiceAdapter;
 
     @Test
-    public void getById() {
+    void getById() {
         List<Person> persons = personController.findAll();
         assertThat(persons).isNotNull().hasSize(3);
 
@@ -47,19 +47,19 @@ class PersonControllerIT {
     }
 
     @Test
-    public void getByIdEntityNotFound() {
+    void getByIdEntityNotFound() {
         assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
-    public void findAll() {
+    void findAll() {
         assertThat(personController.findAll()).isNotNull().hasSize(3);
 
         assertThat(personController.findAll()).isNotNull().hasSize(3);
     }
 
     @Test
-    public void findByFirstName() {
+    void findByFirstName() {
         List<Person> persons = personController.findByFirstName("Monty");
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
@@ -68,7 +68,7 @@ class PersonControllerIT {
     }
 
     @Test
-    public void findByLastName() {
+    void findByLastName() {
         List<Person> persons = personController.findByLastName("Simpson");
         assertThat(persons).isNotNull().hasSize(2);
         assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
@@ -76,7 +76,7 @@ class PersonControllerIT {
     }
 
     @Test
-    public void findByAddressCity() {
+    void findByAddressCity() {
         List<Person> persons = personController.findByStreet("Evergreen Terrace");
         assertThat(persons).isNotNull().isNotEmpty();
         assertThat(persons.getFirst().address().getFirst().street()).startsWith("Evergreen Terrace No.");
