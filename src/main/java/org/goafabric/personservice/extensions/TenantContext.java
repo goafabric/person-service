@@ -1,13 +1,12 @@
 package org.goafabric.personservice.extensions;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Map;
 
 public class TenantContext {
-    private static final ThreadLocal<TenantContextRecord> tenantContext = ThreadLocal.withInitial(() -> new TenantContextRecord(null, null, null));
+    private static final ThreadLocal<TenantContextRecord> CONTEXT =
+            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous"));
 
     record TenantContextRecord(String tenantId, String organizationId, String userName) {
         public Map<String, String> toAdapterHeaderMap() {
@@ -16,44 +15,44 @@ public class TenantContext {
     }
 
     public static void setContext(HttpServletRequest request) {
-        tenantContext.set(new TenantContextRecord(
-                request.getHeader("X-TenantId"),
-                request.getHeader("X-OrganizationId"),
-                request.getHeader("X-Auth-Request-Preferred-Username")));
+        CONTEXT.set(new TenantContextRecord(
+                getDefaultValue(request.getHeader("X-TenantId"), CONTEXT.get().tenantId),
+                getDefaultValue(request.getHeader("X-OrganizationId"), CONTEXT.get().organizationId),
+                getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName))
+        );
     }
 
     static void setContext(TenantContextRecord tenantContextRecord) {
-        tenantContext.set(tenantContextRecord);
+        CONTEXT.set(tenantContextRecord);
     }
 
     public static void removeContext() {
-        tenantContext.remove();
+        CONTEXT.remove();
     }
 
-    public static void setTenantId(String tenant) {
-        tenantContext.set(new TenantContextRecord(tenant, tenantContext.get().organizationId, tenantContext.get().userName));
+    private static String getDefaultValue(String value, String defaultValue) {
+        return value != null ? value : defaultValue;
     }
 
     public static String getTenantId() {
-        return tenantContext.get().tenantId() != null ? tenantContext.get().tenantId() : "0";
+        return CONTEXT.get().tenantId();
     }
 
     public static String getOrganizationId() {
-        return tenantContext.get().organizationId() != null ? tenantContext.get().organizationId() : "0";
+        return CONTEXT.get().organizationId();
     }
 
-
     public static String getUserName() {
-        return (getAuthentication() != null) && !(getAuthentication().getName().equals("anonymousUser")) ? getAuthentication().getName()
-                : tenantContext.get().userName != null ? tenantContext.get().userName : "anonymous";
+        return CONTEXT.get().userName();
     }
 
     public static Map<String, String> getAdapterHeaderMap() {
-        return tenantContext.get().toAdapterHeaderMap();
+        return CONTEXT.get().toAdapterHeaderMap();
     }
 
-    private static Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+
+    public static void setTenantId(String tenant) {
+        CONTEXT.set(new TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName));
     }
 
 
