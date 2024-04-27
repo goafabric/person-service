@@ -31,9 +31,6 @@ public class TenantContext {
         ));
 
     }
-    static void setContext(TenantContextRecord tenantContextRecord) {
-        CONTEXT.set(tenantContextRecord);
-    }
 
     public static void removeContext() {
         CONTEXT.remove();
