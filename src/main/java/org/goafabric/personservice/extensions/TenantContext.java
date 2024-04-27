@@ -1,6 +1,5 @@
 package org.goafabric.personservice.extensions;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -9,14 +8,14 @@ import java.util.Base64;
 import java.util.Map;
 
 public class TenantContext {
-    private static final ThreadLocal<TenantContextRecord> CONTEXT =
-            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous"));
-
     record TenantContextRecord(String tenantId, String organizationId, String userName) {
         public Map<String, String> toAdapterHeaderMap() {
             return Map.of("X-TenantId", tenantId, "X-OrganizationId", organizationId, "X-Auth-Request-Preferred-Username", userName);
         }
     }
+
+    private static final ThreadLocal<TenantContextRecord> CONTEXT =
+            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous"));
 
     public static void setContext(HttpServletRequest request) {
         setContext(request.getHeader("X-TenantId"), request.getHeader("X-OrganizationId"),
@@ -60,14 +59,10 @@ public class TenantContext {
     }
 
     private static String getUserNameFromUserInfo(String userInfo) {
-        return userInfo != null ? (String) decodeUserInfo(userInfo).get("preferred_username") : null;
-    }
-
-    private static Map<String, Object> decodeUserInfo(String userInfo) {
         try {
-            return new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), new TypeReference<>() {});
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
+            return userInfo != null ? (String) new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), Map.class).get("preferred_username") : null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
