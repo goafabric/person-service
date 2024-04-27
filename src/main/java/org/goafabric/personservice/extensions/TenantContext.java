@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class TenantContext {
     private static final ThreadLocal<TenantContextRecord> CONTEXT =
-            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous", null));
+            ThreadLocal.withInitial(() -> new TenantContextRecord("0", "0", "anonymous"));
 
-    record TenantContextRecord(String tenantId, String organizationId, String userName, String userInfo) {
+    record TenantContextRecord(String tenantId, String organizationId, String userName) {
         public Map<String, String> toAdapterHeaderMap() {
             return Map.of("X-TenantId", getTenantId(), "X-OrganizationId", getOrganizationId(), "X-Auth-Request-Preferred-Username", getUserName());
         }
@@ -23,8 +23,7 @@ public class TenantContext {
                 getDefaultValue(request.getHeader("X-TenantId"), CONTEXT.get().tenantId),
                 getDefaultValue(request.getHeader("X-OrganizationId"), CONTEXT.get().organizationId),
                 getDefaultValue(getUserNameFromUserInfo(request.getHeader("X-UserInfo"))
-                        , getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName)),
-                request.getHeader("X-UserInfo")
+                        , getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName))
         ));
     }
 
@@ -56,9 +55,8 @@ public class TenantContext {
         return CONTEXT.get().toAdapterHeaderMap();
     }
 
-
     public static void setTenantId(String tenant) {
-        CONTEXT.set(new TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName, CONTEXT.get().userInfo));
+        CONTEXT.set(new TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName));
     }
 
     private static String getUserNameFromUserInfo(String userInfo) {
