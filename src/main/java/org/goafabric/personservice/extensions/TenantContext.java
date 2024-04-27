@@ -1,7 +1,10 @@
 package org.goafabric.personservice.extensions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 
 public class TenantContext {
@@ -20,6 +23,10 @@ public class TenantContext {
                 getDefaultValue(request.getHeader("X-OrganizationId"), CONTEXT.get().organizationId),
                 getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName))
         );
+
+        if (request.getHeader("X-UserInfo") != null) {
+            var userName = decodeUserInfo(request.getHeader("X-UserInfo")).get("preferred_username");
+        }
     }
 
     static void setContext(TenantContextRecord tenantContextRecord) {
@@ -56,4 +63,13 @@ public class TenantContext {
     }
 
 
+    private static Map<String, Object> decodeUserInfo(String userInfo) {
+        try {
+            return new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), Map.class);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    //eyJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb24gZG9lIiwiYWxnIjoiSFMyNTYifQ.e30.OsLaWah2xLrm4GOGbR0OdZ0BCtPC6wHcQ_ipyuHIAsY
 }
