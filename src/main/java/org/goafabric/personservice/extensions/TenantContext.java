@@ -14,19 +14,23 @@ public class TenantContext {
 
     record TenantContextRecord(String tenantId, String organizationId, String userName) {
         public Map<String, String> toAdapterHeaderMap() {
-            return Map.of("X-TenantId", getTenantId(), "X-OrganizationId", getOrganizationId(), "X-Auth-Request-Preferred-Username", getUserName());
+            return Map.of("X-TenantId", tenantId, "X-OrganizationId", organizationId, "X-Auth-Request-Preferred-Username", userName);
         }
     }
 
     public static void setContext(HttpServletRequest request) {
-        CONTEXT.set(new TenantContextRecord(
-                getDefaultValue(request.getHeader("X-TenantId"), CONTEXT.get().tenantId),
-                getDefaultValue(request.getHeader("X-OrganizationId"), CONTEXT.get().organizationId),
-                getDefaultValue(getUserNameFromUserInfo(request.getHeader("X-UserInfo"))
-                        , getDefaultValue(request.getHeader("X-Auth-Request-Preferred-Username"), CONTEXT.get().userName))
-        ));
+        setContext(request.getHeader("X-TenantId"), request.getHeader("X-OrganizationId"),
+                request.getHeader("X-Auth-Request-Preferred-Username"), request.getHeader("X-UserInfo"));
     }
 
+    static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
+        CONTEXT.set(new TenantContextRecord(
+                getDefaultValue(tenantId, CONTEXT.get().tenantId),
+                getDefaultValue(organizationId, CONTEXT.get().organizationId),
+                getDefaultValue(userInfo, getDefaultValue(userName, CONTEXT.get().userName))
+        ));
+
+    }
     static void setContext(TenantContextRecord tenantContextRecord) {
         CONTEXT.set(tenantContextRecord);
     }
