@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisabledInAotMode
-public class CalleeServiceAdapterMockedIt {
+public class CalleeServiceAdapterMockedIT {
     @Autowired
     private PersonController personController;
 
