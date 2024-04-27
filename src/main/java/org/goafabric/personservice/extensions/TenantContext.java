@@ -62,7 +62,7 @@ public class TenantContext {
         try {
             return userInfo != null ? (String) new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), Map.class).get("preferred_username") : null;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
