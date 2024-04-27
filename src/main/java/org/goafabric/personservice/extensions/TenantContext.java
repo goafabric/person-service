@@ -27,7 +27,7 @@ public class TenantContext {
         CONTEXT.set(new TenantContextRecord(
                 getDefaultValue(tenantId, CONTEXT.get().tenantId),
                 getDefaultValue(organizationId, CONTEXT.get().organizationId),
-                getDefaultValue(userInfo, getDefaultValue(userName, CONTEXT.get().userName))
+                getDefaultValue(getUserNameFromUserInfo(userInfo), getDefaultValue(userName, CONTEXT.get().userName))
         ));
 
     }
