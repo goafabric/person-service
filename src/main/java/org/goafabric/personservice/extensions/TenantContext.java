@@ -1,5 +1,6 @@
 package org.goafabric.personservice.extensions;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -65,7 +66,7 @@ public class TenantContext {
 
     private static Map<String, Object> decodeUserInfo(String userInfo) {
         try {
-            return new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), Map.class);
+            return new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), new TypeReference<>() {});
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
