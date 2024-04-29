@@ -46,6 +46,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     ) {}
 
     @Override
+    @SuppressWarnings("java:S2696")
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;
     }
@@ -71,7 +72,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         try {
             var auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject);
             log.debug("New audit:\n{}", auditTrail);
-            context.getBean(AuditJpaInserter.class).insertAudit(auditTrail, oldObject != null ? oldObject : newObject);
+            context.getBean(AuditJpaInserter.class).insertAudit(auditTrail);
         } catch (Exception e) {
             log.error("Error during audit:\n{}", e.getMessage(), e);
         }
@@ -122,7 +123,7 @@ public class AuditTrailListener implements ApplicationContextAware {
             this.schemaPrefix = schemaPrefix;
         }
 
-        public void insertAudit(AuditTrail auditTrail, Object object) { //we cannot use jpa because of the dynamic table name
+        public void insertAudit(AuditTrail auditTrail) { //we cannot use jpa because of the dynamic table name
             new SimpleJdbcInsert(dataSource)
                     .withSchemaName(schemaPrefix + TenantContext.getTenantId())
                     .withTableName("audit_trail")
