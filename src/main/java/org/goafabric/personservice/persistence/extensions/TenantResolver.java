@@ -2,7 +2,7 @@ package org.goafabric.personservice.persistence.extensions;
 
 import org.flywaydb.core.Flyway;
 import org.goafabric.personservice.extensions.TenantContext;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.MultiTenancySettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
@@ -52,8 +52,8 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
 
     @Override
     public void customize(Map<String, Object> hibernateProperties) {
-        hibernateProperties.put(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, this);
-        hibernateProperties.put(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, this);
+        hibernateProperties.put(MultiTenancySettings.MULTI_TENANT_IDENTIFIER_RESOLVER, this);
+        hibernateProperties.put(MultiTenancySettings.MULTI_TENANT_CONNECTION_PROVIDER, this);
     }
 
     /** Tenant Resolver for Schema **/
