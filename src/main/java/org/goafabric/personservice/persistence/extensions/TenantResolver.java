@@ -2,7 +2,7 @@ package org.goafabric.personservice.persistence.extensions;
 
 import org.flywaydb.core.Flyway;
 import org.goafabric.personservice.extensions.TenantContext;
-import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.MultiTenancySettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
@@ -19,11 +19,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
-// Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
-
 @Component
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @RegisterReflectionForBinding({org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
+@SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
     private final DataSource dataSource;
@@ -53,8 +52,8 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
 
     @Override
     public void customize(Map<String, Object> hibernateProperties) {
-        hibernateProperties.put(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, this);
-        hibernateProperties.put(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, this);
+        hibernateProperties.put(MultiTenancySettings.MULTI_TENANT_IDENTIFIER_RESOLVER, this);
+        hibernateProperties.put(MultiTenancySettings.MULTI_TENANT_CONNECTION_PROVIDER, this);
     }
 
     /** Tenant Resolver for Schema **/
@@ -98,6 +97,9 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
         throw new IllegalStateException("unwrap not supported");
     }
 
+    @RegisterReflectionForBinding(TenantResolver.class)
+    public String getPrefix() { return schemaPrefix + TenantContext.getTenantId() + "_"; }
+
     /** Flyway configuration to create database schemas **/
 
     @Bean
@@ -111,12 +113,11 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
                                            @Value("${multi-tenancy.tenants}") String tenants,
                                            @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
         if (goals.contains("-migrate")) {
-            Arrays.asList(tenants.split(",")).forEach(tenant -> {
-                        Flyway.configure().configuration(flyway.getConfiguration())
-                                .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                                .placeholders(Map.of("tenantId", tenant))
-                                .load().migrate();
-                    }
+            Arrays.asList(tenants.split(",")).forEach(tenant ->
+                    Flyway.configure().configuration(flyway.getConfiguration())
+                    .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                    .placeholders(Map.of("tenantId", tenant))
+                    .load().migrate()
             );
         }
         return true;

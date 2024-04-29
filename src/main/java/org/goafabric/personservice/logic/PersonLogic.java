@@ -25,7 +25,7 @@ public class PersonLogic {
 
     public Person getById(String id) {
         return personMapper.map(
-                personRepository.findById(id).get());
+                personRepository.getById(id));
     }
 
     public List<Person> findAll() {
@@ -45,7 +45,7 @@ public class PersonLogic {
 
     public List<Person> findByStreet(String street) {
         return personMapper.map(
-                personRepository.findByAddress_StreetContainsIgnoreCase(street));
+                personRepository.findByAddressStreetContainsIgnoreCase(street));
     }
 
     public Person save(Person person) {

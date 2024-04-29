@@ -14,7 +14,7 @@ public class AdapterConfiguration {
 
     @Bean
     public CalleeServiceAdapter calleeServiceAdapter(RestClient.Builder builder,
-            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout) {
+            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.calleeservice.authentication}") String authentication) {
         return createAdapter(CalleeServiceAdapter.class, builder, url, timeout);
     }
 
@@ -24,7 +24,6 @@ public class AdapterConfiguration {
         requestFactory.setReadTimeout(timeout.intValue());
         builder.baseUrl(url)
                 .requestInterceptor((request, body, execution) -> {
-                    request.getHeaders().setBasicAuth("admin", "admin");
                     TenantContext.getAdapterHeaderMap().forEach((key, value) -> request.getHeaders().set(key, value));
                     return execution.execute(request, body);
                 })

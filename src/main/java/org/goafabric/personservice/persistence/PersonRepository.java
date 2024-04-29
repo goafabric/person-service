@@ -7,12 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface PersonRepository extends CrudRepository<PersonEo, String> {
+    PersonEo getById(String id);
+
     List<PersonEo> findByFirstName(String firstName);
 
     List<PersonEo> findByLastName(String lastName);
 
     @EntityGraph(attributePaths = "address")
-    List<PersonEo> findByAddress_StreetContainsIgnoreCase(String street);
+    List<PersonEo> findByAddressStreetContainsIgnoreCase(String street);
 
 }
 
