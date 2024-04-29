@@ -1,6 +1,3 @@
-![Coverage](.github/badges/jacoco.svg)
-![Branches](.github/badges/branches.svg)
-
 # Overview and Description concerning the Service                                               
 [Overview](./OVERVIEW.MD)
 
