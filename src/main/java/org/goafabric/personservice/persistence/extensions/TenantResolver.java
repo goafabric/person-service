@@ -19,11 +19,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
-// Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
-
 @Component
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @RegisterReflectionForBinding({org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
+@SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
     private final DataSource dataSource;
@@ -60,7 +59,6 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
     /** Tenant Resolver for Schema **/
 
     @Override
-    @SuppressWarnings("java:S2095") //connection closig is handled by framework
     public Connection getConnection(String schema) throws SQLException {
         var connection = dataSource.getConnection();
         connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + TenantContext.getTenantId());
@@ -112,12 +110,11 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
                                            @Value("${multi-tenancy.tenants}") String tenants,
                                            @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
         if (goals.contains("-migrate")) {
-            Arrays.asList(tenants.split(",")).forEach(tenant -> {
-                        Flyway.configure().configuration(flyway.getConfiguration())
-                                .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                                .placeholders(Map.of("tenantId", tenant))
-                                .load().migrate();
-                    }
+            Arrays.asList(tenants.split(",")).forEach(tenant ->
+                    Flyway.configure().configuration(flyway.getConfiguration())
+                    .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                    .placeholders(Map.of("tenantId", tenant))
+                    .load().migrate()
             );
         }
         return true;
