@@ -57,10 +57,6 @@ dependencies {
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
-	//code generation
-	implementation("org.mapstruct:mapstruct")
-	annotationProcessor("org.mapstruct:mapstruct-processor")
-
 	//persistence
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
 	implementation("com.h2database:h2")
@@ -69,6 +65,10 @@ dependencies {
 
 	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+	//code generation
+	implementation("org.mapstruct:mapstruct")
+	annotationProcessor("org.mapstruct:mapstruct-processor")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
