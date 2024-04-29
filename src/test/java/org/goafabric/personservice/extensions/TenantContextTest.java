@@ -49,9 +49,9 @@ class TenantContextTest {
     void testExtended() throws IOException {
         var userInfo = "eyJnZW5kZXIiOiJVTktOT1dOIiwiYmlydGhkYXRlIjoiMTk4MC0wMS0wMSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ1cm46Z29hZmFicmljOmNsYWltczppbnN0aXR1dGlvbiI6W3siaWQiOiI4MmZhY2RkZS0xOTVjLTQ3OGUtODczYS0yM2MzNDBmZmYyZWQiLCJyb2xlcyI6WyJNRU1CRVIiLCJBRE1JTiJdLCJuYW1lIjoiVGVzdCJ9XSwibmFtZSI6IkpvbmggRG9lIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obi5kb2VAdW5rbm93bi5vcmciLCJlbWFpbCI6ImpvaG4uZG9lQHVua25vd24ub3JnIiwiYWxnIjoiSFMyNTYifQ";
         var map = new ObjectMapper().readValue(Base64.getUrlDecoder().decode(userInfo), Map.class);
-        var institions = map.get("urn:goafabric:claims:institution");
-        if (institions instanceof ArrayList list) {
-            String tenantId = (String) ((LinkedHashMap) list.getFirst()).get("id");
+        var institutions = map.get("urn:goafabric:claims:institution");
+        if (institutions instanceof ArrayList institution) {
+            String tenantId = (String) ((LinkedHashMap) institution.getFirst()).get("id");
             System.out.println(tenantId);
         }
     }
