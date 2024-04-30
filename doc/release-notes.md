@@ -1,7 +1,15 @@
+# 3.2.10
+
+# 3.2.5
+- release plugin added
+- spring security removed
+- upgrade to Spring Boot 3.2.5
+
 # 3.2.4
 - upgrade to Spring Boot 3.2.4
 - upgrade to springdoc 2.3.0
-- upgrade to Kotlin 1.9.2
+- TenantContext added
+- Adapter Header Forwarding fixed
 
 # 3.2.0
 - upgrade to Spring Boot 3.2.0
