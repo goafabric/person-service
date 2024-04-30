@@ -30,11 +30,12 @@ repositories {
 
 dependencies {
 	constraints {
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
-		implementation("org.mapstruct:mapstruct:1.5.5.Final")
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+		implementation("org.mapstruct:mapstruct:1.5.5.Final")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.3")
+		implementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 	}
 }
 
@@ -74,7 +75,7 @@ dependencies {
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	
 	//kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
