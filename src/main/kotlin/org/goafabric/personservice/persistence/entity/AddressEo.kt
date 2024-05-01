@@ -1,4 +1,4 @@
-package org.goafabric.personservice.repository.entity
+package org.goafabric.personservice.persistence.entity
 
 import org.hibernate.annotations.GenericGenerator
 import jakarta.persistence.*

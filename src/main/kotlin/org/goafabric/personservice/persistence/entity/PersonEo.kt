@@ -1,6 +1,7 @@
-package org.goafabric.personservice.repository.entity
+package org.goafabric.personservice.persistence.entity
 
 import jakarta.persistence.*
+import org.goafabric.personservice.persistence.entity.AddressEo
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.TenantId

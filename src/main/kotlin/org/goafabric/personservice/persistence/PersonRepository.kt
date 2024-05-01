@@ -1,7 +1,6 @@
 package org.goafabric.personservice.persistence
 
-import org.goafabric.personservice.repository.entity.PersonEo
-import org.springframework.data.jpa.repository.EntityGraph
+import org.goafabric.personservice.persistence.entity.PersonEo
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
