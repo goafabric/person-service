@@ -2,6 +2,7 @@ package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
 import org.goafabric.personservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.TenantContext.tenantId
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
@@ -19,7 +20,6 @@ import java.sql.SQLException
 import java.util.*
 import java.util.function.Consumer
 import javax.sql.DataSource
-import kotlin.collections.MutableMap
 import kotlin.collections.set
 
 // Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
@@ -89,6 +89,11 @@ class TenantResolver(
 
     override fun <T> unwrap(unwrapType: Class<T>): T? {
         return null
+    }
+
+    @RegisterReflectionForBinding(TenantResolver::class)
+    fun getPrefix(): String {
+        return schemaPrefix + tenantId + "_"
     }
 
     /** Flyway configuration to create database schemas  */
