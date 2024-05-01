@@ -1,7 +1,5 @@
-# Overview and Description concerning the Service                                               
-[Overview](./OVERVIEW.MD)
-
-# Docker Images
+# sonarqube
+[dashboard](https://v2202402203466256255.megasrv.de/sonar/dashboard?id=org.goafabric%3Aperson-service)
 
 # docker compose
 go to /src/deploy/docker and do "./stack up" or "./stack up -native"
