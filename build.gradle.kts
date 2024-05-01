@@ -16,10 +16,10 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.4.2"
 	id("net.researchgate.release") version "3.0.2"
 
-	kotlin("jvm") version "1.9.23"
-	kotlin("plugin.spring") version "1.9.23"
-	kotlin("plugin.jpa") version "1.9.23"
-	kotlin("kapt") version "1.9.23"
+	kotlin("jvm") version "2.0.0-RC2"
+	kotlin("plugin.spring") version "2.0.0-RC2"
+	kotlin("plugin.jpa") version "2.0.0-RC2"
+	kotlin("kapt") version "2.0.0-RC2"
 }
 
 repositories {
@@ -52,8 +52,10 @@ dependencies {
 
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
+	//openapi
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+
 	//crosscuting
-	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
 	//adapter
