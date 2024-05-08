@@ -2,31 +2,26 @@
 server:
   port: 50800
   tomcat.threads.max: 20
+  forward-headers-strategy: FRAMEWORK
+
+#vthreads
+spring.threads.virtual.enabled: "true"
 
 #monitoring
 management:
   endpoint:
     health:
-      show-details: always
+      show-details: never
   endpoints:
     web:
       exposure:
         include: "health,prometheus,heapdump"
-
-spring.cloud.consul.config.enabled: "false"
-
-# openapi
-springdoc.swagger-ui.path: /swagger-ui/index.html
-springdoc.enable-native-support: "true"
-
 
 #tracing
 spring.application.name: person-service
 management.tracing.sampling.probability: "1.0"
 logging.level.io.opentelemetry.exporter: "OFF"
 management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
-
-#security
 
 #persistence
 spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
@@ -41,6 +36,7 @@ spring.datasource.hikari.connection-timeout: "10000"
 multi-tenancy.tenants: "0,5"
 multi-tenancy.schema-prefix: "core_"
 database.provisioning.goals: "-migrate -import-demo-data"
+spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
 
 #mongo
 spring.autoconfigure.exclude: ${mongodb.autoconfiguration}
@@ -49,13 +45,18 @@ spring.data.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authS
 mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
 jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
 
+#security
+security.authentication.enabled: false
+spring.security.user.name: "admin"
+spring.security.user.password: "admin"
+
 #adapter
 adapter:
   timeout: 10000
   calleeservice:
     url: http://localhost:50900
-    user: YWRtaW4=
-    password: YWRtaW4=
+    user.name: "admin"
+    user.password: "admin"
 
 #resilience4j
 resilience4j.circuitbreaker:
