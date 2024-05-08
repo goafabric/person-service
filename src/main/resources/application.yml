@@ -4,6 +4,9 @@ server:
   tomcat.threads.max: 20
   forward-headers-strategy: FRAMEWORK
 
+#vthreads
+spring.threads.virtual.enabled: "true"
+
 #monitoring
 management:
   endpoint:
@@ -19,8 +22,6 @@ spring.application.name: person-service
 management.tracing.sampling.probability: "1.0"
 logging.level.io.opentelemetry.exporter: "OFF"
 management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
-
-#security
 
 #persistence
 spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
@@ -44,12 +45,18 @@ spring.data.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authS
 mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
 jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
 
+#security
+security.authentication.enabled: false
+spring.security.user.name: "admin"
+spring.security.user.password: "admin"
+
 #adapter
 adapter:
   timeout: 10000
   calleeservice:
     url: http://localhost:50900
-    authentication: YWRtaW4=
+    user.name: "admin"
+    user.password: "admin"
 
 #resilience4j
 resilience4j.circuitbreaker:
@@ -73,6 +80,3 @@ logging.level.org.springframework: "INFO"
 logging.level.org.goafabric: "INFO"
 logging.level.org.flywaydb.core: "INFO"
 logging.level.org.hibernate.SQL: "INFO"
-
-#vthreads
-spring.threads.virtual.enabled: "true"
