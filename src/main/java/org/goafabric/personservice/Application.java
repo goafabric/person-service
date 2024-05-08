@@ -30,6 +30,7 @@ public class Application {
         };
     }
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, @Value("${security.authentication.enabled:true}") boolean isAuthenticationEnabled, HandlerMappingIntrospector introspector) throws Exception {
         return isAuthenticationEnabled
                 ? http.authorizeHttpRequests(auth -> auth.requestMatchers(new MvcRequestMatcher(introspector, "/actuator/**")).permitAll().anyRequest().authenticated())
