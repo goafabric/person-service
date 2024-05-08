@@ -16,7 +16,7 @@ class PersonEo (
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    val id: String? = "",
+    val id: String? = null,
 
     @TenantId
     var organizationId: String? = null,
