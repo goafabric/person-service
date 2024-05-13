@@ -40,6 +40,8 @@ class ApplicationRunner {
         else http.authorizeHttpRequests { auth -> auth.anyRequest().permitAll() }.build()
     }
 
+    @Bean
+    fun passwordEncoder(): PasswordEncoder? { return NoOpPasswordEncoder.getInstance() }
 
     @Bean
     fun disableHttpServerObservationsFromName(): ObservationPredicate? {
