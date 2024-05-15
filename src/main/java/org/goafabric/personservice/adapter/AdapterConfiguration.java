@@ -14,16 +14,18 @@ public class AdapterConfiguration {
 
     @Bean
     public CalleeServiceAdapter calleeServiceAdapter(RestClient.Builder builder,
-            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.calleeservice.authentication}") String authentication) {
-        return createAdapter(CalleeServiceAdapter.class, builder, url, timeout);
+            @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout,
+            @Value("${adapter.calleeservice.user.name}") String userName, @Value("${adapter.calleeservice.user.password}") String password) {
+        return createAdapter(CalleeServiceAdapter.class, builder, url, timeout, userName, password);
     }
 
-    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout) {
+    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout, String userName, String password) {
         var requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(timeout.intValue());
         requestFactory.setReadTimeout(timeout.intValue());
         builder.baseUrl(url)
                 .requestInterceptor((request, body, execution) -> {
+                    request.getHeaders().setBasicAuth(userName, password);
                     TenantContext.getAdapterHeaderMap().forEach((key, value) -> request.getHeaders().set(key, value));
                     return execution.execute(request, body);
                 })

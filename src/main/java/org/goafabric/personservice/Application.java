@@ -6,11 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-
-/**
- * Created by amautsch on 26.06.2015.
- */
-
 @SpringBootApplication
 public class Application {
 

@@ -73,7 +73,7 @@ services:
 
   postgres:
     container_name: ${_Values_root_name}-postgres
-    image: postgres:16.0
+    image: postgres:16.2
     restart: 'no'
     ports:
       - 50810:5432
@@ -108,7 +108,6 @@ services:
       - ${_Values_root_name}-net
     volumes:
       - ./nginx/nginx${_Values_nginx_oidc}.conf:/etc/nginx/nginx.conf
-      - ./nginx/ssl:/etc/ssl/
     depends_on:
       application:
         condition: service_started

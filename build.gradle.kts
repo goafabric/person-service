@@ -40,6 +40,9 @@ dependencies {
 	//web
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
+	//security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
@@ -49,9 +52,6 @@ dependencies {
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
-
-	//crosscuting
-	//implementation("org.springframework.boot:spring-boot-starter-security")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
