@@ -1,8 +1,8 @@
 package org.goafabric.personservice.persistence.entity
 
-import org.hibernate.annotations.GenericGenerator
 import jakarta.persistence.*
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener
+import org.hibernate.annotations.GenericGenerator
 
 @Entity
 @Table(name = "address")
