@@ -1,9 +1,7 @@
 package org.goafabric.personservice.persistence.entity
 
 import jakarta.persistence.*
-import org.goafabric.personservice.persistence.entity.AddressEo
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener
-import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.TenantId
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -14,8 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @EntityListeners(AuditTrailListener::class)
 class PersonEo (
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
 
     @TenantId
