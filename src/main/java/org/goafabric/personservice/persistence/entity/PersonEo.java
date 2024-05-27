@@ -10,8 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
-//@Document("#{@tenantResolver.getPrefix()}person")
-@Document("person")
+@Document("#{@httpInterceptor.getPrefix()}person")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
