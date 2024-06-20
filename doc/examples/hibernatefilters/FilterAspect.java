@@ -26,8 +26,8 @@ public class FilterAspect {
     @Before("execution(* org.springframework.data.repository.CrudRepository+.*(..))")
     public void applyFilter() {
         var session = entityManager.unwrap(Session.class);
+        session.enableFilter("tenantFilter").setParameter("tenantId", TenantContext.getTenantId());
         session.enableFilter("organizationFilter").setParameter("organizationId", TenantContext.getOrganizationId());
-        //session.enableFilter("tenantFilter").setParameter("tenantId", TenantContext.getTenantId());
     }
 
     static class ApplicationRuntimeHints implements RuntimeHintsRegistrar {
