@@ -12,4 +12,4 @@ export default function () {
 }
 
 // https://k6.io/docs/get-started/running-k6/
-// docker run --rm -i grafana/k6 run - <script.js
+// docker run --rm -i grafana/k6 run - < loadtest.js
