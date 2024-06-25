@@ -14,16 +14,12 @@ import java.util.List;
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
 @Document("#{@httpInterceptor.getPrefix()}person")
-
-@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = String.class))
-@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
-@FilterDef(name = "organizationFilter", parameters = @ParamDef(name = "organizationId", type = String.class))
-@Filter(name = "organizationFilter", condition = "organization_id = :organizationId")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @OrganizationId
     private String organizationId;
 
     private String firstName;
