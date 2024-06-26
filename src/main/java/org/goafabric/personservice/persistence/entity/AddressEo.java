@@ -11,7 +11,7 @@ import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 
 //@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = String.class))
 //@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
-public class AddressEo {
+public class AddressEo extends TenantAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
