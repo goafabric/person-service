@@ -8,7 +8,6 @@ import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 @Entity
 @Table(name="address")
 @EntityListeners(AuditTrailListener.class)
-
 public class AddressEo extends TenantAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
