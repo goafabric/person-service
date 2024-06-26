@@ -2,9 +2,7 @@ package org.goafabric.personservice.logic;
 
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.persistence.AddressRepository;
 import org.goafabric.personservice.persistence.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +28,7 @@ public class PersonLogic {
                 personRepository.getById(id));
     }
 
-    @Autowired
-    private AddressRepository addressRepository;
-
     public List<Person> findAll() {
-        addressRepository.findAll();
         return personMapper.map(
                 personRepository.findAll());
     }
