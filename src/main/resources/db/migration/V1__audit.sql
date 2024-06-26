@@ -4,7 +4,8 @@ create table audit_trail
 		constraint pk_audit
 			primary key,
 
-    organization_id varchar(36),
+    tenant_id varchar(36) not null,
+    organization_id varchar(36) not null,
     object_type varchar(255),
 
     object_id varchar(255),

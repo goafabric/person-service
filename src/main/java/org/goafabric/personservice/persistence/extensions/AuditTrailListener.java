@@ -33,6 +33,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     record AuditTrail(
             String id,
+            String tenantId,
             String organizationId,
             String objectType,
             String objectId,
@@ -83,6 +84,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
                 UUID.randomUUID().toString(),
+                TenantContext.getTenantId(),
                 TenantContext.getOrganizationId(),
                 getTableName(newObject != null ? newObject : oldObject),
                 referenceId,
@@ -125,7 +127,6 @@ public class AuditTrailListener implements ApplicationContextAware {
 
         public void insertAudit(AuditTrail auditTrail) { //we cannot use jpa because of the dynamic table name
             new SimpleJdbcInsert(dataSource)
-                    .withSchemaName(schemaPrefix + TenantContext.getTenantId())
                     .withTableName("audit_trail")
                     .execute(new BeanPropertySqlParameterSource(auditTrail));
         }
