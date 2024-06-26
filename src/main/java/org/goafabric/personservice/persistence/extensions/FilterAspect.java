@@ -27,6 +27,7 @@ public class FilterAspect {
     public void applyFilter() {
         var session = entityManager.unwrap(Session.class);
         session.enableFilter("tenantFilter").setParameter("tenantId", TenantContext.getTenantId());
+        session.enableFilter("tenantFilterOrg").setParameter("tenantId", TenantContext.getTenantId());
         session.enableFilter("organizationFilter").setParameter("organizationId", TenantContext.getOrganizationId());
     }
 

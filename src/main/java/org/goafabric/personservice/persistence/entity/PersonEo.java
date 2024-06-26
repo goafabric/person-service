@@ -3,9 +3,6 @@ package org.goafabric.personservice.persistence.entity;
 import jakarta.persistence.*;
 import org.goafabric.personservice.extensions.TenantContext;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -15,9 +12,7 @@ import java.util.List;
 @EntityListeners(AuditTrailListener.class)
 @Document("#{@httpInterceptor.getPrefix()}person")
 
-@FilterDef(name = "organizationFilter", parameters = @ParamDef(name = "organizationId", type = String.class))
-@Filter(name = "organizationFilter", condition = "organization_id = :organizationId")
-public class PersonEo extends TenantAware{
+public class PersonEo extends TenantAndOrganizationAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
