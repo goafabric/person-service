@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 //Extra Code to set the TenantId for verification inside the database, this code is unverified !
+//Also needs policy configuration for all tables inside the database
 @Aspect
 @Component
 @ImportRuntimeHints(TenantConnectionAspect.ApplicationRuntimeHints.class)
