@@ -1,7 +1,6 @@
 package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.extensions.TenantContext;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 
 
@@ -13,8 +12,6 @@ public class AddressEo extends TenantAware {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String tenantId;
-
     private String street;
     private String city;
 
@@ -22,15 +19,14 @@ public class AddressEo extends TenantAware {
     private Long version;
 
     public AddressEo(String id, String street, String city, Long version) {
+        super();
         this.id = id;
         this.street = street;
         this.city = city;
         this.version = version;
-
-        this.tenantId = TenantContext.getTenantId(); //set tenantId for save and update operations
     }
 
-    private AddressEo() {
+    AddressEo() {
     }
 
     public String getId() {
