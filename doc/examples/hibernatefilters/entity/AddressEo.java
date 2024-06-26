@@ -7,7 +7,7 @@ import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 @Entity
 @Table(name="address")
 @EntityListeners(AuditTrailListener.class)
-public class AddressEo {
+public class AddressEo extends TenantAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -19,6 +19,7 @@ public class AddressEo {
     private Long version;
 
     public AddressEo(String id, String street, String city, Long version) {
+        super();
         this.id = id;
         this.street = street;
         this.city = city;

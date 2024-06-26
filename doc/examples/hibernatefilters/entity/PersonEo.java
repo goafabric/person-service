@@ -1,11 +1,7 @@
 package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.extensions.TenantContext;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -14,19 +10,10 @@ import java.util.List;
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
 @Document("#{@httpInterceptor.getPrefix()}person")
-
-@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = String.class))
-@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
-
-@FilterDef(name = "organizationFilter", parameters = @ParamDef(name = "organizationId", type = String.class))
-@Filter(name = "organizationFilter", condition = "organization_id = :organizationId")
-public class PersonEo {
+public class PersonEo extends TenantAndOrganizationAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    //@TenantId
-    private String organizationId;
 
     private String firstName;
 
@@ -40,12 +27,12 @@ public class PersonEo {
     private Long version;
 
     public PersonEo(String id, String firstName, String lastName, List<AddressEo> address, Long version) {
+        super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.version = version;
-        this.organizationId = TenantContext.getOrganizationId(); //set organizationId for save and update operations
     }
 
     PersonEo() {}
@@ -70,7 +57,4 @@ public class PersonEo {
         return version;
     }
 
-    public String getOrganizationId() {
-        return organizationId;
-    }
 }
