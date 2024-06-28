@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.UUID;
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
-// for Multi Tenancy by discriminator wie need to change this to multiple tables instead of one, which means developers also have to create multiple flyway script tables
+// Todo: for Multi Tenancy by discriminator wie need to change this to multiple tables instead of one, which means developers also have to create multiple flyway script tables
 public class AuditTrailListener implements ApplicationContextAware {
     private static ApplicationContext context;
 
