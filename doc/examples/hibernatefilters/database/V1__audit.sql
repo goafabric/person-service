@@ -17,4 +17,5 @@ create table audit_trail
     newvalue TEXT
 );
 
+create index idx_audit_tenant_id on audit_trail(tenant_id);
 create index idx_audit_organization_id on audit_trail(organization_id);
