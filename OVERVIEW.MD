@@ -231,6 +231,13 @@ What is highly discouraged is the usage of specific Validator Classes, for compl
 This often leads to Code that is much harder to understand, than just having the more honest approach,
 having the code inside a simple “business validator class”, thats just manually called from the logic layer.
 
+Testing the Validation
+
+Validations should then be tested mostly with Unit tests.
+There can be one simple Integration Test per class that the ensures the validation works.
+But all other constraints (minlen, maxlen etc) should be tests with much faster unit tests.
+
+
 ## Build and Dependency Management
 The build is covered by gradle, which is becoming more and more the successor to maven.
 Dependency Management is mostly covered by Spring Boot.
