@@ -55,4 +55,12 @@ public class AddressTest {
         Set<ConstraintViolation<Address>> violations = validator.validate(address);
         assertThat(violations).hasSize(1);
     }
+
+    @Test
+    public void testInvalidCity() {
+        Address address = new Address(null, null, "@123 Main St", "Springfield");
+        Set<ConstraintViolation<Address>> violations = validator.validate(address);
+        assertThat(violations).hasSize(1);
+    }
+
 }
