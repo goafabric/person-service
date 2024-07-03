@@ -1,5 +1,6 @@
 package org.goafabric.personservice.controller;
 
+import jakarta.validation.Valid;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.springframework.http.MediaType;
@@ -42,7 +43,7 @@ public class PersonController {
     }
 
     @PostMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person save(@RequestBody Person person) {
+    public Person save(@RequestBody @Valid Person person) {
         return personLogic.save(person);
     }
 
