@@ -176,6 +176,33 @@ As with monitoring, the example also exposes an OpenAPI Endpoint for API Documen
 This can also be used by external rest clients or the fronted to generate client stubs.
 It can be leveraged by just having the springdoc-openapi on the classpath.
 
+### Resilience
+
+Resilience ensures the stability of the System, even if an error occurs.
+
+#### Low Coupling
+
+For the Backend the overall architecture is designed in a way, that there is little to no coupling on between the backend containers, except for the Billing process.
+A further mitigation is to use synchronization via a message broker, in specific case, again currently only as an idea for the billing.
+
+#### Circuit breaker & Timeout
+
+In cases where we need coupling via REST, the Circuit Breaker pattern will be leveraged.
+This, together with a timeout ensures, that if there is a continuous failure in the communication, that the communication will be cut for a configured period of time.
+The current configured Threshold is 10 seconds, which is already a long time.
+
+#### Retry
+
+It is also possible to implement a simple Retry mechanism if desirable.
+Please note that for Retry the methods calls need to be idempotent.
+
+#### Frontend Resilience
+
+As the Frontend is ultimately coupled with all the Backends, via the Gateway, most of the Rest Calls need to be made resilient.
+While this is theoretically possible inside the Gateway, we decided against it, to have more control.
+The Frontend should at least have a timeout that cuts the connection after 10 seconds, usually it should respond in < 100ms.
+Als Retry up to 5 times is possible. Please keep in mind that the Backend Methods need to be idempotent for this.
+
 ## Build and Dependency Management
 The build is covered by gradle, which is becoming more and more the successor to maven.
 Dependency Management is mostly covered by Spring Boot.
