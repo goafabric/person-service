@@ -1,6 +1,7 @@
 package org.goafabric.personservice.controller;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
@@ -108,6 +109,22 @@ class PersonControllerIT {
 
         personRepository.deleteById(person.id());
     }
+
+    @Test
+    void saveWithValidationException() {
+        assertThatThrownBy(() ->
+            personController.save(
+                new Person(null,
+                        null,
+                        "Homer",
+                        "",
+                        List.of(
+                                createAddress("Evergreen Terrace"),
+                                createAddress("Everblue Terrace"))
+                ))
+        ).isInstanceOf(ConstraintViolationException.class);
+    }
+
 
     @Test
     void sayMyName() {

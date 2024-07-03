@@ -4,12 +4,14 @@ import jakarta.validation.Valid;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping(value = "/persons", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
+@Validated
 public class PersonController {
     private final PersonLogic personLogic;
 
