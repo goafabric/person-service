@@ -1,5 +1,7 @@
 package org.goafabric.personservice.controller
 
+import jakarta.validation.ConstraintViolationException
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.adapter.Callee
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
@@ -98,7 +100,24 @@ internal class PersonControllerIT(
         ).isEqualTo(person.id!!)
 
         personRepository.deleteById(person.id!!)
+    }
 
+    @Test
+    fun saveWithValidationException() {
+        Assertions.assertThatThrownBy {
+            personController.save(
+                Person(
+                    null,
+                    null,
+                    "Homer",
+                    "",
+                    java.util.List.of(
+                        createAddress("Evergreen Terrace"),
+                        createAddress("Everblue Terrace")
+                    )
+                )
+            )
+        }.isInstanceOf(ConstraintViolationException::class.java)
     }
 
     @Test

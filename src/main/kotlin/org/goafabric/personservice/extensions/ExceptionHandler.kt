@@ -1,9 +1,11 @@
 package org.goafabric.personservice.extensions
 
+import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class ExceptionHandler {
@@ -17,6 +19,12 @@ class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException::class)
     fun handleIllegalStateException(ex: IllegalStateException): ResponseEntity<String?> {
+        log.warn(ex.message, ex)
+        return ResponseEntity(ex.message, HttpStatus.PRECONDITION_FAILED)
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintValidationException(ex: ConstraintViolationException): ResponseEntity<String?> {
         log.warn(ex.message, ex)
         return ResponseEntity(ex.message, HttpStatus.PRECONDITION_FAILED)
     }

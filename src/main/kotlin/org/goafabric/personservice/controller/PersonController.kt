@@ -1,13 +1,16 @@
 package org.goafabric.personservice.controller
 
+import jakarta.validation.Valid
 import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.logic.PersonLogic
 import org.springframework.http.MediaType
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 
 @RequestMapping(value = ["/persons"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
+@Validated
 class PersonController (
     private val personLogic : PersonLogic) {
 
@@ -37,7 +40,7 @@ class PersonController (
     }
 
     @PostMapping(value = ["save"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun save(@RequestBody person : Person): Person? {
+    fun save(@RequestBody @Valid person : Person): Person? {
         return personLogic.save(person);
     }
 
