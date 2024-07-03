@@ -125,7 +125,6 @@ class PersonControllerIT {
         ).isInstanceOf(ConstraintViolationException.class);
     }
 
-
     @Test
     void sayMyName() {
         Mockito.when(calleeServiceAdapter.sayMyName("Heisenberg")).thenReturn(new Callee("", "Heisenberg"));
