@@ -29,6 +29,11 @@ Making it easy to create immutable objects, with Getters/Setters/Equals Hashcode
 In contrast to Kotlin or the Builder Pattern, there is however the drawback that the Records construct cannot have
 named Arguments.
 
+For simple CRUD applications, like most of our applications should be,
+it is also encouraged to go with a single data structure that contains ID and Version as optional fields. 
+of going for 2 separate Structures, just for the initial Creation of the Object.
+This leads to simpler, more consistent code, less redundant code, without filler words like request/response.
+
 ### Logic
 
 The logic is the layer that ... well implements the business logic.
