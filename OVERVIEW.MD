@@ -203,6 +203,29 @@ While this is theoretically possible inside the Gateway, we decided against it, 
 The Frontend should at least have a timeout that cuts the connection after 10 seconds, usually it should respond in < 100ms.
 Als Retry up to 5 times is possible. Please keep in mind that the Backend Methods need to be idempotent for this.
 
+#### Validation
+
+Validation can ensure that specific constraints like MinLen, MaxLen are kept for the Data Objects.
+While it can be as simple as putting an annotation, there is a price tag to keep in mind.
+As Validation might occur on the frontend + on the backend + inside the database, the constraints have to be kept in sync.
+That means if for example, the database changes, everything must be updated.
+
+So, when implementing Validation, follow these simple rules, that apply to the overall application:
+Code should be readable and understandable
+There should be as less code as possible
+Validation should then at least occur inside the Controller Layer
+
+That being said, the simplest kind of Validation is having Null Checks inside the DTOs.
+For Java this can be just Object.requiresNull() .. in Kotlin thats already given.
+
+The next possible Abstraction is, to have Validation annotations inside the DTOs (MinLen, MaxLen).
+For more complex Usecases there is also the Pattern annotation that works with Regex.
+This also requires Spring Boot Starter Validation Dependency, as well as putting a Valid Annotation on every Post Object inside the Controller.
+
+What is highly discouraged is the usage of specific Validator Classes, for complex logic that contains multiple fields or Objects.
+This often leads to Code that is much harder to understand, than just having the more honest approach,
+having the code inside a simple “business validator class”, thats just manually called from the logic layer.
+
 ## Build and Dependency Management
 The build is covered by gradle, which is becoming more and more the successor to maven.
 Dependency Management is mostly covered by Spring Boot.
