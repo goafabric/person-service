@@ -106,8 +106,8 @@ class PersonControllerIT {
 
         //update
         assertThat(personController.save(person3).id()).isEqualTo(person.id());
-
-
+        assertThat(personController.getById(person3.id()).version()).isEqualTo(1L); //version only gets updated /commited in this test if we reload
+        
         personRepository.deleteById(person.id());
     }
 
