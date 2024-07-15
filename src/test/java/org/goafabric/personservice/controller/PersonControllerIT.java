@@ -102,9 +102,10 @@ class PersonControllerIT {
         assertThat(person2).isNotNull();
         assertThat(person2.address()).hasSize(2);
 
+        var person3 = new Person(person.id(), person.version(), person.firstName(), "updated", person.address());
+
         //update
-        assertThat(personController.save(
-                new Person(person.id(), person.version(), person.firstName(), person.lastName(), person.address())).id()).isEqualTo(person.id());
+        assertThat(personController.save(person3).id()).isEqualTo(person.id());
 
 
         personRepository.deleteById(person.id());
