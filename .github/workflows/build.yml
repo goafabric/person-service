@@ -32,8 +32,8 @@ jobs:
       - name: archive sbom
         uses: actions/upload-artifact@v4
         with:
+          name: sbom
           path: build/resources/main/META-INF/sbom/application.cdx.json
-
 
   snapshot:
     runs-on: ubuntu-latest
