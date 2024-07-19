@@ -25,7 +25,7 @@ public class PersonLogic {
 
     public Person getById(String id) {
         return personMapper.map(
-                personRepository.getById(id));
+                personRepository.findById(id).orElseThrow());
     }
 
     public List<Person> findAll() {

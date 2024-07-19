@@ -44,7 +44,7 @@ class PersonControllerIT {
         assertThat(person.firstName()).isEqualTo(persons.getFirst().firstName());
         assertThat(person.lastName()).isEqualTo(persons.getFirst().lastName());
 
-        assertThat(personRepository.getById(persons.getFirst().id()).getOrganizationId()).isEqualTo("0");
+        assertThat(personRepository.findById(persons.getFirst().id()).get().getOrganizationId()).isEqualTo("0");
     }
 
     @Test
@@ -102,10 +102,9 @@ class PersonControllerIT {
         assertThat(person2).isNotNull();
         assertThat(person2.address()).hasSize(2);
 
-        var person3 = new Person(person.id(), person.version(), person.firstName(), "updated", person.address());
 
         //update
-        var personUpdated = personController.save(person3);
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
         //assertThat(personUpdated.version()).isEqualTo(1L);
         
