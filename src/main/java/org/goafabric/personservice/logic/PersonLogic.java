@@ -49,7 +49,7 @@ public class PersonLogic {
     }
 
     public Person save(Person person) {
-        return personMapper.map(personRepository.save(
+        return personMapper.map(personRepository.saveAndFlush(
                 personMapper.map(person)));
     }
 

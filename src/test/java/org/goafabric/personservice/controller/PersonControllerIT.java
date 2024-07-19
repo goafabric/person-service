@@ -1,6 +1,5 @@
 package org.goafabric.personservice.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.aot.DisabledInAotMode;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,7 +49,7 @@ class PersonControllerIT {
 
     @Test
     void getByIdEntityNotFound() {
-        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -106,7 +106,7 @@ class PersonControllerIT {
         //update
         var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
-        //assertThat(personUpdated.version()).isEqualTo(1L);
+        assertThat(personUpdated.version()).isEqualTo(1L);
         
         personRepository.deleteById(person.id());
     }
