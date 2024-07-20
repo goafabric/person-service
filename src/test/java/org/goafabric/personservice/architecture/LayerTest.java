@@ -35,4 +35,9 @@ class LayerTest {
             .that().areAnnotatedWith(RestController.class)
             .should().haveSimpleNameEndingWith("Controller");
 
+    @ArchTest
+    static final ArchRule records = classes()
+            .that().resideInAPackage("..dto..")
+            .should().beRecords()
+            .because("Classes in the dto package should be records");
 }
