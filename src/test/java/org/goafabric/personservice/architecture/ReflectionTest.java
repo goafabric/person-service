@@ -17,6 +17,8 @@ public class ReflectionTest {
                     .dependOnClassesThat()
                     .resideInAPackage("java.lang.reflect")
                     .orShould()
+                    .callMethod(Class.class, "forName", String.class)
+                    .orShould()
                     .dependOnClassesThat()
                     .haveFullyQualifiedName("org.springframework.util.ReflectionUtils")
                     .orShould()
@@ -25,5 +27,4 @@ public class ReflectionTest {
                     .orShould()
                     .dependOnClassesThat()
                     .haveFullyQualifiedName("jakarta.validation.ConstraintValidator");
-
 }
