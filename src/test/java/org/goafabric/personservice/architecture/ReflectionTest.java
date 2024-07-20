@@ -1,17 +1,29 @@
-//package org.goafabric.personservice.architecture;
-//
-//import com.tngtech.archunit.junit.ArchTest;
-//import com.tngtech.archunit.lang.ArchRule;
-//
-//import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noMethods;
-//
-//public class ReflectionTest {
-//    @ArchTest
-//    static final ArchRule declarative_client_should_only_be_used =
-//            noMethods().that()
-//                    .haveNameContaining("invoke")
-//                    .or()
-//                    .haveNameContaining("newinstance")
-//                    .or()
-//                    .haveNameContaining("getDeclaredMethod");
-//}
+package org.goafabric.personservice.architecture;
+
+import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.junit.AnalyzeClasses;
+import com.tngtech.archunit.junit.ArchTest;
+import com.tngtech.archunit.lang.ArchRule;
+import org.goafabric.personservice.Application;
+
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+
+@AnalyzeClasses(packagesOf = Application.class, importOptions = ImportOption.DoNotIncludeTests.class)
+public class ReflectionTest {
+    @ArchTest
+    static final ArchRule reflection =
+            noClasses()
+                    .should()
+                    .dependOnClassesThat()
+                    .resideInAPackage("java.lang.reflect")
+                    .orShould()
+                    .dependOnClassesThat()
+                    .haveFullyQualifiedName("org.springframework.util.ReflectionUtils")
+                    .orShould()
+                    .dependOnClassesThat()
+                    .haveFullyQualifiedName("org.springframework.beans.BeanWrapperImpl")
+                    .orShould()
+                    .dependOnClassesThat()
+                    .haveFullyQualifiedName("jakarta.validation.ConstraintValidator");
+
+}
