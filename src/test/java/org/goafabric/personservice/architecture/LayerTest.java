@@ -13,7 +13,7 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 @AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
-public class LayerTest {
+class LayerTest {
 
     @ArchTest
     static final ArchRule layers_are_respected = layeredArchitecture()

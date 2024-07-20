@@ -13,7 +13,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
-public class RestClientCodingRulesTest {
+class RestClientCodingRulesTest {
 
     @ArchTest
     static final ArchRule declarative_client_should_only_be_used =
