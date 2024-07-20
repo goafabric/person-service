@@ -14,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameStartingWith;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 @AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
@@ -44,6 +43,14 @@ class LayerCodingRulesTest {
             .that().resideInAPackage("..dto")
             .should().beRecords()
             .because("Classes in the dto package should be records");
+
+    @ArchTest
+    static final ArchRule component_naming = noClasses()
+            .should().
+            haveSimpleNameEndingWith("Management");
+            //.orShould()
+            //.haveSimpleNameEndingWith("Impl");
+
 
     @ArchTest
     static final ArchRule controller_return = methods()
