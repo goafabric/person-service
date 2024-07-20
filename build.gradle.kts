@@ -71,8 +71,6 @@ dependencies {
 	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-	implementation("com.google.guava:guava:33.2.1-jre")
-
 	//code generation
 	implementation("org.mapstruct:mapstruct")
 	annotationProcessor("org.mapstruct:mapstruct-processor")
