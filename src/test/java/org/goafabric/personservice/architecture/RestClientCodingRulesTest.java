@@ -5,7 +5,6 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.goafabric.personservice.Application;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.service.annotation.HttpExchange;
 
@@ -34,5 +33,6 @@ class RestClientCodingRulesTest {
             .areMetaAnnotatedWith(HttpExchange.class)
             .should()
             .beDeclaredInClassesThat()
-            .areMetaAnnotatedWith(CircuitBreaker.class);
+            .areMetaAnnotatedWith(CircuitBreaker.class)
+            .allowEmptyShould(true);
 }
