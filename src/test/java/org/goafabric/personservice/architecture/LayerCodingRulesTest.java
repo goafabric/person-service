@@ -59,9 +59,8 @@ class LayerCodingRulesTest {
                 @Override
                 public void check(JavaMethod method, ConditionEvents events) {
                     if (method.getRawReturnType().isAssignableFrom(ResponseEntity.class)) {
-                        String message = String.format("Method %s in %s returns ResponseEntity",
-                                method.getName(), method.getOwner().getName());
-                        events.add(SimpleConditionEvent.violated(method, message));
+                        events.add(SimpleConditionEvent.violated(method,
+                                String.format("Method %s in %s returns ResponseEntity", method.getName(), method.getOwner().getName())));
                     }
                 }
             });
