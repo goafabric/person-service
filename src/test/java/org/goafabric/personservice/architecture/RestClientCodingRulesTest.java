@@ -12,7 +12,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-@AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
 class RestClientCodingRulesTest {
 
     @ArchTest
