@@ -59,10 +59,12 @@ public class ApplicationRulesTest {
                     .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");
 
     @ArchTest
-    static final ArchRule component_naming = noClasses()
-            .should().
-            haveSimpleNameEndingWith("Management");
-            //.orShould()
-            //.haveSimpleNameEndingWith("Impl");
+    static final ArchRule component_naming2 = noClasses()
+            .that().haveSimpleNameNotContaining("Mapper")
+            .should()
+            .haveSimpleNameEndingWith("Impl")
+            .andShould()
+            .haveSimpleNameEndingWith("Management")
+            .because("Avoid filler names like Impl or Management, use neutral Bean instead");
 
 }
