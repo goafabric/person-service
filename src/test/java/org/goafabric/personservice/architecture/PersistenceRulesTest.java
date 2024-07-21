@@ -6,6 +6,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import org.goafabric.personservice.Application;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameStartingWith;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
@@ -29,9 +30,17 @@ public class PersistenceRulesTest {
             .allowEmptyShould(true);
 
     @ArchTest
-    public static final ArchRule classesExtendingRepositoryShouldEndWithRepository = classes()
+    static final ArchRule classesExtendingRepositoryShouldEndWithRepository = classes()
             .that().areAssignableTo("org.springframework.data.repository.Repository")
             .should().haveSimpleNameEndingWith("Repository")
             .because("all classes extending Repository should end with 'Repository' in their name")
             .allowEmptyShould(true);
+
+
+    @ArchTest
+    public static final ArchRule classesExtendingRepositoryShouldEndWithRepository2 = classes()
+            .that().haveSimpleNameEndingWith("Logic")
+            .should().beAnnotatedWith(Transactional.class);
+
+
 }
