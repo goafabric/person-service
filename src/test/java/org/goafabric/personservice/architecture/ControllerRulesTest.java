@@ -21,7 +21,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 class ControllerRulesTest {
 
     @ArchTest
-    static final ArchRule layers_are_respected = layeredArchitecture()
+    static final ArchRule layerAreRespected = layeredArchitecture()
         .consideringOnlyDependenciesInLayers()
         .ignoreDependency(simpleNameStartingWith("DemoDataImporter"), DescribedPredicate.alwaysTrue())
 
