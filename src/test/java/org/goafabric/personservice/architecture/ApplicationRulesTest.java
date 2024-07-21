@@ -5,13 +5,13 @@ import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import org.goafabric.personservice.Application;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class, ApplicationRulesTest.IgnoreCglib.class})
+@AnalyzeClasses(packagesOf = Application.class, importOptions = {ImportOption.DoNotIncludeTests.class, ApplicationRulesTest.IgnoreCglib.class})
 public class ApplicationRulesTest {
 
     static class IgnoreCglib implements ImportOption {

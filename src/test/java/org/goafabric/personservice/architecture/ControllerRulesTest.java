@@ -9,15 +9,15 @@ import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
+import org.goafabric.personservice.Application;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
 class ControllerRulesTest {
 
     @ArchTest

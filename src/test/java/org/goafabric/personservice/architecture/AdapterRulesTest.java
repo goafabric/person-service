@@ -4,14 +4,14 @@ import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import org.goafabric.personservice.Application;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.service.annotation.HttpExchange;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
 class AdapterRulesTest {
     @ArchTest
     static final ArchRule adapterName =
