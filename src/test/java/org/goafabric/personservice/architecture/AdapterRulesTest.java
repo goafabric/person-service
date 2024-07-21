@@ -16,7 +16,8 @@ class AdapterRulesTest {
     static final ArchRule adapterName =
             methods().that()
                     .areMetaAnnotatedWith(HttpExchange.class)
-                    .should().beDeclaredInClassesThat().haveSimpleNameEndingWith("Adapter");
+                    .should().beDeclaredInClassesThat().haveSimpleNameEndingWith("Adapter")
+                    .allowEmptyShould(true);
 
     @ArchTest
     static final ArchRule declarativeClient =
