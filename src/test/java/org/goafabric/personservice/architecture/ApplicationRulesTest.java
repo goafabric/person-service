@@ -12,6 +12,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packages = "org.goafabric", importOptions = {ImportOption.DoNotIncludeTests.class, ApplicationRulesTest.IgnoreCglib.class})
 public class ApplicationRulesTest {
+
     static class IgnoreCglib implements ImportOption {
         @Override
         public boolean includes(Location location) {

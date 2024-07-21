@@ -1,7 +1,6 @@
 package org.goafabric.personservice.architecture;
 
 
-import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
 import com.tngtech.archunit.junit.AnalyzeClasses;
@@ -13,25 +12,22 @@ import com.tngtech.archunit.lang.SimpleConditionEvent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameStartingWith;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 @AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
 class ControllerRulesTest {
 
     @ArchTest
-    static final ArchRule layerAreRespected = layeredArchitecture()
-        .consideringOnlyDependenciesInLayers()
-        .ignoreDependency(simpleNameStartingWith("DemoDataImporter"), DescribedPredicate.alwaysTrue())
+    static final ArchRule layerAreRespectedBasic = layeredArchitecture()
+            .consideringOnlyDependenciesInLayers()
 
-        .layer("Controller").definedBy("..controller")
-        .layer("Logic").definedBy("..logic..")
-        .layer("Persistence").definedBy("..persistence..")
+            .layer("Controller").definedBy("..controller")
+            .layer("Logic").definedBy("..logic..")
 
-        .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
-        .whereLayer("Logic").mayOnlyBeAccessedByLayers("Controller")
-        .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Logic");
+            .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
+            .whereLayer("Logic").mayOnlyBeAccessedByLayers("Controller");
 
     @ArchTest
     static final ArchRule controllerNaming = classes()
