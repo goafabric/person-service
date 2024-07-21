@@ -34,4 +34,6 @@ public class PersistenceRulesTest {
             .should().haveSimpleNameEndingWith("Repository")
             .because("all classes extending Repository should end with 'Repository' in their name")
             .allowEmptyShould(true);
+
+    
 }
