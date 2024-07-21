@@ -9,8 +9,9 @@ import org.springframework.web.service.annotation.HttpExchange;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = DoNotIncludeTests.class)
 class AdapterRulesTest {
     @ArchTest
     static final ArchRule adapterName =

@@ -8,9 +8,12 @@ import com.tngtech.archunit.lang.ArchRule;
 
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameStartingWith;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = "org.goafabric", importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
 public class PersistenceRulesTest {
+    static final String BASE_PACKAGE = "org.goafabric";
+
     @ArchTest
     static final ArchRule layerAreRespectedWithPersistence = layeredArchitecture()
             .consideringOnlyDependenciesInLayers()

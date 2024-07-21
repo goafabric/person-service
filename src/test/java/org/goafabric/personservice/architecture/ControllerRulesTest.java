@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static org.goafabric.personservice.architecture.PersistenceRulesTest.BASE_PACKAGE;
 
-@AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packages = BASE_PACKAGE, importOptions = DoNotIncludeTests.class)
 class ControllerRulesTest {
 
     @ArchTest
