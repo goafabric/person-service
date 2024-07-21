@@ -18,7 +18,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 @AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
-class LayerCodingRulesTest {
+class ControllerRulesTest {
 
     @ArchTest
     static final ArchRule layers_are_respected = layeredArchitecture()
@@ -34,7 +34,7 @@ class LayerCodingRulesTest {
         .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Logic");
 
     @ArchTest
-    static final ArchRule controller_naming = classes()
+    static final ArchRule controllerNaming = classes()
             .that().areAnnotatedWith(RestController.class)
             .should().haveSimpleNameEndingWith("Controller");
 
@@ -44,16 +44,9 @@ class LayerCodingRulesTest {
             .should().beRecords()
             .because("Classes in the dto package should be records");
 
-    @ArchTest
-    static final ArchRule component_naming = noClasses()
-            .should().
-            haveSimpleNameEndingWith("Management");
-            //.orShould()
-            //.haveSimpleNameEndingWith("Impl");
-
 
     @ArchTest
-    static final ArchRule controller_return = methods()
+    static final ArchRule controllerReturn = methods()
             .that().areDeclaredInClassesThat().areAnnotatedWith(RestController.class)
             .should(new ArchCondition<>("ResponseEntity check") {
                 @Override

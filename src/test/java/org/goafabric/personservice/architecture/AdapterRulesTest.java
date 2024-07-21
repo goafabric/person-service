@@ -11,10 +11,15 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packages = "org.goafabric", importOptions = DoNotIncludeTests.class)
-class RestClientCodingRulesTest {
+class AdapterRulesTest {
+    @ArchTest
+    static final ArchRule adapterName =
+            methods().that()
+                    .areMetaAnnotatedWith(HttpExchange.class)
+                    .should().beDeclaredInClassesThat().haveSimpleNameEndingWith("Adapter");
 
     @ArchTest
-    static final ArchRule declarative_client_should_only_be_used =
+    static final ArchRule declarativeClient =
         noClasses().that()
             .areNotAnnotatedWith(Configuration.class)
             .should()
@@ -29,11 +34,12 @@ class RestClientCodingRulesTest {
 
 
     @ArchTest
-    static final ArchRule declarative_client_should_use_circuit_breaker =
+    static final ArchRule declarativeClientShouldUserCircuitBreaker =
         methods().that()
             .areMetaAnnotatedWith(HttpExchange.class)
             .should()
             .beDeclaredInClassesThat()
             .areMetaAnnotatedWith("io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker")
             .allowEmptyShould(true);
+
 }
