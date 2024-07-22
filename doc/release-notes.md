@@ -1,3 +1,7 @@
+# 3.3.1
+- upgrade to Spring Boot 3.3.2
+- archunit added
+
 # 3.3.0
 - upgrade to Spring Boot 3.3.0
 

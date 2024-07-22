@@ -10,11 +10,13 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.3_9-jre-focal@sha256:5cb19afa9ee0
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.3.1"
-	id("io.spring.dependency-management") version "1.1.5"
+	id("org.springframework.boot") version "3.3.2"
+	id("io.spring.dependency-management") version "1.1.2"
 	id("org.graalvm.buildtools.native") version "0.10.2"
 	id("com.google.cloud.tools.jib") version "3.4.3"
 	id("net.researchgate.release") version "3.0.2"
+
+	//id("org.cyclonedx.bom") version "1.8.2"
 
 	kotlin("jvm") version "2.0.0"
 	kotlin("plugin.spring") version "2.0.0"
@@ -36,6 +38,7 @@ dependencies {
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.1.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.3")
 		implementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
+		testImplementation("com.tngtech.archunit:archunit-junit5:1.2.1")
 	}
 }
 
@@ -86,6 +89,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	testImplementation("com.tngtech.archunit:archunit-junit5")
 }
 
 tasks.withType<Test> {
