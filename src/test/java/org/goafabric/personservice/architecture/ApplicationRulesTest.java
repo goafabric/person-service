@@ -59,6 +59,9 @@ public class ApplicationRulesTest {
                     .resideInAPackage("com.google.common..")
                     .orShould()
                     .dependOnClassesThat()
+                    .resideInAPackage("dev.mccue.guava..")
+                    .orShould()
+                    .dependOnClassesThat()
                     .resideInAPackage("org.apache.commons..")
                     .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");
 
