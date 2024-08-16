@@ -34,6 +34,8 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Configuration
     static class Configurer implements WebMvcConfigurer {
+        private @Value("${cors.enabled:false}") boolean corsEnabled;
+
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
             registry.addInterceptor(new HttpInterceptor());
@@ -41,10 +43,11 @@ public class HttpInterceptor implements HandlerInterceptor {
 
         @Override
         public void addCorsMappings(CorsRegistry registry) {
-            registry
-                    .addMapping("/**")
-                    .allowedOrigins("*")
-                    .allowedMethods("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD");
+            if (!corsEnabled) {
+                registry
+                        .addMapping("/**").allowedOrigins("*")
+                        .allowedMethods("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD");
+            }
         }
     }
 
