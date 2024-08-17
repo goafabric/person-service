@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.ServerHttpObservationFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -33,9 +34,16 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Configuration
     static class Configurer implements WebMvcConfigurer {
+        private @Value("${cors.enabled:false}") boolean corsEnabled;
+
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
             registry.addInterceptor(new HttpInterceptor());
+        }
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            if (!corsEnabled) { registry.addMapping("/**").allowedOrigins("*").allowedMethods("*"); }
         }
     }
 
