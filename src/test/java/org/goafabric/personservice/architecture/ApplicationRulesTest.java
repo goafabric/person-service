@@ -6,6 +6,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import org.goafabric.personservice.Application;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
@@ -40,6 +41,9 @@ public class ApplicationRulesTest {
                     .orShould()
                     .dependOnClassesThat()
                     .haveFullyQualifiedName("jakarta.validation.ConstraintValidator")
+                    .orShould()
+                    .dependOnClassesThat()
+                    .areAnnotatedWith(ConditionalOnProperty.class)
                     .because("Reflection breaks native image support");
 
     @ArchTest
