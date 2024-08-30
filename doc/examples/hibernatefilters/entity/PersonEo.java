@@ -2,7 +2,6 @@ package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
-import org.hibernate.annotations.TenantId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -11,13 +10,10 @@ import java.util.List;
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
 @Document("#{@httpInterceptor.getPrefix()}person")
-public class PersonEo {
+public class PersonEo extends TenantAndOrganizationAware {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @TenantId
-    private String organizationId;
 
     private String firstName;
 
@@ -30,8 +26,8 @@ public class PersonEo {
     @Version //optimistic locking
     private Long version;
 
-
     public PersonEo(String id, String firstName, String lastName, List<AddressEo> address, Long version) {
+        super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,7 +57,4 @@ public class PersonEo {
         return version;
     }
 
-    public String getOrganizationId() {
-        return organizationId;
-    }
 }

@@ -1,7 +1,10 @@
 package org.goafabric.personservice.extensions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,6 +20,12 @@ class ExceptionHandlerTest {
     @Test
     void handleIllegalStateException() {
         assertThat(exceptionHandler.handleIllegalStateException(new IllegalStateException("illegal state")).getStatusCode())
+                .isEqualTo(HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @Test
+    void handleConstraintViolationException() {
+        assertThat(exceptionHandler.handleConstraintValidationException(new ConstraintViolationException(new HashSet<>())).getStatusCode())
                 .isEqualTo(HttpStatus.PRECONDITION_FAILED);
     }
 

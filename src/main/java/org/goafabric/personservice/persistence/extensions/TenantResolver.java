@@ -97,9 +97,6 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
         throw new IllegalStateException("unwrap not supported");
     }
 
-    @RegisterReflectionForBinding(TenantResolver.class)
-    public String getPrefix() { return schemaPrefix + TenantContext.getTenantId() + "_"; }
-
     /** Flyway configuration to create database schemas **/
 
     @Bean

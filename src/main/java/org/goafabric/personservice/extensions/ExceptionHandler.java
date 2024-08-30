@@ -1,5 +1,6 @@
 package org.goafabric.personservice.extensions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,12 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
+        log.warn(ex.getMessage(), ex);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleConstraintValidationException(ConstraintViolationException ex) {
         log.warn(ex.getMessage(), ex);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_FAILED);
     }

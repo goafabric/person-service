@@ -29,6 +29,11 @@ Making it easy to create immutable objects, with Getters/Setters/Equals Hashcode
 In contrast to Kotlin or the Builder Pattern, there is however the drawback that the Records construct cannot have
 named Arguments.
 
+For simple CRUD applications, like most of our applications should be,
+it is also encouraged to go with a single data structure that contains ID and Version as optional fields. 
+of going for 2 separate Structures, just for the initial Creation of the Object.
+This leads to simpler, more consistent code, less redundant code, without filler words like request/response.
+
 ### Logic
 
 The logic is the layer that ... well implements the business logic.
@@ -175,6 +180,63 @@ Currently this involves
 As with monitoring, the example also exposes an OpenAPI Endpoint for API Documentation.
 This can also be used by external rest clients or the fronted to generate client stubs.
 It can be leveraged by just having the springdoc-openapi on the classpath.
+
+### Resilience
+
+Resilience ensures the stability of the System, even if an error occurs.
+
+#### Low Coupling
+
+For the Backend the overall architecture is designed in a way, that there is little to no coupling on between the backend containers, except for the Billing process.
+A further mitigation is to use synchronization via a message broker, in specific case, again currently only as an idea for the billing.
+
+#### Circuit breaker & Timeout
+
+In cases where we need coupling via REST, the Circuit Breaker pattern will be leveraged.
+This, together with a timeout ensures, that if there is a continuous failure in the communication, that the communication will be cut for a configured period of time.
+The current configured Threshold is 10 seconds, which is already a long time.
+
+#### Retry
+
+It is also possible to implement a simple Retry mechanism if desirable.
+Please note that for Retry the methods calls need to be idempotent.
+
+#### Frontend Resilience
+
+As the Frontend is ultimately coupled with all the Backends, via the Gateway, most of the Rest Calls need to be made resilient.
+While this is theoretically possible inside the Gateway, we decided against it, to have more control.
+The Frontend should at least have a timeout that cuts the connection after 10 seconds, usually it should respond in < 100ms.
+Als Retry up to 5 times is possible. Please keep in mind that the Backend Methods need to be idempotent for this.
+
+#### Validation
+
+Validation can ensure that specific constraints like MinLen, MaxLen are kept for the Data Objects.
+While it can be as simple as putting an annotation, there is a price tag to keep in mind.
+As Validation might occur on the frontend + on the backend + inside the database, the constraints have to be kept in sync.
+That means if for example, the database changes, everything must be updated.
+
+So, when implementing Validation, follow these simple rules, that apply to the overall application:
+Code should be readable and understandable
+There should be as less code as possible
+Validation should then at least occur inside the Controller Layer
+
+That being said, the simplest kind of Validation is having Null Checks inside the DTOs.
+For Java this can be just Object.requiresNull() .. in Kotlin thats already given.
+
+The next possible Abstraction is, to have Validation annotations inside the DTOs (MinLen, MaxLen).
+For more complex Usecases there is also the Pattern annotation that works with Regex.
+This also requires Spring Boot Starter Validation Dependency, as well as putting a Valid Annotation on every Post Object inside the Controller.
+
+What is highly discouraged is the usage of specific Validator Classes, for complex logic that contains multiple fields or Objects.
+This often leads to Code that is much harder to understand, than just having the more honest approach,
+having the code inside a simple “business validator class”, thats just manually called from the logic layer.
+
+Testing the Validation
+
+Validations should then be tested mostly with Unit tests.
+There can be one simple Integration Test per class that the ensures the validation works.
+But all other constraints (minlen, maxlen etc) should be tests with much faster unit tests.
+
 
 ## Build and Dependency Management
 The build is covered by gradle, which is becoming more and more the successor to maven.

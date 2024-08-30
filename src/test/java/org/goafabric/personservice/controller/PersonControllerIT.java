@@ -1,6 +1,6 @@
 package org.goafabric.personservice.controller;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.aot.DisabledInAotMode;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,12 +44,12 @@ class PersonControllerIT {
         assertThat(person.firstName()).isEqualTo(persons.getFirst().firstName());
         assertThat(person.lastName()).isEqualTo(persons.getFirst().lastName());
 
-        assertThat(personRepository.getById(persons.getFirst().id()).getOrganizationId()).isEqualTo("0");
+        assertThat(personRepository.findById(persons.getFirst().id()).get().getOrganizationId()).isEqualTo("0");
     }
 
     @Test
     void getByIdEntityNotFound() {
-        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(EntityNotFoundException.class);
+        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -101,12 +102,28 @@ class PersonControllerIT {
         assertThat(person2).isNotNull();
         assertThat(person2.address()).hasSize(2);
 
+
         //update
-        assertThat(personController.save(
-                new Person(person.id(), person.version(), person.firstName(), person.lastName(), person.address())).id()).isEqualTo(person.id());
-
-
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+        assertThat(personUpdated.id()).isEqualTo(person.id());
+        assertThat(personUpdated.version()).isEqualTo(1L);
+        
         personRepository.deleteById(person.id());
+    }
+
+    @Test
+    void saveWithValidationException() {
+        assertThatThrownBy(() ->
+            personController.save(
+                new Person(null,
+                        null,
+                        "Homer",
+                        "",
+                        List.of(
+                                createAddress("Evergreen Terrace"),
+                                createAddress("Everblue Terrace"))
+                ))
+        ).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
