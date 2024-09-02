@@ -20,17 +20,27 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.ServerHttpObservationFilter
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Component
 class HttpInterceptor : HandlerInterceptor {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass.name)
-
+    
     @Configuration
     internal class Configurer : WebMvcConfigurer {
+        @Value("\${cors.enabled:false}")
+        private val corsEnabled = false
+
         override fun addInterceptors(registry: InterceptorRegistry) {
             registry.addInterceptor(HttpInterceptor())
+        }
+
+        override fun addCorsMappings(registry: CorsRegistry) {
+            if (!corsEnabled) {
+                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*")
+            }
         }
     }
 
