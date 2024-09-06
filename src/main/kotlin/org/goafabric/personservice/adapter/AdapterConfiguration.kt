@@ -39,7 +39,6 @@ class AdapterConfiguration {
         requestFactory.setReadTimeout(timeout.toInt())
         builder.baseUrl(url!!)
             .requestInterceptor { request, body, execution ->
-                request.headers.setBasicAuth(userName, password)
                 TenantContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
                 execution.execute(request, body)
             }
