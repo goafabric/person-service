@@ -19,20 +19,16 @@ class AdapterConfiguration {
     fun calleeServiceAdapter(
         builder: RestClient.Builder,
         @Value("\${adapter.calleeservice.url}") url: String?,
-        @Value("\${adapter.timeout}") timeout: Long,
-        @Value("\${adapter.calleeservice.user.name}") userName: String,
-        @Value("\${adapter.calleeservice.user.password}") password: String
+        @Value("\${adapter.timeout}") timeout: Long
     ): CalleeServiceAdapter {
-        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout, userName, password)
+        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout)
     }
 
     fun <A> createAdapter(
         adapterType: Class<A>?,
         builder: RestClient.Builder,
         url: String?,
-        timeout: Long,
-        userName: String,
-        password: String
+        timeout: Long
     ): A {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
