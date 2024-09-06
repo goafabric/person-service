@@ -43,10 +43,7 @@ dependencies {
 	//web
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-
-	//security
-	implementation("org.springframework.boot:spring-boot-starter-security")
-
+	
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")

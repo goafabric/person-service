@@ -45,11 +45,6 @@ spring.data.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authS
 mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
 jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
 
-#security
-security.authentication.enabled: false
-spring.security.user.name: "admin"
-spring.security.user.password: "admin"
-
 #adapter
 adapter:
   timeout: 10000
