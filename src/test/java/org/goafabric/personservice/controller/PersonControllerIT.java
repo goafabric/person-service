@@ -113,7 +113,7 @@ class PersonControllerIT {
         //optimistic locking
         assertThatThrownBy(
                 () -> personController.save(
-                        new Person(person.id(), person.version(), person.firstName(), "updated2", person.address())))
+                        new Person(person.id(), 0L, person.firstName(), "updated2", person.address())))
                 .isInstanceOf(ObjectOptimisticLockingFailureException.class);
 
         personRepository.deleteById(person.id());
