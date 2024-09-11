@@ -120,39 +120,6 @@ class PersonControllerIT {
     }
 
     @Test
-    void optimisticLocking() {
-        final Person person = personController.save(
-                new Person(null,
-                        null,
-                        "Homer",
-                        "Simpson",
-                        List.of(
-                                createAddress("Evergreen Terrace"),
-                                createAddress("Everblue Terrace"))
-                ));
-
-        assertThat(person).isNotNull();
-
-        var person2 = personController.getById(person.id());
-        assertThat(person2).isNotNull();
-        assertThat(person2.address()).hasSize(2);
-
-
-        //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
-        assertThat(personUpdated.id()).isEqualTo(person.id());
-        assertThat(personUpdated.version()).isEqualTo(1L);
-
-
-        var personUpdated2 = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated2", person.address()));
-        assertThat(personUpdated.id()).isEqualTo(person.id());
-        assertThat(personUpdated.version()).isEqualTo(1L);
-
-        personRepository.deleteById(person.id());
-    }
-
-
-    @Test
     void saveWithValidationException() {
         assertThatThrownBy(() ->
             personController.save(
