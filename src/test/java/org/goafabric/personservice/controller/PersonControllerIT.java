@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.aot.DisabledInAotMode;
 
 import java.util.List;
@@ -107,9 +108,49 @@ class PersonControllerIT {
         var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
-        
+
+
+        //optimistic locking
+        assertThatThrownBy(
+                () -> personController.save(
+                        new Person(person.id(), person.version(), person.firstName(), "updated2", person.address())))
+                .isInstanceOf(ObjectOptimisticLockingFailureException.class);
+
         personRepository.deleteById(person.id());
     }
+
+    @Test
+    void optimisticLocking() {
+        final Person person = personController.save(
+                new Person(null,
+                        null,
+                        "Homer",
+                        "Simpson",
+                        List.of(
+                                createAddress("Evergreen Terrace"),
+                                createAddress("Everblue Terrace"))
+                ));
+
+        assertThat(person).isNotNull();
+
+        var person2 = personController.getById(person.id());
+        assertThat(person2).isNotNull();
+        assertThat(person2.address()).hasSize(2);
+
+
+        //update
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+        assertThat(personUpdated.id()).isEqualTo(person.id());
+        assertThat(personUpdated.version()).isEqualTo(1L);
+
+
+        var personUpdated2 = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated2", person.address()));
+        assertThat(personUpdated.id()).isEqualTo(person.id());
+        assertThat(personUpdated.version()).isEqualTo(1L);
+
+        personRepository.deleteById(person.id());
+    }
+
 
     @Test
     void saveWithValidationException() {
