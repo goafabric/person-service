@@ -5,13 +5,13 @@ val version: String by project
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
-val nativeBuilder = "paketobuildpacks/java-native-image:9.5.0"
+val nativeBuilder = "paketobuildpacks/java-native-image:9.8.0"
 val baseImage = "ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052\n"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.3.3"
+	id("org.springframework.boot") version "3.4.0-M3"
 	id("io.spring.dependency-management") version "1.1.6"
 	id("org.graalvm.buildtools.native") version "0.10.2"
 
