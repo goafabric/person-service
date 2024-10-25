@@ -101,7 +101,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	builder.set("paketobuildpacks/builder-jammy-buildpackless-tiny")
 	buildpacks.add(nativeBuilder)
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx5000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
 	doLast {
 		exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
