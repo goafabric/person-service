@@ -5,21 +5,21 @@ val version: String by project
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
-val nativeBuilder = "paketobuildpacks/java-native-image:9.8.0"
+val nativeBuilder = "paketobuildpacks/java-native-image:10.1.0"
 val baseImage = "ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052\n"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.3.4"
+	id("org.springframework.boot") version "3.3.5"
 	id("io.spring.dependency-management") version "1.1.6"
-	id("org.graalvm.buildtools.native") version "0.10.2"
+	id("org.graalvm.buildtools.native") version "0.10.3"
 
-	id("com.google.cloud.tools.jib") version "3.4.3"
+	id("com.google.cloud.tools.jib") version "3.4.4"
 	id("net.researchgate.release") version "3.0.2"
 	id("org.sonarqube") version "5.0.0.4638"
 
-	id("org.cyclonedx.bom") version "1.8.2"
+	id("org.cyclonedx.bom") version "1.10.0"
 }
 
 repositories {
@@ -101,7 +101,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	builder.set("paketobuildpacks/builder-jammy-buildpackless-tiny")
 	buildpacks.add(nativeBuilder)
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx5000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
 	doLast {
 		exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
