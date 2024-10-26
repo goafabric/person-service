@@ -27,7 +27,7 @@ nativeAnnotations:
   
 initContainers:
   - name: wait-for-application
-    image: curlimages/curl:7.88.1
+    image: curlimages/curl:8.10.1
     command: ["/bin/sh","-c"]
     args: ["while [ $(curl -sw '%{http_code}' --fail --connect-timeout 1 http://person-service-application:8080/actuator/health -o /dev/null) -ne 200 ]; do sleep 2; done"]
 
