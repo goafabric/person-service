@@ -1,26 +1,5 @@
 {
-  "repositories": [
-    "goafabric/person-service"
-  ],
-  "baseBranches": [
-    "autoupdate"
-  ],
   "extends": [
     "config:recommended"
-  ],
-  "prConcurrentLimit": 0,
-  "prHourlyLimit": 0,
-  "enabledManagers": ["gradle"],
-  "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true,
-      "automergeType": "branch",
-      "groupName": "all-updates",
-      "ignoreTests": true
-    }
   ]
 }
