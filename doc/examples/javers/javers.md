@@ -10,3 +10,4 @@ V3__javers.sql
 
 # limitations
 - currently only working with save and not saveAndFlush do to JaversSpringDataAuditableRepositoryAspect
+- archunit tests may currently fail due to reflection usage somewhere

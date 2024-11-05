@@ -1,6 +1,7 @@
 package org.goafabric.personservice;
 
 
+import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.javers.core.Javers;
 import org.javers.repository.jql.QueryBuilder;
@@ -21,9 +22,12 @@ public class JaversIT {
 
     @Test
     public void test() {
-        QueryBuilder jqlQuery = QueryBuilder.byClass(PersonEo.class);
-        var snapshots = javers.findChanges(jqlQuery.build());
-        assertThat(snapshots).isNotEmpty();
-        snapshots.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
+        var persons = javers.findSnapshots( QueryBuilder.byClass(PersonEo.class).build());
+        assertThat(persons).isNotEmpty();
+        persons.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
+
+        var addresses = javers.findSnapshots( QueryBuilder.byClass(AddressEo.class).build());
+        assertThat(addresses).isNotEmpty();
+        addresses.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
     }
 }
