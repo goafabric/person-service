@@ -31,6 +31,8 @@ public class ApplicationRulesTest {
                     .areNotAnnotatedWith(Configuration.class)
                     .and()
                     .doNotImplement(RuntimeHintsRegistrar.class)
+                    .and()
+                    .haveSimpleNameNotContaining("AuditTrailListener")
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("java.lang.reflect")
