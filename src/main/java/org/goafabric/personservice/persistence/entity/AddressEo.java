@@ -1,12 +1,11 @@
 package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 
 
 @Entity
 @Table(name="address")
-@EntityListeners(AuditTrailListener.class)
+//@EntityListeners(AuditTrailListener.class)
 public class AddressEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

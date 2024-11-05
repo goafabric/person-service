@@ -46,13 +46,15 @@ dependencies {
 
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	/*
 	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
+	 */
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
@@ -78,6 +80,10 @@ dependencies {
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
+
+	//javers
+	implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
+
 }
 
 tasks.withType<Test> {
