@@ -1,25 +1,25 @@
-package org.goafabric.personservice;
+package org.goafabric.personservice.persistence.extensions;
 
-import org.javers.spring.jpa.JpaHibernateConnectionProvider;
+import jakarta.persistence.EntityManager;
+import org.goafabric.personservice.extensions.TenantContext;
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
+import org.javers.repository.sql.ConnectionProvider;
+import org.javers.spring.auditable.AuthorProvider;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
-import org.springframework.context.annotation.Primary;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 @Configuration
 @ImportRuntimeHints(JaversNativeConfiguration.ApplicationRuntimeHints.class)
 public class JaversNativeConfiguration {
-    @Bean(name = "JpaHibernateConnectionProvider")
-    @Primary
-    public JpaHibernateConnectionProvider jpaConnectionProvider() {
-        return new JpaHibernateConnectionProvider();
-    }
-
     static class ApplicationRuntimeHints implements RuntimeHintsRegistrar {
         @Override
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
@@ -80,7 +80,6 @@ public class JaversNativeConfiguration {
                     "org.javers.core.json.typeadapter.commit.CommitMetadataTypeAdapter",
                     "org.javers.core.json.typeadapter.commit.GlobalIdTypeAdapter",
 
-                    "org.javers.core.json.typeadapter.commit.JsonElementFakeAdapter",
                     "org.javers.core.metamodel.object.CdoSnapshot",
                     "org.javers.core.metamodel.object.GlobalId",
                     "org.javers.core.metamodel.object.GlobalIdFactory",
@@ -166,12 +165,11 @@ public class JaversNativeConfiguration {
 
                     "org.javers.spring.boot.sql.JaversSqlAutoConfiguration",
                     "org.javers.spring.boot.sql.JaversSqlAutoConfiguration$$SpringCGLIB$$0",
-                    "org.javers.spring.boot.sql.JaversSqlAutoConfiguration$$SpringCGLIB$$1",
-                    "org.javers.spring.boot.sql.JaversSqlAutoConfiguration$$SpringCGLIB$$2",
                     "org.javers.spring.boot.sql.JaversSqlProperties",
-                    "org.javers.spring.jpa.JaversTransactionalJpaDecorator",
-                    "org.javers.spring.jpa.JaversTransactionalJpaDecorator$1",
-                    "org.javers.spring.jpa.JpaHibernateConnectionProvider"
+                    "org.javers.spring.jpa.JpaHibernateConnectionProvider",
+                    "org.javers.core.graph.SnapshotObjectHasher",
+
+                    "org.javers.core.metamodel.type.ListType"
             );
 
             lst.stream().forEach(clazz -> {
@@ -186,6 +184,28 @@ public class JaversNativeConfiguration {
         }
     }
 
-    // javers.newObjectSnapshot: "true"
 
+    @Bean //fix for NP inside JpaHibernateConnectionProvider
+    public ConnectionProvider customConnectionProvider(EntityManager entityManager) {
+        return () -> {
+            var session = entityManager.unwrap(Session.class);
+            var connectionWork = new GetConnectionWork();
+            session.doWork(connectionWork);
+            return connectionWork.theConnection;
+        };
+    }
+
+    private class GetConnectionWork implements Work {
+        private Connection theConnection;
+
+        @Override
+        public void execute(Connection connection) throws SQLException {
+            theConnection = connection;
+        }
+    }
+
+    @Bean
+    public AuthorProvider authorProvider() {
+        return TenantContext::getUserName;
+    }
 }
