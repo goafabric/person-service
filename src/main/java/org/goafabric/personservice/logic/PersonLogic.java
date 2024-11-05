@@ -3,6 +3,7 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
+import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.javers.core.Javers;
 import org.javers.repository.jql.QueryBuilder;
@@ -41,9 +42,11 @@ public class PersonLogic {
 
     public List<Person> findAll() {
 
-        QueryBuilder jqlQuery = QueryBuilder.byClass(PersonEo.class);
-        var snapshots = javers.findSnapshots(jqlQuery.build());
-        snapshots.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
+        var persons = javers.findSnapshots( QueryBuilder.byClass(PersonEo.class).build());
+        persons.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
+
+        var addresses = javers.findSnapshots( QueryBuilder.byClass(AddressEo.class).build());
+        addresses.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
 
         return personMapper.map(
                 personRepository.findAll());
