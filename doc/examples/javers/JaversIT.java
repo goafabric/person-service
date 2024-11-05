@@ -22,7 +22,7 @@ public class JaversIT {
     @Test
     public void test() {
         QueryBuilder jqlQuery = QueryBuilder.byClass(PersonEo.class);
-        var snapshots = javers.findChanges(jqlQuery.build());
+        var snapshots = javers.findSnapshots(jqlQuery.build());
         assertThat(snapshots).isNotEmpty();
         snapshots.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
     }

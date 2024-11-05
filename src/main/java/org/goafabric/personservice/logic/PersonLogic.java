@@ -3,6 +3,12 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
+import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.javers.core.Javers;
+import org.javers.repository.jql.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +34,17 @@ public class PersonLogic {
                 personRepository.findById(id).orElseThrow());
     }
 
+    @Autowired
+    Javers javers;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     public List<Person> findAll() {
+
+        QueryBuilder jqlQuery = QueryBuilder.byClass(PersonEo.class);
+        var snapshots = javers.findSnapshots(jqlQuery.build());
+        snapshots.forEach(snapshot -> log.info(javers.getJsonConverter().toJson(snapshot)));
+
         return personMapper.map(
                 personRepository.findAll());
     }
