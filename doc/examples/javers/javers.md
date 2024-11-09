@@ -4,8 +4,12 @@ implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
 # annotation on Repositories / disable existing one on entities
 @JaversSpringDataAuditable
 
-# annotation on saveAndFlush method (repository or logic)
+# annotation on saveAndFlush repository method
 @JaversAuditable
+
+# Authorprovider
+@Bean
+public AuthorProvider authorProvider() { return TenantContext::getUserName; }
                                  
 # flyway
 javers.sqlSchemaManagementEnabled: "false"
