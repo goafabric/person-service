@@ -1,11 +1,8 @@
 # dependency
 implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
 
-# annotation on Repositories / disable existing one on entities
+# annotation on Repositories / also works for saveAndFlush on JPARepository
 @JaversSpringDataAuditable
-
-# annotation on saveAndFlush repository method
-@JaversAuditable
 
 # Authorprovider
 @Bean
