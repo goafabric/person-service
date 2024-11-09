@@ -78,4 +78,3 @@ logging.level.org.hibernate.SQL: "INFO"
 
 #
 javers.sqlSchemaManagementEnabled: "false"
-javers.newObjectSnapshot: "true"
