@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -52,7 +53,11 @@ public class DemoDataImporter implements CommandLineRunner {
     private void importDemoData() {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
             TenantContext.setTenantId(tenant);
-            if (applicationContext.getBean(PersonLogic.class).findAll().isEmpty()) {
+            try {
+                if (applicationContext.getBean(PersonLogic.class).findAll().isEmpty()) {
+                    insertData();
+                }
+            } catch (DataAccessException e) {
                 insertData();
             }
         });

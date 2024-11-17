@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
-@Document("#{@httpInterceptor.getPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getPrefix()}person", createIndex = false)
+@Document("#{@httpInterceptor.getPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getPrefix()}person")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
