@@ -60,8 +60,7 @@ public class HttpInterceptor implements HandlerInterceptor {
         ServerHttpObservationFilter.findObservationContext(request).ifPresent(
                 context -> context.addHighCardinalityKeyValue(KeyValue.of("tenant.id", TenantContext.getTenantId())));
     }
-    
-    @Value("${multi-tenancy.schema-prefix}") private String schemaPrefix;
+
     @RegisterReflectionForBinding(HttpInterceptor.class)
-    public String getPrefix() { return schemaPrefix + TenantContext.getTenantId() + "_"; }
+    public String getTenantPrefix() { return TenantContext.getTenantId() + "_"; }
 }
