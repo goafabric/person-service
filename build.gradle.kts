@@ -10,7 +10,7 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.3_9-jre-focal@sha256:5cb19afa9ee0
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.3.5"
+	id("org.springframework.boot") version "3.4.0"
 	id("io.spring.dependency-management") version "1.1.6"
 	id("org.graalvm.buildtools.native") version "0.10.3"
 	id("com.google.cloud.tools.jib") version "3.4.4"
@@ -18,10 +18,10 @@ plugins {
 
 	id("org.cyclonedx.bom") version "1.10.0"
 
-	kotlin("jvm") version "2.0.21"
-	kotlin("plugin.spring") version "2.0.21"
-	kotlin("plugin.jpa") version "2.0.21"
-	kotlin("kapt") version "2.0.21"
+	kotlin("jvm") version "2.1.0"
+	kotlin("plugin.spring") version "2.1.0"
+	kotlin("plugin.jpa") version "2.1.0"
+	kotlin("kapt") version "2.1.0"
 }
 
 repositories {
@@ -30,11 +30,19 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
+//spring boot 3.4.0 native fix
+dependencyManagement {
+	dependencies {
+		dependency("org.flywaydb:flyway-core:10.10.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+	}
+}
+
 dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.2.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.6")
 		implementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
@@ -57,7 +65,9 @@ dependencies {
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//spring boot 3.4.0 native fix
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
