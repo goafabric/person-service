@@ -35,6 +35,10 @@ dependencies {
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.2.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.6")
+
+		implementation("org.flywaydb:flyway-core:10.10.0")
+		implementation("org.flywaydb:flyway-database-postgresql:10.10.0")
+
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
 	}
 }
