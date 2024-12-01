@@ -82,7 +82,7 @@ dependencies {
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
 	//javers
-	implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
+	implementation("org.javers:javers-spring-boot-starter-sql:7.7.0")
 
 }
 
