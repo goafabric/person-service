@@ -11,7 +11,7 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14f
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.3.5"
+	id("org.springframework.boot") version "3.4.0"
 	id("io.spring.dependency-management") version "1.1.6"
 	id("org.graalvm.buildtools.native") version "0.10.3"
 
@@ -26,6 +26,14 @@ repositories {
 	mavenCentral()
 	maven { url = uri("https://repo.spring.io/milestone") }
 	maven { url = uri("https://repo.spring.io/snapshot") }
+}
+
+//spring boot 3.4.0 native fix
+dependencyManagement {
+	dependencies {
+		dependency("org.flywaydb:flyway-core:10.10.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+	}
 }
 
 dependencies {
@@ -54,7 +62,9 @@ dependencies {
 	 */
 
 	//openapi
+	//spring boot 3.4.0 native fix
 	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
