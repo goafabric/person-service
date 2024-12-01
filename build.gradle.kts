@@ -33,8 +33,8 @@ repositories {
 //spring boot 3.4.0 native fix
 dependencyManagement {
 	dependencies {
-		dependency("org.flywaydb:flyway-core:10.10.0")
-		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+		dependency("org.flywaydb:flyway-core:10.22.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.22.0")
 	}
 }
 
