@@ -30,6 +30,14 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
+//spring boot 3.4.0 native fix
+dependencyManagement {
+	dependencies {
+		dependency("org.flywaydb:flyway-core:10.10.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+	}
+}
+
 dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
@@ -57,7 +65,9 @@ dependencies {
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//spring boot 3.4.0 native fix
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
