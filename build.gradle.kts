@@ -6,7 +6,7 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
 val nativeBuilder = "paketobuildpacks/java-native-image:10.1.0"
-val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39"
+val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39" //"ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052"
 
 plugins {
 	java
@@ -26,6 +26,14 @@ repositories {
 	mavenCentral()
 	maven { url = uri("https://repo.spring.io/milestone") }
 	maven { url = uri("https://repo.spring.io/snapshot") }
+}
+
+//spring boot 3.4.0 native fix
+dependencyManagement {
+	dependencies {
+		dependency("org.flywaydb:flyway-core:10.10.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+	}
 }
 
 dependencies {
@@ -56,7 +64,9 @@ dependencies {
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//spring boot 3.4.0 native fix
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
