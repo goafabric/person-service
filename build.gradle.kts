@@ -13,7 +13,7 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "3.4.0"
 	id("io.spring.dependency-management") version "1.1.6"
-	id("org.graalvm.buildtools.native") version "0.10.3"
+	id("org.graalvm.buildtools.native") version "0.10.4"
 
 	id("com.google.cloud.tools.jib") version "3.4.4"
 	id("net.researchgate.release") version "3.0.2"
@@ -31,8 +31,8 @@ repositories {
 //spring boot 3.4.0 native fix
 dependencyManagement {
 	dependencies {
-		dependency("org.flywaydb:flyway-core:10.10.0")
-		dependency("org.flywaydb:flyway-database-postgresql:10.10.0")
+		dependency("org.flywaydb:flyway-core:10.22.0")
+		dependency("org.flywaydb:flyway-database-postgresql:10.22.0")
 	}
 }
 
@@ -44,8 +44,8 @@ dependencies {
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.2.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.6")
 
-		implementation("org.flywaydb:flyway-core:10.10.0")
-		implementation("org.flywaydb:flyway-database-postgresql:10.10.0")
+		implementation("org.flywaydb:flyway-core:10.22.0")
+		implementation("org.flywaydb:flyway-database-postgresql:10.22.0")
 
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
 	}
