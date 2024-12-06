@@ -46,14 +46,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	//monitoring
-	/*
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
-	
-	 */
 
 	//openapi
 	//spring boot 3.4.0 native fix
