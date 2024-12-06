@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@RegisterReflection(classes = PublishingConfigurationExtension.class, memberCategories = MemberCategory.INVOKE_PUBLIC_METHODS)
 public class Application {
 
     public static void main(String[] args) {
