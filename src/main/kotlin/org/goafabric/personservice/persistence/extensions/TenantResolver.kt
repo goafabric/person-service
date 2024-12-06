@@ -23,9 +23,7 @@ import java.util.function.Consumer
 import javax.sql.DataSource
 import kotlin.collections.set
 
-// Source: https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
 @Component
-@RegisterReflectionForBinding(org.flywaydb.database.postgresql.TransactionalModel::class, org.hibernate.binder.internal.TenantIdBinder::class, org.hibernate.generator.internal.TenantIdGeneration::class)
 @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 class TenantResolver(
     private val dataSource: DataSource,
