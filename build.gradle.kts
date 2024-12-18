@@ -11,7 +11,7 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14f
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.4.0"
+	id("org.springframework.boot") version "3.4.1-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.4"
 
@@ -54,8 +54,7 @@ dependencies {
 
 	//openapi
 	//spring boot 3.4.0 native fix
-	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
-	implementation("io.projectreactor:reactor-core")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
