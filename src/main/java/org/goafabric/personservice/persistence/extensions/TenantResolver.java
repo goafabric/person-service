@@ -24,7 +24,6 @@ import java.util.Map;
 
 @Component
 @RegisterReflectionForBinding({org.flywaydb.database.postgresql.TransactionalModel.class, org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
-@RegisterReflection(classes = PublishingConfigurationExtension.class, memberCategories = MemberCategory.INVOKE_PUBLIC_METHODS)
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
