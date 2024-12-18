@@ -25,6 +25,7 @@ import kotlin.collections.set
 
 @Component
 @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
+@RegisterReflectionForBinding(org.flywaydb.database.postgresql.TransactionalModel::class, org.hibernate.binder.internal.TenantIdBinder::class, org.hibernate.generator.internal.TenantIdGeneration::class)
 class TenantResolver(
     private val dataSource: DataSource,
     @param:Value("\${multi-tenancy.default-schema:PUBLIC}") private val defaultSchema: String,
