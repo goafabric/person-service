@@ -5,7 +5,6 @@ val version: String by project
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
-val nativeBuilder = "paketobuildpacks/java-native-image:11.3.0"
 val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39" //"ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052"
 
 plugins {
@@ -100,8 +99,6 @@ jib {
 tasks.register("dockerImageNative") { description= "Native Image"; group = "build"; dependsOn("bootBuildImage") }
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native" + (if (System.getProperty("os.arch").equals("aarch64")) "-arm64v8" else "") + ":${project.version}"
-	builder.set("paketobuildpacks/builder-jammy-buildpackless-tiny")
-	buildpacks.add(nativeBuilder)
 	imageName.set(nativeImageName)
 	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
 	doLast {
