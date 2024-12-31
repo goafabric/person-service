@@ -8,7 +8,7 @@ services:
       spring.autoconfigure.exclude: "$${jpa.autoconfiguration}"
 
   mongodb:
-    image: mongo:8.0.1
+    image: mongo:8.
     container_name: ${_Values_root_name}-mongodb
     restart: 'no'
     ports:
