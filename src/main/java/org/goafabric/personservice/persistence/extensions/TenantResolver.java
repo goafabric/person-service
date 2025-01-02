@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Component
-@RegisterReflectionForBinding({org.flywaydb.database.postgresql.TransactionalModel.class, org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
+@RegisterReflectionForBinding({org.hibernate.binder.internal.TenantIdBinder.class, org.hibernate.generator.internal.TenantIdGeneration.class})
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
