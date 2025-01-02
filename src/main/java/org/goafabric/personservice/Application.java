@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@RegisterReflection(classes = {org.flywaydb.core.internal.publishing.PublishingConfigurationExtension.class, org.flywaydb.database.postgresql.TransactionalModel.class}, memberCategories = {MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 public class Application {
 
     public static void main(String[] args) {
