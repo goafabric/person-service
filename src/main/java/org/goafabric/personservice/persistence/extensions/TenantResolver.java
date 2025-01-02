@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Component
-@RegisterReflection(classes = {org.flywaydb.core.internal.publishing.PublishingConfigurationExtension.class, org.flywaydb.database.postgresql.TransactionalModel.class}, memberCategories = {MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
+@RegisterReflection(classes = {org.flywaydb.core.internal.publishing.PublishingConfigurationExtension.class, org.flywaydb.database.postgresql.TransactionalModel.class}, memberCategories = {MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS})
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
