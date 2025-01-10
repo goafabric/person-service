@@ -5,3 +5,14 @@ https://www.datablist.com/learn/csv/download-sample-csv-files
 
 .open testdb 
 => creates a database file, import will be slower
+
+
+# imdb
+https://www.kaggle.com/datasets
+
+CREATE TABLE imdb AS SELECT * FROM read_csv('~/Downloads/imdb.csv');
+
+from imdb where vote_average > 8;
+
+select count (*) from imdb where vote_average > 8;
+
