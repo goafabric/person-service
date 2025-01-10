@@ -12,7 +12,7 @@ https://www.kaggle.com/datasets
 
 CREATE TABLE imdb AS SELECT * FROM read_csv('~/Downloads/imdb.csv');
 
-from imdb where vote_average > 8;
+from imdb where vote_average > 8 and spoken_languages = 'English';
 
-select count (*) from imdb where vote_average > 8;
+select count (*) from imdb where vote_average > 8 and spoken_languages = 'English';
 
