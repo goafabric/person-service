@@ -56,8 +56,7 @@ dependencies {
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
-	//spring boot 3.4.0 native fix
-	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 	implementation("io.projectreactor:reactor-core")
 
 	//adapter
