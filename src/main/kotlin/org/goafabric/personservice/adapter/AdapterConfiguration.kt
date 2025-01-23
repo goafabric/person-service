@@ -19,27 +19,22 @@ class AdapterConfiguration {
     fun calleeServiceAdapter(
         builder: RestClient.Builder,
         @Value("\${adapter.calleeservice.url}") url: String?,
-        @Value("\${adapter.timeout}") timeout: Long,
-        @Value("\${adapter.calleeservice.user.name}") userName: String,
-        @Value("\${adapter.calleeservice.user.password}") password: String
+        @Value("\${adapter.timeout}") timeout: Long
     ): CalleeServiceAdapter {
-        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout, userName, password)
+        return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout)
     }
 
     fun <A> createAdapter(
         adapterType: Class<A>?,
         builder: RestClient.Builder,
         url: String?,
-        timeout: Long,
-        userName: String,
-        password: String
+        timeout: Long
     ): A {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
         requestFactory.setReadTimeout(timeout.toInt())
         builder.baseUrl(url!!)
             .requestInterceptor { request, body, execution ->
-                request.headers.setBasicAuth(userName, password)
                 TenantContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
                 execution.execute(request, body)
             }
