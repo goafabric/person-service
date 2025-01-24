@@ -6,6 +6,7 @@ import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import org.goafabric.personservice.Application
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.service.annotation.HttpExchange
 
@@ -20,6 +21,7 @@ internal object AdapterRulesTest {
     @ArchTest
     val declarativeClientShouldBeUsed: ArchRule = ArchRuleDefinition.noClasses().that()
         .areNotAnnotatedWith(Configuration::class.java)
+            .and().areNotAnnotatedWith(SpringBootApplication::class.java)
         .should()
         .dependOnClassesThat()
         .haveFullyQualifiedName("org.springframework.web.client.RestClient")
