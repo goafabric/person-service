@@ -16,26 +16,16 @@ object ApplicationRulesTest {
     @ArchTest
     val reflectionShouldBeAvoided: ArchRule = ArchRuleDefinition.noClasses()
         .that()
-        .areNotAnnotatedWith(
-            org.springframework.context.annotation.Configuration::
-            class.java
-        )
+        .areNotAnnotatedWith(org.springframework.context.annotation.Configuration::class.java)
         .and()
-        .doNotImplement(
-            org.springframework.aot.hint.RuntimeHintsRegistrar::
-            class.java
-        )
+        .doNotImplement(org.springframework.aot.hint.RuntimeHintsRegistrar::class.java)
         .and()
         .haveSimpleNameNotContaining("AuditTrailListener")
         .should()
         .dependOnClassesThat()
         .resideInAPackage("java.lang.reflect")
         .orShould()
-        .callMethod(
-            java.lang.Class::
-            class.java, "forName", kotlin.String::
-            class.java
-        )
+        .callMethod(java.lang.Class::class.java, "forName", String::class.java)
         .orShould()
         .dependOnClassesThat()
         .haveFullyQualifiedName("org.springframework.util.ReflectionUtils")
