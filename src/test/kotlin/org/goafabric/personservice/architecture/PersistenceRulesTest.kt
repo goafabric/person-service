@@ -3,7 +3,9 @@ package org.goafabric.personservice.architecture
 import com.tngtech.archunit.base.DescribedPredicate
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
+import com.tngtech.archunit.core.importer.Location
 import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.ArchCondition
@@ -13,7 +15,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.library.Architectures
 import org.goafabric.personservice.Application
 
-@AnalyzeClasses(packagesOf = [Application::class], importOptions = [DoNotIncludeTests::class])
+@AnalyzeClasses(packagesOf = [Application::class], importOptions = [DoNotIncludeTests::class, PersistenceRulesTest.IgnoreTestContext::class])
 object PersistenceRulesTest {
     @ArchTest
     val layerAreRespectedWithPersistence: ArchRule = Architectures.layeredArchitecture()
@@ -53,4 +55,10 @@ object PersistenceRulesTest {
             }
         }
         ).allowEmptyShould(true)
+
+    internal class IgnoreTestContext : ImportOption {
+        override fun includes(location: Location): Boolean {
+            return !location.contains("$$") && !location.contains("EnhancerByCGLIB")
+        }
+    }
 }
