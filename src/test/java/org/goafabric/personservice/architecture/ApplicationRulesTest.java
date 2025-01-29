@@ -23,6 +23,7 @@ public class ApplicationRulesTest {
             return !location.contains("$$") && !location.contains("EnhancerByCGLIB");
         }
     }
+
     @ArchTest
     static final ArchRule reflectionShouldBeAvoided =
             noClasses()

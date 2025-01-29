@@ -4,6 +4,7 @@ import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchCondition;
@@ -15,8 +16,15 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.simpleNameSt
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-@AnalyzeClasses(packagesOf = Application.class, importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = Application.class, importOptions = {ImportOption.DoNotIncludeTests.class, PersistenceRulesTest.IgnoreTestContext.class})
 public class PersistenceRulesTest {
+
+    static class IgnoreTestContext implements ImportOption {
+        @Override
+        public boolean includes(Location location) {
+            return !location.contains("_TestContext");
+        }
+    }
 
     @ArchTest
     static final ArchRule layerAreRespectedWithPersistence = layeredArchitecture()
