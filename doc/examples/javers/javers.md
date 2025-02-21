@@ -1,8 +1,13 @@
 # dependency
-implementation("org.javers:javers-spring-boot-starter-sql:7.3.2")
+implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
 
-# annotation
+# annotation on Repositories / also works for saveAndFlush on JPARepository
 @JaversSpringDataAuditable
 
-# property
-javers.newObjectSnapshot: "true"
+# Authorprovider
+@Bean
+public AuthorProvider authorProvider() { return TenantContext::getUserName; }
+
+# flyway
+javers.sqlSchemaManagementEnabled: "false"
+V3__javers.sql

@@ -1,3 +1,12 @@
+# 3.4.3
+- upgrade of Spring Boot
+
+# 3.3.5
+- spring security removed again
+- upgrade to Spring Boot 3.3.5
+- upgrade of openjdk, paketo, 
+- upgrade of jib, cylconedx
+
 # 3.3.3
 - upgrade to Spring Boot 3.3.3
 
@@ -36,6 +45,7 @@
 - declarative webclient replaced again by resttemplate fo future declarative restclient
 - validation framework removed
 - postgres update to 16.0
+- mongodb profile added
 
 # 3.1.1
 - upgrade to Spring Boot 3.1.1

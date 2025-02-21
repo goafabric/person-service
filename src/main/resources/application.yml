@@ -38,17 +38,13 @@ multi-tenancy.schema-prefix: "core_"
 database.provisioning.goals: "-migrate -import-demo-data"
 spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
 
-#mongo
-spring.autoconfigure.exclude: ${mongodb.autoconfiguration}
+#nosql databases
+spring.autoconfigure.exclude: ${.jpa.autoconfiguration},${mongodb.autoconfiguration},${elasticsearch.autoconfiguration}
+
 spring.data.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authSource=admin"
-
-mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
 jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
-
-#security
-security.authentication.enabled: false
-spring.security.user.name: "admin"
-spring.security.user.password: "admin"
+mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
+elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticsearchRestHealthContributorAutoConfiguration"
 
 #adapter
 adapter:
