@@ -1,7 +1,8 @@
 package org.goafabric.personservice.controller;
 
-import org.goafabric.personservice.adapter.Callee;
-import org.goafabric.personservice.adapter.CalleeServiceAdapter;
+import org.goafabric.personservice.base.adapter.Callee;
+import org.goafabric.personservice.base.adapter.CalleeServiceAdapter;
+import org.goafabric.personservice.v1.controller.PersonController;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

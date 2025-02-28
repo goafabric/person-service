@@ -1,5 +1,6 @@
 package org.goafabric.personservice.extensions;
 
+import org.goafabric.personservice.base.extensions.TenantContext;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

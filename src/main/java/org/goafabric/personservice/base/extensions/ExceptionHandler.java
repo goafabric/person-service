@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.base.extensions;
 
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;

@@ -1,8 +1,8 @@
-package org.goafabric.personservice.logic;
+package org.goafabric.personservice.v1.logic;
 
-import org.goafabric.personservice.adapter.CalleeServiceAdapter;
-import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.persistence.PersonRepository;
+import org.goafabric.personservice.base.adapter.CalleeServiceAdapter;
+import org.goafabric.personservice.base.persistence.PersonRepository;
+import org.goafabric.personservice.v1.controller.dto.Person;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,12 +35,12 @@ public class PersonLogic {
 
     public List<Person> findByFirstName(String firstName) {
         return personMapper.map(
-                personRepository.findByFirstName(firstName));
+                personRepository.findByGivenName((firstName)));
     }
 
     public List<Person> findByLastName(String lastName) {
         return personMapper.map(
-                personRepository.findByLastName(lastName));
+                personRepository.findByFamilyName(lastName));
     }
 
     public List<Person> findByStreet(String street) {

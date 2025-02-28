@@ -3,6 +3,7 @@ package org.goafabric.personservice.controller.dto;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.goafabric.personservice.v1.controller.dto.Person;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

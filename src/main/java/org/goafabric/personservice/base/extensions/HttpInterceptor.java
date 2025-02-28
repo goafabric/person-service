@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.base.extensions;
 
 import io.micrometer.common.KeyValue;
 import jakarta.servlet.http.HttpServletRequest;

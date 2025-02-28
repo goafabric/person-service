@@ -1,6 +1,6 @@
-package org.goafabric.personservice.persistence;
+package org.goafabric.personservice.base.persistence;
 
-import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.goafabric.personservice.base.persistence.entity.PersonEo;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,9 +13,9 @@ public interface PersonRepository extends CrudRepository<PersonEo, String> {
     @Transactional(propagation = Propagation.REQUIRES_NEW) //Workaround for getting the version increased, for JPARepository there is already a working method
     default PersonEo saveAndFlush(PersonEo person) { return save(person); }
 
-    List<PersonEo> findByFirstName(String firstName);
+    List<PersonEo> findByGivenName(String givenName);
 
-    List<PersonEo> findByLastName(String lastName);
+    List<PersonEo> findByFamilyName(String familyName);
 
     @EntityGraph(attributePaths = "address")
     List<PersonEo> findByAddressStreetContainsIgnoreCase(String street);

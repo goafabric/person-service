@@ -1,7 +1,7 @@
-package org.goafabric.personservice.persistence.entity;
+package org.goafabric.personservice.base.persistence.entity;
 
 import jakarta.persistence.*;
-import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
+import org.goafabric.personservice.base.persistence.extensions.AuditTrailListener;
 import org.hibernate.annotations.TenantId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,9 +19,9 @@ public class PersonEo {
     @TenantId
     private String organizationId;
 
-    private String firstName;
+    private String givenName;
 
-    private String lastName;
+    private String familyName;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
@@ -31,10 +31,10 @@ public class PersonEo {
     private Long version;
 
 
-    public PersonEo(String id, String firstName, String lastName, List<AddressEo> address, Long version) {
+    public PersonEo(String id, String givenName, String familyName, List<AddressEo> address, Long version) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.givenName = givenName;
+        this.familyName = familyName;
         this.address = address;
         this.version = version;
     }
@@ -45,12 +45,12 @@ public class PersonEo {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFamilyName() {
+        return familyName;
     }
 
     public List<AddressEo> getAddress() {

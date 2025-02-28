@@ -2,6 +2,7 @@ package org.goafabric.personservice.extensions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.goafabric.personservice.base.extensions.HttpInterceptor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

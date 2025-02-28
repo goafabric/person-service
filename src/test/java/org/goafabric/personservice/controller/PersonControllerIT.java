@@ -1,11 +1,12 @@
 package org.goafabric.personservice.controller;
 
 import jakarta.validation.ConstraintViolationException;
-import org.goafabric.personservice.adapter.Callee;
-import org.goafabric.personservice.adapter.CalleeServiceAdapter;
-import org.goafabric.personservice.controller.dto.Address;
-import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.persistence.PersonRepository;
+import org.goafabric.personservice.base.adapter.Callee;
+import org.goafabric.personservice.base.adapter.CalleeServiceAdapter;
+import org.goafabric.personservice.v1.controller.PersonController;
+import org.goafabric.personservice.base.controller.dto.Address;
+import org.goafabric.personservice.v1.controller.dto.Person;
+import org.goafabric.personservice.base.persistence.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.base.extensions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class TenantContext {
                 request.getHeader("X-Auth-Request-Preferred-Username"), request.getHeader("X-UserInfo"));
     }
 
-    static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
+    public static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
         CONTEXT.set(new TenantContextRecord(
                 getValue(tenantId, "0"),
                 getValue(organizationId, "0"),

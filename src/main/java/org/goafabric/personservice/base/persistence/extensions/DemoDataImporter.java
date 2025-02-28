@@ -1,9 +1,9 @@
-package org.goafabric.personservice.persistence.extensions;
+package org.goafabric.personservice.base.persistence.extensions;
 
-import org.goafabric.personservice.controller.dto.Address;
-import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.extensions.TenantContext;
-import org.goafabric.personservice.logic.PersonLogic;
+import org.goafabric.personservice.base.controller.dto.Address;
+import org.goafabric.personservice.v2.controller.dto.Person;
+import org.goafabric.personservice.base.extensions.TenantContext;
+import org.goafabric.personservice.v2.logic.PersonLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

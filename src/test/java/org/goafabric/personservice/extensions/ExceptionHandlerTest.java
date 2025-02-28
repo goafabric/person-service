@@ -1,6 +1,7 @@
 package org.goafabric.personservice.extensions;
 
 import jakarta.validation.ConstraintViolationException;
+import org.goafabric.personservice.base.extensions.ExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

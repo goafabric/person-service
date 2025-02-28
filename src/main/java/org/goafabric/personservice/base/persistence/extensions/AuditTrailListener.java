@@ -1,10 +1,10 @@
-package org.goafabric.personservice.persistence.extensions;
+package org.goafabric.personservice.base.persistence.extensions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.*;
-import org.goafabric.personservice.extensions.TenantContext;
+import org.goafabric.personservice.base.extensions.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;

@@ -1,16 +1,16 @@
-package org.goafabric.personservice.controller;
+package org.goafabric.personservice.v2.controller;
 
 import jakarta.validation.Valid;
-import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.logic.PersonLogic;
+import org.goafabric.personservice.v2.controller.dto.Person;
+import org.goafabric.personservice.v2.logic.PersonLogic;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(value = "/persons", produces = MediaType.APPLICATION_JSON_VALUE)
-@RestController
+@RequestMapping(value = "/api/v2/persons", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController("PersonControllerV2")
 @Validated
 public class PersonController {
     private final PersonLogic personLogic;

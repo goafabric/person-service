@@ -1,4 +1,4 @@
-package org.goafabric.personservice.adapter;
+package org.goafabric.personservice.base.adapter;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.PathVariable;

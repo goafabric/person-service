@@ -1,8 +1,9 @@
-package org.goafabric.personservice.controller.dto;
+package org.goafabric.personservice.v1.controller.dto;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.goafabric.personservice.base.controller.dto.Address;
 
 import java.util.List;
 

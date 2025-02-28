@@ -1,7 +1,7 @@
-package org.goafabric.personservice.logic;
+package org.goafabric.personservice.v1.logic;
 
-import org.goafabric.personservice.persistence.entity.PersonEo;
-import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.base.persistence.entity.PersonEo;
+import org.goafabric.personservice.v1.controller.dto.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

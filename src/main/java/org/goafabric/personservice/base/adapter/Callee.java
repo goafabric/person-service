@@ -1,3 +1,3 @@
-package org.goafabric.personservice.adapter;
+package org.goafabric.personservice.base.adapter;
 
 public record Callee(String id, String message) {}
