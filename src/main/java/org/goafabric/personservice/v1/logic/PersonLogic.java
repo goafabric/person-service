@@ -1,7 +1,5 @@
 package org.goafabric.personservice.v1.logic;
 
-import org.goafabric.personservice.base.adapter.CalleeServiceAdapter;
-import org.goafabric.personservice.base.persistence.PersonRepository;
 import org.goafabric.personservice.v1.controller.dto.Person;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,48 +11,47 @@ import java.util.List;
 public class PersonLogic {
     private final PersonMapper personMapper;
 
-    private final PersonRepository personRepository;
+    private final org.goafabric.personservice.v2.logic.PersonLogic personLogicV2;
 
-    private final CalleeServiceAdapter calleeServiceAdapter;
-
-    public PersonLogic(PersonMapper personMapper, PersonRepository personRepository, CalleeServiceAdapter calleeServiceAdapter) {
+    public PersonLogic(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
         this.personMapper = personMapper;
-        this.personRepository = personRepository;
-        this.calleeServiceAdapter = calleeServiceAdapter;
+        this.personLogicV2 = personLogicV2;
     }
 
     public Person getById(String id) {
         return personMapper.map(
-                personRepository.findById(id).orElseThrow());
+                personLogicV2.getById(id));
     }
 
     public List<Person> findAll() {
         return personMapper.map(
-                personRepository.findAll());
+                personLogicV2.findAll());
     }
 
     public List<Person> findByFirstName(String firstName) {
         return personMapper.map(
-                personRepository.findByGivenName((firstName)));
+                personLogicV2.findByGivenName(firstName));
     }
 
     public List<Person> findByLastName(String lastName) {
         return personMapper.map(
-                personRepository.findByFamilyName(lastName));
+                personLogicV2.findByFamilyName(lastName));
     }
 
     public List<Person> findByStreet(String street) {
         return personMapper.map(
-                personRepository.findByAddressStreetContainsIgnoreCase(street));
+                personLogicV2.findByStreet(street));
     }
 
     public Person save(Person person) {
-        return personMapper.map(personRepository.saveAndFlush(
-                personMapper.map(person)));
+        return personMapper.map(
+                personLogicV2.save(
+                        personMapper.map(person)));
+
     }
 
     public Person sayMyName(String name) {
-        return new Person(null, null,
-                calleeServiceAdapter.sayMyName(name).message(), "", null);
+        return personMapper.map(
+            personLogicV2.sayMyName(name));
     }
 }

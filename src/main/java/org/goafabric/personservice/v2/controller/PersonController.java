@@ -30,13 +30,13 @@ public class PersonController {
     }
 
     @GetMapping("findByFirstName")
-    public List<Person> findByFirstName(@RequestParam("firstName") String firstName) {
-        return personLogic.findByFirstName(firstName);
+    public List<Person> findByGivenName(@RequestParam("givenName") String givenName) {
+        return personLogic.findByGivenName(givenName);
     }
 
-    @GetMapping("findByLastName")
-    public List<Person> findByLastName(@RequestParam("lastName") String lastName) {
-        return personLogic.findByLastName(lastName);
+    @GetMapping("findByFamilyName")
+    public List<Person> findByFamilyName(@RequestParam("familyName") String familyName) {
+        return personLogic.findByFamilyName(familyName);
     }
 
     @GetMapping("findByStreet")

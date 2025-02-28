@@ -33,12 +33,12 @@ public class PersonLogic {
                 personRepository.findAll());
     }
 
-    public List<Person> findByFirstName(String firstName) {
+    public List<Person> findByGivenName(String givenName) {
         return personMapper.map(
-                personRepository.findByGivenName(firstName));
+                personRepository.findByGivenName(givenName));
     }
 
-    public List<Person> findByLastName(String lastName) {
+    public List<Person> findByFamilyName(String lastName) {
         return personMapper.map(
                 personRepository.findByFamilyName(lastName));
     }
