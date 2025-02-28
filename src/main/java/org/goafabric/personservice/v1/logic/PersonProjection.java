@@ -1,6 +1,7 @@
 package org.goafabric.personservice.v1.logic;
 
 import org.goafabric.personservice.v1.controller.dto.Person;
+import org.goafabric.personservice.v2.logic.PersonLogic;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,12 +9,12 @@ import java.util.List;
 
 @Component
 @Transactional
-public class PersonLogic {
+public class PersonProjection {
     private final PersonMapper personMapper;
 
-    private final org.goafabric.personservice.v2.logic.PersonLogic personLogicV2;
+    private final PersonLogic personLogicV2;
 
-    public PersonLogic(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
+    public PersonProjection(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
         this.personMapper = personMapper;
         this.personLogicV2 = personLogicV2;
     }

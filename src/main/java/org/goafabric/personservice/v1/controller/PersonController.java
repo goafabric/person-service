@@ -2,7 +2,7 @@ package org.goafabric.personservice.v1.controller;
 
 import jakarta.validation.Valid;
 import org.goafabric.personservice.v1.controller.dto.Person;
-import org.goafabric.personservice.v1.logic.PersonLogic;
+import org.goafabric.personservice.v1.logic.PersonProjection;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/persons", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class PersonController {
-    private final PersonLogic personLogic;
+    private final PersonProjection personLogic;
 
-    public PersonController(PersonLogic personLogic) {
+    public PersonController(PersonProjection personLogic) {
         this.personLogic = personLogic;
     }
 
