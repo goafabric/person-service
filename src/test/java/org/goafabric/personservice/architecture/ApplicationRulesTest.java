@@ -5,6 +5,7 @@ import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.goafabric.personservice.Application;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -73,7 +74,27 @@ public class ApplicationRulesTest {
                     .orShould()
                     .dependOnClassesThat()
                     .resideInAPackage("org.apache.commons..")
-                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");
+                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");@ArchTest
+
+    static final ArchRule onlyAllowedLibraries = ArchRuleDefinition.classes()
+            .should()
+            .onlyDependOnClassesThat()
+            .resideInAnyPackage(
+                    "org.goafabric..",
+                    "java..",
+                    "javax..",
+                    "jakarta..",
+                    "org.springframework..",
+                    "org.slf4j..",
+                    "com.fasterxml.jackson..",
+                    "org.flywaydb..",
+                    "org.hibernate..",
+                    "org.mapstruct..",
+                    "io.github.resilience4j..",
+                    "io.micrometer.."
+            )
+            .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
+
 
     @ArchTest
     static final ArchRule componentNamesThatAreBanished = noClasses()
