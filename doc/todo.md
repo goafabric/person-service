@@ -1,2 +1,1 @@
-- archunit test
 - dealing with deleted fields
