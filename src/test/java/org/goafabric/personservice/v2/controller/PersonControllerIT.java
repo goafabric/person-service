@@ -66,7 +66,7 @@ class PersonControllerIT {
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().givenName()).isEqualTo("Monty");
         assertThat(persons.getFirst().familyName()).isEqualTo("Burns");
-        //assertThat(persons.getFirst().middleName()).isEqualTo("middle");
+        assertThat(persons.getFirst().middleName()).isEqualTo("middle");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
 

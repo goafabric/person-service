@@ -56,7 +56,7 @@ public class PersonEo {
         return familyName;
     }
 
-    public String getSpecialField() {
+    public String getMiddleName() {
         return middleName;
     }
 
