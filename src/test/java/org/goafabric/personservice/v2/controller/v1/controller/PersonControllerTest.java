@@ -1,4 +1,4 @@
-package org.goafabric.personservice.controller;
+package org.goafabric.personservice.v2.controller.v1.controller;
 
 import org.goafabric.personservice.v1.controller.PersonController;
 import org.goafabric.personservice.v1.controller.dto.Person;

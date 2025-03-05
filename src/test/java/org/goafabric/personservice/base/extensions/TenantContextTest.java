@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.base.extensions;
 
 import org.goafabric.personservice.base.extensions.TenantContext;
 import org.junit.jupiter.api.Test;

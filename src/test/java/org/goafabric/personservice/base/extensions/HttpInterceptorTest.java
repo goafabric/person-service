@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.base.extensions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

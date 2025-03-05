@@ -1,4 +1,4 @@
-package org.goafabric.personservice.architecture;
+package org.goafabric.personservice.base.architecture;
 
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
 import com.tngtech.archunit.junit.AnalyzeClasses;

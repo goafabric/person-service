@@ -1,4 +1,4 @@
-package org.goafabric.personservice.architecture;
+package org.goafabric.personservice.base.architecture;
 
 
 import com.tngtech.archunit.core.domain.JavaMethod;
