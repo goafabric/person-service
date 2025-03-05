@@ -1,3 +1,3 @@
-- v1 package in tests
-- breaking tests
+- archunit test
+- mapping + test of list 
 - framework?
