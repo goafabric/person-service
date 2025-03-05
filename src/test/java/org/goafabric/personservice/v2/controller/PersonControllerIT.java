@@ -1,12 +1,11 @@
-package org.goafabric.personservice.v2.controller.v1.controller;
+package org.goafabric.personservice.v2.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.goafabric.personservice.base.adapter.Callee;
 import org.goafabric.personservice.base.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.base.controller.dto.Address;
 import org.goafabric.personservice.base.persistence.PersonRepository;
-import org.goafabric.personservice.v1.controller.PersonController;
-import org.goafabric.personservice.v1.controller.dto.Person;
+import org.goafabric.personservice.v2.controller.dto.Person;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,8 @@ class PersonControllerIT {
         final Person person
                 = personController.getById(persons.getFirst().id());
         assertThat(person).isNotNull();
-        assertThat(person.firstName()).isEqualTo(persons.getFirst().firstName());
-        assertThat(person.lastName()).isEqualTo(persons.getFirst().lastName());
+        assertThat(person.givenName()).isEqualTo(persons.getFirst().givenName());
+        assertThat(person.familyName()).isEqualTo(persons.getFirst().familyName());
 
         assertThat(personRepository.findById(persons.getFirst().id()).get().getOrganizationId()).isEqualTo("0");
     }
@@ -63,18 +62,18 @@ class PersonControllerIT {
 
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.findByFirstName("Monty");
+        List<Person> persons = personController.findByGivenName("Monty");
         assertThat(persons).isNotNull().hasSize(1);
-        assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
-        assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
+        assertThat(persons.getFirst().givenName()).isEqualTo("Monty");
+        assertThat(persons.getFirst().familyName()).isEqualTo("Burns");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
 
     @Test
     void findByLastName() {
-        List<Person> persons = personController.findByLastName("Simpson");
+        List<Person> persons = personController.findByFamilyName("Simpson");
         assertThat(persons).isNotNull().hasSize(2);
-        assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
+        assertThat(persons.getFirst().familyName()).isEqualTo("Simpson");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
 
@@ -83,7 +82,7 @@ class PersonControllerIT {
         List<Person> persons = personController.findByStreet("Evergreen Terrace");
         assertThat(persons).isNotNull().isNotEmpty();
         assertThat(persons.getFirst().address().getFirst().street()).startsWith("Evergreen Terrace No.");
-        //assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
+        //assertThat(persons.getFirst().familyName()).isEqualTo("Simpson");
     }
 
     @Test
@@ -106,7 +105,7 @@ class PersonControllerIT {
 
 
         //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.givenName(), "updated", person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
@@ -114,7 +113,7 @@ class PersonControllerIT {
         //optimistic locking
         assertThatThrownBy(
                 () -> personController.save(
-                        new Person(person.id(), 0L, person.firstName(), "updated2", person.address())))
+                        new Person(person.id(), 0L, person.givenName(), "updated2", person.address())))
                 .isInstanceOf(ObjectOptimisticLockingFailureException.class);
 
         personRepository.deleteById(person.id());

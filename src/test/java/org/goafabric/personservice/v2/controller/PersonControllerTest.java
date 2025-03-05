@@ -1,8 +1,7 @@
-package org.goafabric.personservice.v2.controller.v1.controller;
+package org.goafabric.personservice.v2.controller;
 
-import org.goafabric.personservice.v1.controller.PersonController;
-import org.goafabric.personservice.v1.controller.dto.Person;
-import org.goafabric.personservice.v1.logic.PersonLogic;
+import org.goafabric.personservice.v2.controller.dto.Person;
+import org.goafabric.personservice.v2.logic.PersonLogic;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -18,7 +17,7 @@ class PersonControllerTest {
     @Test
     void getById() {
         when(personLogic.getById("0")).thenReturn(createPerson());
-        assertThat(personController.getById("0").lastName()).isEqualTo("Simpson");
+        assertThat(personController.getById("0").familyName()).isEqualTo("Simpson");
     }
 
 
@@ -26,21 +25,21 @@ class PersonControllerTest {
     void findAll() {
         when(personLogic.findAll()).thenReturn(Collections.singletonList(createPerson()));
         assertThat(personController.findAll()).isNotNull().isNotEmpty();
-        assertThat(personController.findAll().getFirst().lastName()).isEqualTo("Simpson");
+        assertThat(personController.findAll().getFirst().familyName()).isEqualTo("Simpson");
     }
 
     @Test
-    void findByFirstName() {
-        when(personLogic.findByFirstName("Homer")).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findByFirstName("Homer")).isNotNull().isNotEmpty();
-        assertThat(personController.findByFirstName("Homer").getFirst().firstName()).isEqualTo("Homer");
+    void findByGivenName() {
+        when(personLogic.findByGivenName("Homer")).thenReturn(Collections.singletonList(createPerson()));
+        assertThat(personController.findByGivenName("Homer")).isNotNull().isNotEmpty();
+        assertThat(personController.findByGivenName("Homer").getFirst().givenName()).isEqualTo("Homer");
     }
 
     @Test
     void findByLastName() {
-        when(personLogic.findByLastName("Simpson")).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findByLastName("Simpson")).isNotNull().isNotEmpty();
-        assertThat(personController.findByLastName("Simpson").getFirst().lastName()).isEqualTo("Simpson");
+        when(personLogic.findByFamilyName("Simpson")).thenReturn(Collections.singletonList(createPerson()));
+        assertThat(personController.findByFamilyName("Simpson")).isNotNull().isNotEmpty();
+        assertThat(personController.findByFamilyName("Simpson").getFirst().familyName()).isEqualTo("Simpson");
     }
 
     @Test
