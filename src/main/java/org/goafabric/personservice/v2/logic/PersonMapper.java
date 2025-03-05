@@ -8,8 +8,8 @@ import org.mapstruct.ReportingPolicy;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface PersonMapperV2 {
+@Mapper(implementationName = "PersonMapperV2Impl", componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface PersonMapper {
     Person map(PersonEo value);
 
     PersonEo map(Person value);

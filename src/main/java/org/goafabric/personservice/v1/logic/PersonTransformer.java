@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Component("PersonTransformerV1")
 @Transactional
-public class PersonProjection {
+public class PersonTransformer {
     private final PersonMapper personMapper;
 
     private final org.goafabric.personservice.v2.logic.PersonLogic personLogicV2;
 
-    public PersonProjection(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
+    public PersonTransformer(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
         this.personMapper = personMapper;
         this.personLogicV2 = personLogicV2;
     }

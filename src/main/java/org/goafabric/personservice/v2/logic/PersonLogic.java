@@ -11,13 +11,13 @@ import java.util.List;
 @Component("PersonLogicV2")
 @Transactional
 public class PersonLogic {
-    private final PersonMapperV2 personMapper;
+    private final PersonMapper personMapper;
 
     private final PersonRepository personRepository;
 
     private final CalleeServiceAdapter calleeServiceAdapter;
 
-    public PersonLogic(PersonMapperV2 personMapper, PersonRepository personRepository, CalleeServiceAdapter calleeServiceAdapter) {
+    public PersonLogic(PersonMapper personMapper, PersonRepository personRepository, CalleeServiceAdapter calleeServiceAdapter) {
         this.personMapper = personMapper;
         this.personRepository = personRepository;
         this.calleeServiceAdapter = calleeServiceAdapter;

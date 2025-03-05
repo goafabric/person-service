@@ -8,7 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(implementationName = "PersonMapperV1Impl", componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PersonMapper {
     @Mapping(target = "firstName", source = "value.givenName")
     @Mapping(target = "lastName", source = "value.familyName")
