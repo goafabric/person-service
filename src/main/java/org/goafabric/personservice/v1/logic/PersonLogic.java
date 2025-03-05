@@ -8,12 +8,12 @@ import java.util.List;
 
 @Component("PersonTransformerV1")
 @Transactional
-public class PersonTransformer {
+public class PersonLogic {
     private final PersonMapper personMapper;
 
     private final org.goafabric.personservice.v2.logic.PersonLogic personLogicV2;
 
-    public PersonTransformer(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
+    public PersonLogic(PersonMapper personMapper, org.goafabric.personservice.v2.logic.PersonLogic personLogicV2) {
         this.personMapper = personMapper;
         this.personLogicV2 = personLogicV2;
     }

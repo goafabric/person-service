@@ -2,7 +2,7 @@ package org.goafabric.personservice.v1.controller;
 
 import jakarta.validation.Valid;
 import org.goafabric.personservice.v1.controller.dto.Person;
-import org.goafabric.personservice.v1.logic.PersonTransformer;
+import org.goafabric.personservice.v1.logic.PersonLogic;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.List;
 @RestController("PersonControllerV1")
 @Validated
 public class PersonController {
-    private final PersonTransformer personLogic;
+    private final PersonLogic personLogic;
 
-    public PersonController(PersonTransformer personLogic) {
+    public PersonController(PersonLogic personLogic) {
         this.personLogic = personLogic;
     }
 

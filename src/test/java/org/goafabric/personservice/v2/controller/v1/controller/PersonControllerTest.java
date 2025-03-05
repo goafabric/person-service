@@ -2,7 +2,7 @@ package org.goafabric.personservice.v2.controller.v1.controller;
 
 import org.goafabric.personservice.v1.controller.PersonController;
 import org.goafabric.personservice.v1.controller.dto.Person;
-import org.goafabric.personservice.v1.logic.PersonTransformer;
+import org.goafabric.personservice.v1.logic.PersonLogic;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class PersonControllerTest {
-    private PersonTransformer personLogic = Mockito.mock(PersonTransformer.class);
+    private PersonLogic personLogic = Mockito.mock(PersonLogic.class);
     private PersonController personController = new PersonController(personLogic);
 
     @Test
