@@ -10,8 +10,7 @@ import java.util.List;
 public record Person (
     @Nullable String id,
     @Nullable Long version,
-    @NotNull @Size(min = 3, max = 512) String givenName,
-    @NotNull @Size(min = 3, max = 512) String familyName,
-    @NotNull @Size(min = 3, max = 512) String middleName,
+    @NotNull @Size(min = 3, max = 256) String givenName,
+    @NotNull @Size(min = 3, max = 256) String familyName,
     List<Address> address) {
 }
