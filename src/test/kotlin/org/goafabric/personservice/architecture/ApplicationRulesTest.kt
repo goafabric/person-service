@@ -60,6 +60,29 @@ object ApplicationRulesTest {
         .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided")
 
     @ArchTest
+    val onlyAllowedLibraries: ArchRule = ArchRuleDefinition.classes()
+        .should()
+        .onlyDependOnClassesThat()
+        .resideInAnyPackage(
+            "org.goafabric..",
+            "java..",
+            "javax..",
+            "jakarta..",
+            "org.springframework..",
+            "org.slf4j..",
+            "com.fasterxml.jackson..",
+            "org.flywaydb..",
+            "org.hibernate..",
+            "org.mapstruct..",
+            "io.github.resilience4j..",
+            "io.micrometer..",
+
+            "kotlin..",
+            "org.jetbrains.annotations..",
+        )
+        .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies")
+
+    @ArchTest
     val componentNamesThatAreBanished: ArchRule = ArchRuleDefinition.noClasses()
         .that().haveSimpleNameNotContaining("Mapper")
         .should()
