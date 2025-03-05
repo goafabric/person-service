@@ -1,5 +1,4 @@
 - archunit test
-- mapping + test of list 
 - dealing with deleted fields
 - V1 in classname
 - framework?

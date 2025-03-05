@@ -18,6 +18,6 @@ public interface PersonMapper {
     @Mapping(target = "familyName", source = "value.lastName")
     org.goafabric.personservice.v2.controller.dto.Person map(org.goafabric.personservice.v1.controller.dto.Person value);
 
+    //mapping of lists is already covered by annotations above
     List<Person> map(List<org.goafabric.personservice.v2.controller.dto.Person> value);
-
 }
