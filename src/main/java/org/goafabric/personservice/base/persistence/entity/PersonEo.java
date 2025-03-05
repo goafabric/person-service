@@ -23,6 +23,8 @@ public class PersonEo {
 
     private String familyName;
 
+    private String middleName;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     private List<AddressEo> address;
@@ -31,10 +33,11 @@ public class PersonEo {
     private Long version;
 
 
-    public PersonEo(String id, String givenName, String familyName, List<AddressEo> address, Long version) {
+    public PersonEo(String id, String givenName, String familyName, String middleName, List<AddressEo> address, Long version) {
         this.id = id;
         this.givenName = givenName;
         this.familyName = familyName;
+        this.middleName = middleName;
         this.address = address;
         this.version = version;
     }
@@ -51,6 +54,10 @@ public class PersonEo {
 
     public String getFamilyName() {
         return familyName;
+    }
+
+    public String getSpecialField() {
+        return middleName;
     }
 
     public List<AddressEo> getAddress() {

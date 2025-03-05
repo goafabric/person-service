@@ -22,32 +22,32 @@ public class PersonTest {
 
     @Test
     public void testValidPerson() {
-        Person person = new Person(null, null, "John", "Doe", List.of());
+        Person person = new Person(null, null, "John", "Doe", "middle", List.of());
         var violations = validator.validate(person);
         assertThat(violations).isEmpty();
     }
 
     @Test
     public void testNullFirstName() {
-        Person person = new Person(null, null, null, "Doe", List.of());
+        Person person = new Person(null, null, null, "Doe", "middle", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
     public void testShortFirstName() {
-        Person person = new Person(null, null, "Jo", "Doe", List.of());
+        Person person = new Person(null, null, "Jo", "Doe", "middle", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
     public void testNullLastName() {
-        Person person = new Person(null, null, "John", null, List.of());
+        Person person = new Person(null, null, "John", null, "middle", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
     public void testShortLastName() {
-        Person person = new Person(null, null, "John", "Do", List.of());
+        Person person = new Person(null, null, "John", "Do", "middle", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 }

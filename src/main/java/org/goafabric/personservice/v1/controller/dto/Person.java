@@ -12,5 +12,6 @@ public record Person (
     @Nullable Long version,
     @NotNull @Size(min = 3, max = 255) String firstName,
     @NotNull @Size(min = 3, max = 255) String lastName,
+    @NotNull @Size(min = 3, max = 255) String middleName,
     List<Address> address) {
 }

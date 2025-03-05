@@ -54,7 +54,7 @@ class PersonControllerTest {
     }
 
     private static Person createPerson() {
-        return new Person("0", null, "Homer", "Simpson", null);
+        return new Person("0", null, "Homer", "Simpson", "middle",null);
     }
 
 }

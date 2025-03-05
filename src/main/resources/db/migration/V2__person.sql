@@ -8,6 +8,8 @@ create table person
 	first_name varchar(255),
 	last_name varchar(255),
 
+	middle_name varchar(255),
+
     version bigint default 0
 );
 

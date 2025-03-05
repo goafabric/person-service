@@ -1,9 +1,9 @@
 package org.goafabric.personservice.base.persistence.extensions;
 
 import org.goafabric.personservice.base.controller.dto.Address;
-import org.goafabric.personservice.v2.controller.dto.Person;
+import org.goafabric.personservice.v1.controller.dto.Person;
 import org.goafabric.personservice.base.extensions.TenantContext;
-import org.goafabric.personservice.v2.logic.PersonLogic;
+import org.goafabric.personservice.v1.logic.PersonLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,13 +66,13 @@ public class DemoDataImporter implements CommandLineRunner {
 
     private void insertData() {
         IntStream.range(0, 1).forEach(i -> {
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Homer", "Simpson"
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Homer", "Simpson", "middle"
                     , List.of(createAddress("Evergreen Terrace No. " + i), createAddress("Springfield Power Plant"))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", "Simpson"
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", "Simpson", "middle"
                     , List.of(createAddress("Everblue Terrace No. " + i))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Monty", "Burns"
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Monty", "Burns", "middle"
                     , List.of(createAddress("Mammon Street No. 1000 on the corner of Croesus"))));
         });
 
