@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping(value = "/api/v1/persons", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController("PersonControllerV1")
 @Validated
 public class PersonController {
     private final PersonProjection personLogic;
