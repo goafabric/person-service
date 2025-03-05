@@ -1,4 +1,2 @@
 - archunit test
 - dealing with deleted fields
-- V1 in classname
-- framework?
