@@ -66,6 +66,7 @@ class PersonControllerIT {
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().givenName()).isEqualTo("Monty");
         assertThat(persons.getFirst().familyName()).isEqualTo("Burns");
+        //assertThat(persons.getFirst().middleName()).isEqualTo("middle");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
 
@@ -92,6 +93,7 @@ class PersonControllerIT {
                         null,
                         "Homer",
                         "Simpson",
+                        "middle",
                         List.of(
                                 createAddress("Evergreen Terrace"),
                                 createAddress("Everblue Terrace"))
@@ -105,7 +107,7 @@ class PersonControllerIT {
 
 
         //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), person.givenName(), "updated", person.address()));
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.givenName(), "updated", "middle", person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
@@ -113,7 +115,7 @@ class PersonControllerIT {
         //optimistic locking
         assertThatThrownBy(
                 () -> personController.save(
-                        new Person(person.id(), 0L, person.givenName(), "updated2", person.address())))
+                        new Person(person.id(), 0L, person.givenName(), "updated2", "middle", person.address())))
                 .isInstanceOf(ObjectOptimisticLockingFailureException.class);
 
         personRepository.deleteById(person.id());
@@ -127,6 +129,7 @@ class PersonControllerIT {
                         null,
                         "Homer",
                         "",
+                        "middle",
                         List.of(
                                 createAddress("Evergreen Terrace"),
                                 createAddress("Everblue Terrace"))
