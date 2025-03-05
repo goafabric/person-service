@@ -5,8 +5,8 @@ create table person
 			primary key,
     organization_id varchar(36) not null,
 
-	given_name varchar(255),
-	family_name varchar(255),
+	first_name varchar(255),
+	last_name varchar(255),
 
     version bigint default 0
 );
