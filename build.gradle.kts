@@ -12,7 +12,7 @@ plugins {
 	id("org.springframework.boot") version "3.4.3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
-	id("com.google.cloud.tools.jib") version "3.4.4"
+	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
 
 	id("org.cyclonedx.bom") version "2.2.0"
