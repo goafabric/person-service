@@ -1,5 +1,5 @@
 # dependency
-implementation("org.javers:javers-spring-boot-starter-sql:7.6.3")
+implementation("org.javers:javers-spring-boot-starter-sql:7.8.0")
 
 # annotation on Repositories 
 @JaversSpringDataAuditable
