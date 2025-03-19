@@ -91,7 +91,12 @@ public class ApplicationRulesTest {
                     "org.hibernate..",
                     "org.mapstruct..",
                     "io.github.resilience4j..",
-                    "io.micrometer.."
+                    "io.micrometer..",
+
+                    "org.springdoc..",
+                    "net.ttddyy..",
+
+                    "org.javers.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 
