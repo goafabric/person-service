@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
 val baseImage = "azul/zulu-openjdk:24.0.0"
@@ -94,6 +94,7 @@ jib {
 	to.image = "${dockerRegistry}/${project.name}:${project.version}"
 	container.jvmFlags = listOf("-Xms256m", "-Xmx256m")
 	from.platforms.set(listOf(amd64, arm64))
+	container.mainClass = "org.goafabric.personservice.Application"
 }
 
 interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
