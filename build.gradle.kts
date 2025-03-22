@@ -10,7 +10,7 @@ val baseImage = "azul/zulu-openjdk:24.0.0"
 plugins {
 	java
 	//jacoco
-	id("org.springframework.boot") version "3.4.4"
+	id("org.springframework.boot") version "3.4.4" //"3.5.0-M3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
 
