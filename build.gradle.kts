@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
 val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39" //"ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052"
@@ -84,7 +84,7 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	exclude("**/*NRIT*")
-	finalizedBy("jacocoTestReport")
+	//finalizedBy("jacocoTestReport")
 }
 tasks.jacocoTestReport { reports {csv.required.set(true); xml.required.set(true) } }
 
@@ -111,4 +111,10 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 configure<net.researchgate.release.ReleaseExtension> {
 	buildTasks.set(listOf("build", "test", "jib", "dockerImageNative"))
 	tagTemplate.set("v${version}".replace("-SNAPSHOT", ""))
+}
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(24))
+	}
 }
