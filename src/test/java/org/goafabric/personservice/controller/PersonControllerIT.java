@@ -36,7 +36,7 @@ class PersonControllerIT {
 
     @Test
     void getById() {
-        List<Person> persons = personController.findAll();
+        List<Person> persons = personController.findAll(0, 3);
         assertThat(persons).isNotNull().hasSize(3);
 
         final Person person
@@ -55,7 +55,7 @@ class PersonControllerIT {
 
     @Test
     void findAll() {
-        assertThat(personController.findAll()).isNotNull().hasSize(3);
+        assertThat(personController.findAll(0, 3)).isNotNull().hasSize(3);
     }
 
     @Test

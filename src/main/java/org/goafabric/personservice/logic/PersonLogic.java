@@ -3,7 +3,7 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +29,9 @@ public class PersonLogic {
                 personRepository.findById(id).orElseThrow());
     }
 
-    public List<Person> findAll() {
+    public List<Person> findAll(Pageable pageable) {
         return personMapper.map(
-                personRepository.findAll(PageRequest.of(0, 3)));
+                personRepository.findAll(pageable));
     }
 
     public List<Person> findByFirstName(String firstName) {
