@@ -66,11 +66,11 @@ public class DemoDataImporter implements CommandLineRunner {
 
     private void insertData() {
         IntStream.range(0, 1).forEach(i -> {
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", "Simpson"
-                    , List.of(createAddress("Everblue Terrace No. " + i))));
-
             applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Homer", "Simpson"
                     , List.of(createAddress("Evergreen Terrace No. " + i), createAddress("Springfield Power Plant"))));
+
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", "Simpson"
+                    , List.of(createAddress("Everblue Terrace No. " + i))));
 
             applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Lisa", "Simpson"
                     , List.of(createAddress("Everblue Terrace No. " + i))));
