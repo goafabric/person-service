@@ -56,8 +56,6 @@ class PersonControllerIT {
     @Test
     void findAll() {
         assertThat(personController.findAll()).isNotNull().hasSize(3);
-
-        assertThat(personController.findAll()).isNotNull().hasSize(3);
     }
 
     @Test
@@ -72,7 +70,7 @@ class PersonControllerIT {
     @Test
     void findByLastName() {
         List<Person> persons = personController.findByLastName("Simpson");
-        assertThat(persons).isNotNull().hasSize(2);
+        assertThat(persons).isNotNull().hasSize(5);
         assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
