@@ -11,7 +11,7 @@ import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.List;
 
-public interface PersonAdapter {
+public interface PersonControllerRemote {
 
     @GetExchange("persons/{id}")
     Person getById(@PathVariable("id") String id);

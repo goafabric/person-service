@@ -12,12 +12,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @Lazy
-public class PersonAdapterConfiguration {
+public class PersonControllerRemoteConfiguration {
 
     @Bean
-    public PersonAdapter personControllerRemote(RestClient.Builder builder,
-                                                @LocalServerPort String port, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.maxlifetime:-1}") Long maxLifeTime) {
-        return createAdapter(PersonAdapter.class, builder, "http://localhost:" + port, timeout, maxLifeTime);
+    public PersonControllerRemote personControllerRemote(RestClient.Builder builder,
+                                                         @LocalServerPort String port, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.maxlifetime:-1}") Long maxLifeTime) {
+        return createAdapter(PersonControllerRemote.class, builder, "http://localhost:" + port, timeout, maxLifeTime);
     }
 
     public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout, Long maxLifeTime) {

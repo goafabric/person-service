@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisabledInAotMode
-class PersonAdapterIT {
+class PersonControllerRemoteIT {
 
     @Autowired
-    private PersonAdapter personController;
+    private PersonControllerRemote personController;
 
     @Autowired
     private PersonRepository personRepository;
