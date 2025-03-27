@@ -30,18 +30,18 @@ public class PersonController {
         return personLogic.findAll(PageRequest.of(page, size));
     }
 
-    @GetMapping("findByFirstName")
+    @GetMapping("by-first-name")
     public List<Person> findByFirstName(@RequestParam("firstName") String firstName) {
         return personLogic.findByFirstName(firstName);
     }
 
-    @GetMapping("findByLastName")
+    @GetMapping("by-last-name")
     public List<Person> findByLastName(@RequestParam("lastName") String lastName) {
         return personLogic.findByLastName(lastName);
     }
 
-    @GetMapping("findByStreet")
-    public List<Person> findByStreet(String street) {
+    @GetMapping("by-street")
+    public List<Person> findByStreet(@RequestParam("street") String street) {
         return personLogic.findByStreet(street);
     }
 
@@ -50,7 +50,7 @@ public class PersonController {
         return personLogic.save(person);
     }
 
-    @GetMapping("sayMyName")
+    @GetMapping("say-my-name")
     public Person sayMyName (@RequestParam("name") String name) {
         return personLogic.sayMyName(name);
     }
