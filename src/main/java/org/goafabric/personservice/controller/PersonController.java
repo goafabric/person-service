@@ -20,12 +20,12 @@ public class PersonController {
         this.personLogic = personLogic;
     }
 
-    @GetMapping("getById/{id}")
+    @GetMapping("/{id}")
     public Person getById(@PathVariable("id") String id) {
         return personLogic.getById(id);
     }
 
-    @GetMapping("findAll")
+    @GetMapping
     public List<Person> findAll(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         return personLogic.findAll(PageRequest.of(page, size));
     }
@@ -45,7 +45,7 @@ public class PersonController {
         return personLogic.findByStreet(street);
     }
 
-    @PostMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Person save(@RequestBody @Valid Person person) {
         return personLogic.save(person);
     }
