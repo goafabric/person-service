@@ -5,7 +5,6 @@ import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,6 @@ class PersonControllerRemoteIT {
     }
 
     @Test
-    @Disabled
     void save() {
         final Person person = personController.save(
                 new Person(null,
