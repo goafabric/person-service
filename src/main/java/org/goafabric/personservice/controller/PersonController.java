@@ -50,13 +50,6 @@ public class PersonController {
         return personLogic.save(person);
     }
 
-    @GetMapping("search")
-    public List<Person> search(@RequestParam(value = "firstName", required = false) String firstName,
-                               @RequestParam(value = "lastName", required = false) String lastName,
-                               @RequestParam("street") String street) {
-        return personLogic.findByStreet(street);
-    }
-
     @GetMapping("say-my-name")
     public Person sayMyName (@RequestParam("name") String name) {
         return personLogic.sayMyName(name);
