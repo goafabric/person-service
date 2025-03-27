@@ -11,7 +11,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -55,7 +54,7 @@ public class DemoDataImporter implements CommandLineRunner {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
             TenantContext.setTenantId(tenant);
             try {
-                if (applicationContext.getBean(PersonLogic.class).findAll(PageRequest.of(0, 1)).isEmpty()) {
+                if (applicationContext.getBean(PersonLogic.class).findAll(0, 1).isEmpty()) {
                     insertData();
                 }
             } catch (DataAccessException e) {

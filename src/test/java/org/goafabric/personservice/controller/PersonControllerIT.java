@@ -60,7 +60,7 @@ class PersonControllerIT {
 
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.findByFirstName("Monty");
+        List<Person> persons = personController.findByFirstName("Monty", 0 , 10);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
@@ -68,16 +68,8 @@ class PersonControllerIT {
     }
 
     @Test
-    void findByLastName() {
-        List<Person> persons = personController.findByLastName("Simpson");
-        assertThat(persons).isNotNull().hasSize(5);
-        assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
-        assertThat(persons.getFirst().address()).isNotEmpty();
-    }
-
-    @Test
     void findByAddressCity() {
-        List<Person> persons = personController.findByStreet("Evergreen Terrace");
+        List<Person> persons = personController.findByStreet("Evergreen Terrace", 0, 10);
         assertThat(persons).isNotNull().isNotEmpty();
         assertThat(persons.getFirst().address().getFirst().street()).startsWith("Evergreen Terrace No.");
         //assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");

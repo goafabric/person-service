@@ -21,28 +21,18 @@ class PersonControllerTest {
     }
 
 
-    /*
     @Test
     void findAll() {
-        when(personLogic.findAll(PageRequest.of(0, 3)).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findAll(0,3)).isNotNull().isNotEmpty();
-        assertThat(personController.findAll(0,3).getFirst().lastName()).isEqualTo("Simpson");
+        when(personLogic.findAll(0,1)).thenReturn(Collections.singletonList(createPerson()));
+        assertThat(personController.findAll(0,1)).isNotNull().isNotEmpty();
+        assertThat(personController.findAll(0,1).getFirst().lastName()).isEqualTo("Simpson");
     }
-
-     */
 
     @Test
     void findByFirstName() {
-        when(personLogic.findByFirstName("Homer")).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findByFirstName("Homer")).isNotNull().isNotEmpty();
-        assertThat(personController.findByFirstName("Homer").getFirst().firstName()).isEqualTo("Homer");
-    }
-
-    @Test
-    void findByLastName() {
-        when(personLogic.findByLastName("Simpson")).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findByLastName("Simpson")).isNotNull().isNotEmpty();
-        assertThat(personController.findByLastName("Simpson").getFirst().lastName()).isEqualTo("Simpson");
+        when(personLogic.findByFirstName("Homer",0,1)).thenReturn(Collections.singletonList(createPerson()));
+        assertThat(personController.findByFirstName("Homer",0, 1)).isNotNull().isNotEmpty();
+        assertThat(personController.findByFirstName("Homer",0, 1).getFirst().firstName()).isEqualTo("Homer");
     }
 
     @Test

@@ -3,7 +3,7 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,24 +29,19 @@ public class PersonLogic {
                 personRepository.findById(id).orElseThrow());
     }
 
-    public List<Person> findAll(Pageable pageable) {
+    public List<Person> findAll(int page, int size) {
         return personMapper.map(
-                personRepository.findAll(pageable));
+                personRepository.findAll(PageRequest.of(page, size)));
     }
 
-    public List<Person> findByFirstName(String firstName) {
+    public List<Person> findByFirstName(String firstName, Integer page, Integer size) {
         return personMapper.map(
-                personRepository.findByFirstName(firstName));
+                personRepository.findByFirstName(firstName, PageRequest.of(page, size)));
     }
 
-    public List<Person> findByLastName(String lastName) {
+    public List<Person> findByStreet(String street, Integer page, Integer size) {
         return personMapper.map(
-                personRepository.findByLastName(lastName));
-    }
-
-    public List<Person> findByStreet(String street) {
-        return personMapper.map(
-                personRepository.findByAddressStreetContainsIgnoreCase(street));
+                personRepository.findByAddressStreetContainsIgnoreCase(street, PageRequest.of(page, size)));
     }
 
     public Person save(Person person) {
