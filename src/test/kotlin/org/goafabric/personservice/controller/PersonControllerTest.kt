@@ -3,6 +3,7 @@ package org.goafabric.personservice.controller
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.dto.PersonSearch
 import org.goafabric.personservice.logic.PersonLogic
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -19,17 +20,10 @@ internal class PersonControllerTest {
     }
 
     @Test
-    fun findAll() {
-        whenever(personLogic.findAll(0, 1)).thenReturn(listOf(createPerson()))
-        assertThat(personController.findAll(0, 1)).isNotNull().isNotEmpty
-        assertThat(personController.findAll(0, 1).first().lastName).isEqualTo("Simpson")
-    }
-
-    @Test
     fun findByFirstName() {
-        whenever(personLogic.findByFirstName("Homer", 0, 1)).thenReturn(listOf(createPerson()))
-        assertThat(personController.findByFirstName("Homer",0, 1)).isNotNull().isNotEmpty
-        assertThat(personController.findByFirstName("Homer",0, 1).first().firstName).isEqualTo("Homer")
+        whenever(personLogic.find(PersonSearch(firstName = "Homer"), 0, 1)).thenReturn(listOf(createPerson()))
+        assertThat(personController.find(PersonSearch(firstName = "Homer") ,0, 1)).isNotNull().isNotEmpty
+        assertThat(personController.find(PersonSearch(firstName = "Homer") ,0, 1).first().firstName).isEqualTo("Homer")
     }
 
     @Test

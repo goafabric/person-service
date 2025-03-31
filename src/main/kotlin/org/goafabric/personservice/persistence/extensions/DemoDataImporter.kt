@@ -3,6 +3,7 @@ package org.goafabric.personservice.persistence.extensions
 import org.goafabric.personservice.extensions.TenantContext
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.dto.PersonSearch
 import org.goafabric.personservice.logic.PersonLogic
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -44,7 +45,7 @@ class DemoDataImporter(
         Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
             Consumer { tenant: String? ->
                 TenantContext.tenantId = tenant!!;
-                if (applicationContext.getBean(PersonLogic::class.java).findAll(0, 1).isEmpty()) {
+                if (applicationContext.getBean(PersonLogic::class.java).find(PersonSearch(),0, 1).isEmpty()) {
                     insertData()
                 }
             })

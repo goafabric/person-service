@@ -7,6 +7,7 @@ import org.goafabric.personservice.adapter.Callee
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
+import org.goafabric.personservice.controller.dto.PersonSearch
 import org.goafabric.personservice.persistence.PersonRepository
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
@@ -24,7 +25,7 @@ internal class PersonControllerIT(
 
     @Test
     fun findById() {
-        val persons: List<Person> = personController.findAll(0, 3)
+        val persons: List<Person> = personController.find(PersonSearch(), 0, 3)
         assertThat(persons).isNotNull().hasSize(3)
 
         val person
@@ -40,13 +41,8 @@ internal class PersonControllerIT(
     }
 
     @Test
-    fun findAll() {
-        assertThat(personController.findAll(0, 3)).isNotNull().hasSize(3)
-    }
-
-    @Test
     fun findByFirstName() {
-        val persons: List<Person> = personController.findByFirstName("Monty",0, 3)
+        val persons: List<Person> = personController.find(PersonSearch(firstName = "Monty") ,0, 3)
         assertThat(persons).isNotNull().hasSize(1)
         assertThat(persons.first().firstName).isEqualTo("Monty")
         assertThat(persons.first().lastName).isEqualTo("Burns")

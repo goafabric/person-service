@@ -13,6 +13,10 @@ create table person
 
 create index idx_person_organization_id on person(organization_id);
 
+create index idx_person_first_name on person(first_name);
+
+create index idx_person_last_name on person(last_name);
+
 create table address
 (
 	id varchar(36) not null
