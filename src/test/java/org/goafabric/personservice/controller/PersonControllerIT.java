@@ -38,7 +38,7 @@ class PersonControllerIT {
 
     @Test
     void getById() {
-        List<Person> persons = personController.search(new PersonSearch(null, null), 0, 3);
+        List<Person> persons = personController.find(new PersonSearch(null, null), 0, 3);
         assertThat(persons).isNotNull().hasSize(3);
 
         final Person person
@@ -58,7 +58,7 @@ class PersonControllerIT {
 
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.search(new PersonSearch("Monty", null), 0 , 3);
+        List<Person> persons = personController.find(new PersonSearch("Monty", null), 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
@@ -67,7 +67,7 @@ class PersonControllerIT {
 
     @Test
     void findByLastName() {
-        List<Person> persons = personController.search(new PersonSearch(null, "Burns"), 0 , 3);
+        List<Person> persons = personController.find(new PersonSearch(null, "Burns"), 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
@@ -152,8 +152,8 @@ class PersonControllerIT {
 
 
     @Test
-    void search() {
-        var persons = personController.search(new PersonSearch("Homer", null), 0, 3);
+    void find() {
+        var persons = personController.find(new PersonSearch("Homer", null), 0, 3);
         assertThat(persons).isNotNull().hasSize(1);
         System.out.println(persons);
     }

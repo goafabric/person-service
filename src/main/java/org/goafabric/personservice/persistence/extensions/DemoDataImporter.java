@@ -55,7 +55,7 @@ public class DemoDataImporter implements CommandLineRunner {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
             TenantContext.setTenantId(tenant);
             try {
-                if (applicationContext.getBean(PersonLogic.class).search(new PersonSearch(null, null), 0, 1).isEmpty()) {
+                if (applicationContext.getBean(PersonLogic.class).find(new PersonSearch(null, null), 0, 1).isEmpty()) {
                     insertData();
                 }
             } catch (DataAccessException e) {

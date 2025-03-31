@@ -11,17 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface PersonRepository extends CrudRepository<PersonEo, String> {
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW) //Workaround for getting the version increased, for JPARepository there is already a working method
-    default PersonEo saveAndFlush(PersonEo person) { return save(person); }
-
     Page<PersonEo> findAll(Example<PersonEo> example, Pageable pageable);
-
-    //Page<PersonEo> findAll(Example<PersonSearch> example, Pageable pageable);
-
-    Page<PersonEo> findByFirstName(String firstName, Pageable pageable);
 
     @EntityGraph(attributePaths = "address")
     Page<PersonEo> findByAddressStreetContainsIgnoreCase(String street, Pageable pageable);
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW) //Workaround for getting the version increased, for JPARepository there is already a working method
+    default PersonEo saveAndFlush(PersonEo person) { return save(person); }
 }
 

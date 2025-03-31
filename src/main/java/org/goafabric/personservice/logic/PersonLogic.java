@@ -31,6 +31,13 @@ public class PersonLogic {
                 personRepository.findById(id).orElseThrow());
     }
 
+    public List<Person> find(PersonSearch personSearch, Integer page, Integer size) {
+        return personMapper.map(
+                personRepository.findAll(
+                        Example.of(personMapper.map(personSearch)),
+                        PageRequest.of(page,size)));
+    }
+
     public List<Person> findByStreet(String street, Integer page, Integer size) {
         return personMapper.map(
                 personRepository.findByAddressStreetContainsIgnoreCase(street, PageRequest.of(page, size)));
@@ -46,10 +53,4 @@ public class PersonLogic {
                 calleeServiceAdapter.sayMyName(name).message(), "", null);
     }
 
-    public List<Person> search(PersonSearch personSearch, Integer page, Integer size) {
-        return personMapper.map(
-                personRepository.findAll(
-                        Example.of(personMapper.map(personSearch)),
-                        PageRequest.of(page,size)));
-    }
 }
