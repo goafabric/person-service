@@ -5,7 +5,6 @@ import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.persistence.PersonRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.*
 
 
 @Component
@@ -20,30 +19,25 @@ class PersonLogic (
             personRepository.findById(id).get())
     }
 
-    fun findAll() : List<Person> {
+    fun findAll(page: Int, size: Int): List<Person> {
         return personMapper.map(
             personRepository.findAll())
     }
 
-    fun findByFirstName(firstName : String) : List<Person> {
+    fun findByFirstName(firstName: String, page: Int, size: Int) : List<Person> {
         return personMapper.map(
             personRepository.findByFirstName(firstName))
     }
 
-    fun findByLastName(lastName : String) : List<Person> {
-        return personMapper.map(
-            personRepository.findByLastName(lastName))
-    }
-
-    fun save(person : Person): Person? {
+    fun save(person : Person): Person {
         return personMapper.map(personRepository.save(
                 personMapper.map(person))
         )
     }
 
-    fun findByStreet(street: String?): List<Person> {
+    fun findByStreet(street: String?, page: Int, size: Int): List<Person> {
         return personMapper.map(
-            personRepository.findByAddress_StreetContainsIgnoreCase(street)
+            personRepository.findByAddressStreetContainsIgnoreCase(street)
         )
     }
 

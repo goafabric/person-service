@@ -13,6 +13,6 @@ interface PersonRepository : CrudRepository<PersonEo, String> {
     fun findByLastName(@Param("lastName") lastName: String): List<PersonEo>
 
     //@EntityGraph(attributePaths = "address")
-    fun findByAddress_StreetContainsIgnoreCase(street: String?): List<PersonEo>
+    fun findByAddressStreetContainsIgnoreCase(street: String?): List<PersonEo>
 
 }

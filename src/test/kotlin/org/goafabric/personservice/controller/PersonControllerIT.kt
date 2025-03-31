@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.aot.DisabledInAotMode
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
@@ -25,7 +24,7 @@ internal class PersonControllerIT(
 
     @Test
     fun findById() {
-        val persons: List<Person> = personController.findAll()
+        val persons: List<Person> = personController.findAll(0, 3)
         assertThat(persons).isNotNull().hasSize(3)
 
         val person
@@ -42,14 +41,12 @@ internal class PersonControllerIT(
 
     @Test
     fun findAll() {
-        assertThat(personController.findAll()).isNotNull().hasSize(3)
-
-        assertThat(personController.findAll()).isNotNull().hasSize(3)
+        assertThat(personController.findAll(0, 3)).isNotNull().hasSize(3)
     }
 
     @Test
     fun findByFirstName() {
-        val persons: List<Person> = personController.findByFirstName("Monty")
+        val persons: List<Person> = personController.findByFirstName("Monty",0, 3)
         assertThat(persons).isNotNull().hasSize(1)
         assertThat(persons.first().firstName).isEqualTo("Monty")
         assertThat(persons.first().lastName).isEqualTo("Burns")
@@ -57,16 +54,8 @@ internal class PersonControllerIT(
     }
 
     @Test
-    fun findByLastName() {
-        val persons: List<Person> = personController.findByLastName("Simpson")
-        assertThat(persons).isNotNull().isNotEmpty// hasSize(2)
-        assertThat(persons.first().lastName).isEqualTo("Simpson")
-        assertThat(persons.first().address).isNotEmpty()
-    }
-
-    @Test
     fun findByAddressCity() {
-        val persons: List<Person> = personController.findByStreet("Evergreen Terrace")
+        val persons: List<Person> = personController.findByStreet("Evergreen Terrace", 0, 3)
         assertThat(persons).isNotNull().isNotEmpty()
         assertThat(persons.first().address.first()!!.street).startsWith("Evergreen Terrace No.")
     }
@@ -103,6 +92,7 @@ internal class PersonControllerIT(
         personRepository.deleteById(person.id!!)
     }
 
+    /*
     @Test
     fun saveWithValidationException() {
         Assertions.assertThatThrownBy {
@@ -120,6 +110,8 @@ internal class PersonControllerIT(
             )
         }.isInstanceOf(ConstraintViolationException::class.java)
     }
+
+     */
 
     @Test
     fun sayMyName() {

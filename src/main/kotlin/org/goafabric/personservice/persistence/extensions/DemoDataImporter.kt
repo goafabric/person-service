@@ -44,7 +44,7 @@ class DemoDataImporter(
         Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
             Consumer { tenant: String? ->
                 TenantContext.tenantId = tenant!!;
-                if (applicationContext.getBean(PersonLogic::class.java).findAll().isEmpty()) {
+                if (applicationContext.getBean(PersonLogic::class.java).findAll(0, 1).isEmpty()) {
                     insertData()
                 }
             })

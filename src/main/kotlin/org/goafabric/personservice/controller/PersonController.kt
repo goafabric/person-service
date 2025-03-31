@@ -7,45 +7,44 @@ import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-
 @RequestMapping(value = ["/persons"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @RestController
 @Validated
-class PersonController (
-    private val personLogic : PersonLogic) {
-
-    @GetMapping("getById/{id}")
-    fun getById(@PathVariable("id") id: String) : Person {
-        return personLogic.getById(id);
+class PersonController(private val personLogic: PersonLogic) {
+    @GetMapping("/{id}")
+    fun getById(@PathVariable("id") id: String): Person {
+        return personLogic.getById(id)
     }
 
-    @GetMapping("findAll")
-    fun findAll() : List<Person> {
-        return personLogic.findAll();
+    @GetMapping
+    fun findAll(@RequestParam("page") page: Int, @RequestParam("size") size: Int): List<Person> {
+        return personLogic.findAll(page, size)
     }
 
-    @GetMapping("findByFirstName")
-    fun findByFirstName(@RequestParam("firstName") firstName : String) : List<Person> {
-        return personLogic.findByFirstName(firstName);
+    @GetMapping("by-first-name")
+    fun findByFirstName(@RequestParam("firstName") firstName: String,
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int
+    ): List<Person> {
+        return personLogic.findByFirstName(firstName, page, size)
     }
 
-    @GetMapping("findByLastName")
-    fun findByLastName(@RequestParam("lastName") lastName : String) : List<Person> {
-        return personLogic.findByLastName(lastName);
+    @GetMapping("by-street")
+    fun findByStreet(
+        @RequestParam("street") street: String,
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int
+    ): List<Person> {
+        return personLogic.findByStreet(street, page, size)
     }
 
-    @GetMapping("findByStreet")
-    fun findByStreet(street: String?): List<Person> {
-        return personLogic.findByStreet(street)
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun save(@RequestBody person: @Valid Person): Person {
+        return personLogic.save(person)
     }
 
-    @PostMapping(value = ["save"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun save(@RequestBody @Valid person : Person): Person? {
-        return personLogic.save(person);
-    }
-
-    @GetMapping("sayMyName")
-    fun sayMyName (@RequestParam("name") name : String) : Person {
-        return personLogic.sayMyName(name);
+    @GetMapping("say-my-name")
+    fun sayMyName(@RequestParam("name") name: String): Person {
+        return personLogic.sayMyName(name)
     }
 }
