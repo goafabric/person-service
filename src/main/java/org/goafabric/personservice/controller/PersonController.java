@@ -51,8 +51,8 @@ public class PersonController {
     }
 
     @GetMapping("search")
-    public List<Person> search (@ModelAttribute PersonSearch personSearch) {
+    public List<Person> search (@ModelAttribute PersonSearch personSearch, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         System.out.println(personSearch);
-        return personLogic.search(personSearch);
+        return personLogic.search(personSearch, page, size);
     }
 }

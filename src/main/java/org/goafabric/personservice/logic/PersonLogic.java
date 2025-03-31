@@ -65,10 +65,10 @@ public class PersonLogic {
 
      */
 
-    public List<Person> search(PersonSearch personSearch) {
+    public List<Person> search(PersonSearch personSearch, Integer page, Integer size) {
         return personMapper.map(
                 personRepository.findAll(
                         Example.of(personMapper.map(personSearch)),
-                        PageRequest.of(0,3)));
+                        PageRequest.of(page,size)));
     }
 }

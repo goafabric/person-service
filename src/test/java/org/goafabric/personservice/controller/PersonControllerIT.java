@@ -148,7 +148,7 @@ class PersonControllerIT {
 
     @Test
     void search() {
-        var persons = personController.search(new PersonSearch("Homer", null));
+        var persons = personController.search(new PersonSearch("Homer", null), 0, 3);
         assertThat(persons).isNotNull().hasSize(1);
         System.out.println(persons);
     }
