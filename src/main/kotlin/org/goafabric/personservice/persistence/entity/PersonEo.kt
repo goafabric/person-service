@@ -13,18 +13,18 @@ import org.springframework.data.mongodb.core.mapping.Document
 class PersonEo (
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: String? = null,
+    val id: String?,
 
     @TenantId
-    var organizationId: String? = null,
+    var organizationId: String?,
 
-    val firstName: String,
-    val lastName: String,
+    val firstName: String?,
+    val lastName: String?,
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "person_id")
-    val address: List<AddressEo>,
+    val address: List<AddressEo>?,
 
     @Version //optimistic locking
-    val version: Long? = null
+    val version: Long?
 )
