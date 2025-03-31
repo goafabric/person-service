@@ -45,17 +45,14 @@ class PersonControllerRemoteIT {
     }
 
 
-    /*
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.findByFirstName("Monty", 0 , 3);
+        List<Person> persons = personController.find("Monty", null, 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
-
-     */
 
     @Test
     void findByAddressCity() {
