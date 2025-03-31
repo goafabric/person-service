@@ -2,6 +2,7 @@ package org.goafabric.personservice.controller;
 
 import jakarta.validation.Valid;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -47,5 +48,11 @@ public class PersonController {
     @GetMapping("say-my-name")
     public Person sayMyName (@RequestParam("name") String name) {
         return personLogic.sayMyName(name);
+    }
+
+    @GetMapping("search")
+    public List<Person> search (@ModelAttribute PersonSearch personSearch) {
+        System.out.println(personSearch);
+        return personLogic.search(personSearch);
     }
 }

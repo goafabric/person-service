@@ -5,6 +5,7 @@ import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.goafabric.personservice.persistence.PersonRepository;
 import org.junit.jupiter.api.Test;
@@ -134,6 +135,7 @@ class PersonControllerIT {
     @Autowired
     private PersonLogic personLogic;
 
+    /*
     @Test
     void search() {
         var persons = personLogic.search("Homer", "burns");
@@ -141,6 +143,15 @@ class PersonControllerIT {
         System.out.println(persons);
     }
 
+     */
+
+
+    @Test
+    void search() {
+        var persons = personController.search(new PersonSearch("Homer", null));
+        assertThat(persons).isNotNull().hasSize(1);
+        System.out.println(persons);
+    }
 
     private Address createAddress(String street) {
         return new Address(null, null,

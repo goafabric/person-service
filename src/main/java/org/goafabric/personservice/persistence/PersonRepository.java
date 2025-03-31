@@ -19,6 +19,8 @@ public interface PersonRepository extends CrudRepository<PersonEo, String> {
 
     List<PersonEo> findAll(Example<PersonEo> example, Pageable pageable);
 
+    //List<PersonEo> findAll(Example<PersonSearch> example, Pageable pageable);
+
     List<PersonEo> findByFirstName(String firstName, Pageable pageable);
 
     @EntityGraph(attributePaths = "address")
