@@ -31,16 +31,6 @@ public class PersonLogic {
                 personRepository.findById(id).orElseThrow());
     }
 
-    public List<Person> findAll(int page, int size) {
-        return personMapper.map(
-                personRepository.findAll(PageRequest.of(page, size)));
-    }
-
-    public List<Person> findByFirstName(String firstName, Integer page, Integer size) {
-        return personMapper.map(
-                personRepository.findByFirstName(firstName, PageRequest.of(page, size)));
-    }
-
     public List<Person> findByStreet(String street, Integer page, Integer size) {
         return personMapper.map(
                 personRepository.findByAddressStreetContainsIgnoreCase(street, PageRequest.of(page, size)));
@@ -55,15 +45,6 @@ public class PersonLogic {
         return new Person(null, null,
                 calleeServiceAdapter.sayMyName(name).message(), "", null);
     }
-
-    /*
-    public List<Person> search(String firstName, String lastName){
-        var person = new PersonEo(null, firstName, lastName, null, null);
-        return personMapper.map(
-                personRepository.findAll(Example.of(person), PageRequest.of(0,3)));
-    }
-
-     */
 
     public List<Person> search(PersonSearch personSearch, Integer page, Integer size) {
         return personMapper.map(

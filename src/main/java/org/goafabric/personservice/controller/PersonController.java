@@ -25,15 +25,6 @@ public class PersonController {
         return personLogic.getById(id);
     }
 
-    @GetMapping
-    public List<Person> findAll(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return personLogic.findAll(page, size);
-    }
-
-    @GetMapping("by-first-name")
-    public List<Person> findByFirstName(@RequestParam("firstName") String firstName, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return personLogic.findByFirstName(firstName, page, size);
-    }
 
     @GetMapping("by-street")
     public List<Person> findByStreet(@RequestParam("street") String street, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
@@ -50,8 +41,8 @@ public class PersonController {
         return personLogic.sayMyName(name);
     }
 
-    @GetMapping("search")
-    public List<Person> search (@ModelAttribute PersonSearch personSearch, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+    @GetMapping
+    public List<Person> search(@ModelAttribute PersonSearch personSearch, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         System.out.println(personSearch);
         return personLogic.search(personSearch, page, size);
     }

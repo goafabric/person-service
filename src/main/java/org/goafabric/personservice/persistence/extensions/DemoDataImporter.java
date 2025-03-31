@@ -2,6 +2,7 @@ package org.goafabric.personservice.persistence.extensions;
 
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.extensions.TenantContext;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class DemoDataImporter implements CommandLineRunner {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
             TenantContext.setTenantId(tenant);
             try {
-                if (applicationContext.getBean(PersonLogic.class).findAll(0, 1).isEmpty()) {
+                if (applicationContext.getBean(PersonLogic.class).search(new PersonSearch(null, null), 0, 1).isEmpty()) {
                     insertData();
                 }
             } catch (DataAccessException e) {
