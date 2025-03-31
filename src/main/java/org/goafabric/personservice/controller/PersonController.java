@@ -20,7 +20,7 @@ public class PersonController {
         this.personLogic = personLogic;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Person getById(@PathVariable("id") String id) {
         return personLogic.getById(id);
     }
