@@ -1,6 +1,7 @@
 package org.goafabric.personservice.persistence;
 
 import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
@@ -15,6 +16,8 @@ public interface PersonRepository extends CrudRepository<PersonEo, String> {
     default PersonEo saveAndFlush(PersonEo person) { return save(person); }
 
     List<PersonEo> findAll(Pageable pageable);
+
+    List<PersonEo> findAll(Example<PersonEo> example, Pageable pageable);
 
     List<PersonEo> findByFirstName(String firstName, Pageable pageable);
 

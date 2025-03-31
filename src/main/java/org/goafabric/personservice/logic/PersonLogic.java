@@ -3,6 +3,8 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.persistence.PersonRepository;
+import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,5 +54,11 @@ public class PersonLogic {
     public Person sayMyName(String name) {
         return new Person(null, null,
                 calleeServiceAdapter.sayMyName(name).message(), "", null);
+    }
+
+    public List<Person> search(String firstName, String lastName){
+        var person = new PersonEo(null, firstName, lastName, null, null);
+        return personMapper.map(
+                personRepository.findAll(Example.of(person), PageRequest.of(0,3)));
     }
 }
