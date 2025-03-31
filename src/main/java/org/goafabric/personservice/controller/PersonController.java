@@ -37,14 +37,14 @@ public class PersonController {
         return personLogic.findByStreet(street, page, size);
     }
 
-    @GetMapping("name")
-    public Person sayMyName (@RequestParam("name") String name) {
-        return personLogic.sayMyName(name);
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Person save(@RequestBody @Valid Person person) {
         return personLogic.save(person);
+    }
+
+    @GetMapping("name")
+    public Person sayMyName (@RequestParam("name") String name) {
+        return personLogic.sayMyName(name);
     }
 
 }
