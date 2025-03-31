@@ -5,6 +5,8 @@ import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
+import org.goafabric.personservice.logic.PersonLogic;
 import org.goafabric.personservice.persistence.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,7 +38,7 @@ class PersonControllerIT {
 
     @Test
     void getById() {
-        List<Person> persons = personController.findAll(0, 3);
+        List<Person> persons = personController.find(new PersonSearch(null, null), 0, 3);
         assertThat(persons).isNotNull().hasSize(3);
 
         final Person person
@@ -53,14 +55,19 @@ class PersonControllerIT {
         assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(NoSuchElementException.class);
     }
 
-    @Test
-    void findAll() {
-        assertThat(personController.findAll(0, 3)).isNotNull().hasSize(3);
-    }
 
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.findByFirstName("Monty", 0 , 3);
+        List<Person> persons = personController.find(new PersonSearch("Monty", null), 0 , 3);
+        assertThat(persons).isNotNull().hasSize(1);
+        assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
+        assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
+        assertThat(persons.getFirst().address()).isNotEmpty();
+    }
+
+    @Test
+    void findByLastName() {
+        List<Person> persons = personController.find(new PersonSearch(null, "Burns"), 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
@@ -128,6 +135,27 @@ class PersonControllerIT {
     void sayMyName() {
         Mockito.when(calleeServiceAdapter.sayMyName("Heisenberg")).thenReturn(new Callee("", "Heisenberg"));
         assertThat(personController.sayMyName("Heisenberg")).isNotNull();
+    }
+
+    @Autowired
+    private PersonLogic personLogic;
+
+    /*
+    @Test
+    void search() {
+        var persons = personLogic.search("Homer", "burns");
+        assertThat(persons).isNotNull().hasSize(1);
+        System.out.println(persons);
+    }
+
+     */
+
+
+    @Test
+    void find() {
+        var persons = personController.find(new PersonSearch("Homer", null), 0, 3);
+        assertThat(persons).isNotNull().hasSize(1);
+        System.out.println(persons);
     }
 
     private Address createAddress(String street) {

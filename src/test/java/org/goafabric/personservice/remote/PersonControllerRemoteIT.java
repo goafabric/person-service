@@ -32,7 +32,7 @@ class PersonControllerRemoteIT {
 
     @Test
     void getById() {
-        List<Person> persons = personController.findAll(0, 3);
+        List<Person> persons = personController.find(null, null, 0, 3);
         assertThat(persons).isNotNull().hasSize(3);
 
         final Person person
@@ -46,13 +46,8 @@ class PersonControllerRemoteIT {
 
 
     @Test
-    void findAll() {
-        assertThat(personController.findAll(0, 3)).isNotNull().hasSize(3);
-    }
-
-    @Test
     void findByFirstName() {
-        List<Person> persons = personController.findByFirstName("Monty", 0 , 3);
+        List<Person> persons = personController.find("Monty", null, 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");

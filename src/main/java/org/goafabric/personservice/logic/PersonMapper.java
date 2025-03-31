@@ -1,5 +1,6 @@
 package org.goafabric.personservice.logic;
 
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.goafabric.personservice.controller.dto.Person;
 import org.mapstruct.Mapper;
@@ -17,4 +18,7 @@ public interface PersonMapper {
     List<Person> map(List<PersonEo> value);
 
     List<Person> map(Iterable<PersonEo> value);
+
+    PersonEo map(PersonSearch value);
+
 }

@@ -5,8 +5,6 @@ import org.goafabric.personservice.logic.PersonLogic;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -21,19 +19,15 @@ class PersonControllerTest {
     }
 
 
-    @Test
-    void findAll() {
-        when(personLogic.findAll(0,1)).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findAll(0,1)).isNotNull().isNotEmpty();
-        assertThat(personController.findAll(0,1).getFirst().lastName()).isEqualTo("Simpson");
-    }
-
+    /*
     @Test
     void findByFirstName() {
         when(personLogic.findByFirstName("Homer",0,1)).thenReturn(Collections.singletonList(createPerson()));
         assertThat(personController.findByFirstName("Homer",0, 1)).isNotNull().isNotEmpty();
         assertThat(personController.findByFirstName("Homer",0, 1).getFirst().firstName()).isEqualTo("Homer");
     }
+
+     */
 
     @Test
     void save() {

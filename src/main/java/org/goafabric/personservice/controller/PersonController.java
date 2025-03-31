@@ -2,6 +2,7 @@ package org.goafabric.personservice.controller;
 
 import jakarta.validation.Valid;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -19,23 +20,20 @@ public class PersonController {
         this.personLogic = personLogic;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Person getById(@PathVariable("id") String id) {
         return personLogic.getById(id);
     }
 
-    @GetMapping
-    public List<Person> findAll(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return personLogic.findAll(page, size);
+    @GetMapping //ModelAttribute automatically applies RequestParams to the GetMapping, please note that there should be indexes inside the DB for every Attribute
+    public List<Person> find(@ModelAttribute PersonSearch personSearch,
+                             @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return personLogic.find(personSearch, page, size);
     }
 
-    @GetMapping("by-first-name")
-    public List<Person> findByFirstName(@RequestParam("firstName") String firstName, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return personLogic.findByFirstName(firstName, page, size);
-    }
-
-    @GetMapping("by-street")
-    public List<Person> findByStreet(@RequestParam("street") String street, @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+    @GetMapping("street")
+    public List<Person> findByStreet(@RequestParam("street") String street,
+                                     @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         return personLogic.findByStreet(street, page, size);
     }
 
@@ -44,8 +42,9 @@ public class PersonController {
         return personLogic.save(person);
     }
 
-    @GetMapping("say-my-name")
+    @GetMapping("name")
     public Person sayMyName (@RequestParam("name") String name) {
         return personLogic.sayMyName(name);
     }
+
 }
