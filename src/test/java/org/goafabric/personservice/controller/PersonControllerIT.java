@@ -6,7 +6,6 @@ import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
-import org.goafabric.personservice.logic.PersonLogic;
 import org.goafabric.personservice.persistence.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -136,20 +135,6 @@ class PersonControllerIT {
         Mockito.when(calleeServiceAdapter.sayMyName("Heisenberg")).thenReturn(new Callee("", "Heisenberg"));
         assertThat(personController.sayMyName("Heisenberg")).isNotNull();
     }
-
-    @Autowired
-    private PersonLogic personLogic;
-
-    /*
-    @Test
-    void search() {
-        var persons = personLogic.search("Homer", "burns");
-        assertThat(persons).isNotNull().hasSize(1);
-        System.out.println(persons);
-    }
-
-     */
-
 
     @Test
     void find() {
