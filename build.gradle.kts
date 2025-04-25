@@ -113,9 +113,3 @@ configure<net.researchgate.release.ReleaseExtension> {
 	buildTasks.set(listOf("build", "test", "jib", "dockerImageNative"))
 	tagTemplate.set("v${version}".replace("-SNAPSHOT", ""))
 }
-
-java {
-	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(24))
-	}
-}
