@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_23
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
 val baseImage = "azul/zulu-openjdk:24.0.0"
@@ -16,7 +16,7 @@ plugins {
 
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
-	id("org.sonarqube") version "6.0.1.5171"
+	id("org.sonarqube") version "6.1.0.5360"
 
 	id("org.cyclonedx.bom") version "2.2.0"
 }
@@ -31,7 +31,7 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.0")
 
@@ -102,7 +102,7 @@ tasks.register("dockerImageNative") { description= "Native Image"; group = "buil
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native" + (if (System.getProperty("os.arch").equals("aarch64")) "-arm64v8" else "") + ":${project.version}"
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "23", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "24", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
