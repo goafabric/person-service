@@ -9,7 +9,7 @@ val baseImage = "azul/zulu-openjdk:24.0.0"
 
 plugins {
 	java
-	//jacoco
+	jacoco
 	id("org.springframework.boot") version "3.5.0-M3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
@@ -84,9 +84,9 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	exclude("**/*NRIT*")
-	//finalizedBy("jacocoTestReport")
+	finalizedBy("jacocoTestReport")
 }
-//tasks.jacocoTestReport { reports {csv.required.set(true); xml.required.set(true) } }
+tasks.jacocoTestReport { reports {csv.required.set(true); xml.required.set(true) } }
 
 jib {
 	val amd64 = com.google.cloud.tools.jib.gradle.PlatformParameters(); amd64.os = "linux"; amd64.architecture = "amd64"; val arm64 = com.google.cloud.tools.jib.gradle.PlatformParameters(); arm64.os = "linux"; arm64.architecture = "arm64"
