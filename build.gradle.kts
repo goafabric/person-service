@@ -15,7 +15,7 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
 
-	id("org.cyclonedx.bom") version "2.2.0"
+	id("org.cyclonedx.bom") version "2.3.0"
 
 	kotlin("jvm") version "2.1.20"
 	kotlin("plugin.spring") version "2.1.20"
