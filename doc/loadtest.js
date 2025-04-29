@@ -11,10 +11,10 @@ export const options = {
 const baseUrl = 'http://localhost:50800';
 
 export default function () {
-    checkResponse(http.get(`${baseUrl}/persons/findAll`));
-    checkResponse(http.get(`${baseUrl}/persons/findByFirstName?firstName=Homer`));
-    checkResponse(http.get(`${baseUrl}/persons/findByLastName?lastName=Simpson`));
-    checkResponse(http.get(`${baseUrl}/persons/findByStreet?street=Evergreen%20Terrace`));
+    checkResponse(http.get(`${baseUrl}/persons?page=0&size=3`));
+    checkResponse(http.get(`${baseUrl}/persons?firstName=Homer&page=0&size=3`));
+    checkResponse(http.get(`${baseUrl}/persons?lastName=Simpson&page=0&size=3`));
+    //checkResponse(http.get(`${baseUrl}/persons/street?street=Evergreen Terrace&page=0&size=3`));
 }
 
 function checkResponse(response) {
