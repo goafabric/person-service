@@ -16,19 +16,15 @@ public class PersonControllerRemoteConfiguration {
 
     @Bean
     public PersonControllerRemote personControllerRemote(RestClient.Builder builder,
-                                                         @LocalServerPort String port, @Value("${adapter.timeout}") Long timeout, @Value("${adapter.maxlifetime:-1}") Long maxLifeTime) {
-        return createAdapter(PersonControllerRemote.class, builder, "http://localhost:" + port, timeout, maxLifeTime);
+                                                         @LocalServerPort String port, @Value("${adapter.timeout}") Long timeout) {
+        return createAdapter(PersonControllerRemote.class, builder, "http://localhost:" + port, timeout);
     }
 
-    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout, Long maxLifeTime) {
+    public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout) {
         var requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(timeout.intValue());
         requestFactory.setReadTimeout(timeout.intValue());
-
-        builder.baseUrl(url)
-                .defaultHeaders(header -> header.setBasicAuth("admin", "admin"))
-                .requestFactory(requestFactory);
-                //.clientConnector(new ReactorClientHttpConnector(HttpClient.create(ConnectionProvider.builder("custom").maxLifeTime(Duration.ofMillis(maxLifeTime)).build())));
+        builder.baseUrl(url).requestFactory(requestFactory);
 
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
                 .createClient(adapterType);
