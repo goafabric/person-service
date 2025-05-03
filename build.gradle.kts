@@ -15,12 +15,13 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
 
-	id("org.cyclonedx.bom") version "2.3.0"
-
 	kotlin("jvm") version "2.1.20"
 	kotlin("plugin.spring") version "2.1.20"
 	kotlin("plugin.jpa") version "2.1.20"
 	kotlin("kapt") version "2.1.20"
+
+	id("org.cyclonedx.bom") version "2.3.0"
+	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
 repositories {
@@ -121,4 +122,9 @@ configure<net.researchgate.release.ReleaseExtension> {
 	tagTemplate.set("v${version}".replace("-SNAPSHOT", ""))
 }
 
-tasks.cyclonedxBom {  setIncludeConfigs(listOf("compileClasspath")) }
+//tasks.cyclonedxBom {  setIncludeConfigs(listOf("compileClasspath")) }
+openApi {
+	outputDir.set(file("doc/generated"))
+	customBootRun { args.set(listOf("--server.port=8080")) }
+	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
+}
