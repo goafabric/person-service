@@ -19,6 +19,8 @@ plugins {
 	id("org.sonarqube") version "6.1.0.5360"
 
 	id("org.cyclonedx.bom") version "2.2.0"
+	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
+
 }
 
 repositories {
@@ -111,4 +113,11 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 configure<net.researchgate.release.ReleaseExtension> {
 	buildTasks.set(listOf("build", "test", "jib", "dockerImageNative"))
 	tagTemplate.set("v${version}".replace("-SNAPSHOT", ""))
+}
+
+tasks.cyclonedxBom { destination = file("doc/generated") }
+openApi {
+	outputDir.set(file("doc/generated"))
+	customBootRun { args.set(listOf("--server.port=8080")) }
+	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
