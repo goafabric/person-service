@@ -18,17 +18,6 @@ class PersonControllerTest {
         assertThat(personController.getById("0").lastName()).isEqualTo("Simpson");
     }
 
-
-    /*
-    @Test
-    void findByFirstName() {
-        when(personLogic.findByFirstName("Homer",0,1)).thenReturn(Collections.singletonList(createPerson()));
-        assertThat(personController.findByFirstName("Homer",0, 1)).isNotNull().isNotEmpty();
-        assertThat(personController.findByFirstName("Homer",0, 1).getFirst().firstName()).isEqualTo("Homer");
-    }
-
-     */
-
     @Test
     void save() {
         assertThat(personController.save(createPerson())).isNull();
