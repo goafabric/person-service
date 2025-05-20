@@ -66,21 +66,23 @@ public class DemoDataImporter implements CommandLineRunner {
     }
 
     private void insertData() {
+        var street = "Evergreen Terrace No. ";
+        var lastName = "Simpson";
         IntStream.range(0, 1).forEach(i -> {
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Homer", "Simpson"
-                    , List.of(createAddress("Evergreen Terrace No. " + i), createAddress("Springfield Power Plant"))));
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Homer", lastName
+                    , List.of(createAddress(street + i), createAddress("Springfield Power Plant"))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", "Simpson"
-                    , List.of(createAddress("Everblue Terrace No. " + i))));
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Bart", lastName
+                    , List.of(createAddress(street + i))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Lisa", "Simpson"
-                    , List.of(createAddress("Everblue Terrace No. " + i))));
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Lisa", lastName
+                    , List.of(createAddress(street + i))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Marge", "Simpson"
-                    , List.of(createAddress("Everblue Terrace No. " + i))));
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Marge", lastName
+                    , List.of(createAddress(street + i))));
 
-            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Maggie", "Simpson"
-                    , List.of(createAddress("Everblue Terrace No. " + i))));
+            applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Maggie", lastName
+                    , List.of(createAddress(street + i))));
 
             applicationContext.getBean(PersonLogic.class).save(new Person(null, null, "Monty", "Burns"
                     , List.of(createAddress("Mammon Street No. 1000 on the corner of Croesus"))));

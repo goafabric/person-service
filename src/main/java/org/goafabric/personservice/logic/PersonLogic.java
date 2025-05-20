@@ -32,12 +32,6 @@ public class PersonLogic {
     }
 
     public List<Person> find(PersonSearch personSearch, Integer page, Integer size) {
-        /*
-        var spec = Specification.where((Specification<PersonEo>) (root, query, criteriaBuilder)
-                    -> personSearch.firstName() == null ? null : criteriaBuilder.equal(root.get("firstName"), personSearch.firstName()))
-                        .and((Specification<PersonEo>) (root, query, criteriaBuilder)
-                                -> personSearch.lastName() == null ? null : criteriaBuilder.equal(root.get("lastName"), personSearch.lastName()));
-        */
         return personMapper.map(
                 personRepository.findAll(
                         Example.of(personMapper.map(personSearch)),

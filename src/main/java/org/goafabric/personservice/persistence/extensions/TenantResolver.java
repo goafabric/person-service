@@ -26,7 +26,7 @@ import java.util.Map;
 @SuppressWarnings("java:S2095") //connection closing is handled by framework
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
-    private final DataSource dataSource;
+    private final transient DataSource dataSource;
     private final String schemaPrefix;
     private final String defaultSchema;
 
