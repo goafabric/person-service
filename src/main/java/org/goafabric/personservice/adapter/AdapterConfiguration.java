@@ -1,6 +1,6 @@
 package org.goafabric.personservice.adapter;
 
-import org.goafabric.personservice.extensions.TenantContext;
+import org.goafabric.personservice.extensions.UserContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class AdapterConfiguration {
         requestFactory.setReadTimeout(timeout.intValue());
         builder.baseUrl(url)
                 .requestInterceptor((request, body, execution) -> {
-                    TenantContext.getAdapterHeaderMap().forEach((key, value) -> request.getHeaders().set(key, value));
+                    UserContext.getAdapterHeaderMap().forEach((key, value) -> request.getHeaders().set(key, value));
                     return execution.execute(request, body);
                 })
                 .requestFactory(requestFactory);

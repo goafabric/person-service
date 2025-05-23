@@ -3,7 +3,7 @@ package org.goafabric.personservice.persistence.extensions;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
-import org.goafabric.personservice.extensions.TenantContext;
+import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class DemoDataImporter implements CommandLineRunner {
 
     private void importDemoData() {
         Arrays.asList(tenants.split(",")).forEach(tenant -> {
-            TenantContext.setTenantId(tenant);
+            UserContext.setTenantId(tenant);
             try {
                 if (applicationContext.getBean(PersonLogic.class).find(new PersonSearch(null, null), 0, 1).isEmpty()) {
                     insertData();
@@ -62,7 +62,7 @@ public class DemoDataImporter implements CommandLineRunner {
                 insertData();
             }
         });
-        TenantContext.setTenantId("0");
+        UserContext.setTenantId("0");
     }
 
     private void insertData() {
@@ -91,7 +91,7 @@ public class DemoDataImporter implements CommandLineRunner {
     }
 
     private Address createAddress(String street) {
-        return new Address(null, null, street, "Springfield " + TenantContext.getTenantId());
+        return new Address(null, null, street, "Springfield " + UserContext.getTenantId());
     }
 
 }
