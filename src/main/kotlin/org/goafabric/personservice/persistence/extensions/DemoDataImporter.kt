@@ -1,6 +1,6 @@
 package org.goafabric.personservice.persistence.extensions
 
-import org.goafabric.personservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.UserContext
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.controller.dto.PersonSearch
@@ -44,12 +44,12 @@ class DemoDataImporter(
     private fun importDemoData() {
         Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
             Consumer { tenant: String? ->
-                TenantContext.tenantId = tenant!!;
+                UserContext.tenantId = tenant!!;
                 if (applicationContext.getBean(PersonLogic::class.java).find(PersonSearch(),0, 1).isEmpty()) {
                     insertData()
                 }
             })
-        TenantContext.tenantId = "0";
+        UserContext.tenantId = "0";
     }
 
     private fun insertData() {
@@ -77,6 +77,6 @@ class DemoDataImporter(
     }
 
     private fun createAddress(street: String): Address {
-        return Address(null, null, street, "Springfield " + TenantContext.tenantId)
+        return Address(null, null, street, "Springfield " + UserContext.tenantId)
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import jakarta.persistence.*
-import org.goafabric.personservice.extensions.TenantContext
+import org.goafabric.personservice.extensions.UserContext
 import org.slf4j.LoggerFactory
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.BeansException
@@ -91,9 +91,9 @@ class AuditTrailListener : ApplicationContextAware {
             getTableName((newObject ?: oldObject)!!),
             referenceId,
             dbOperation,
-            if (dbOperation == DbOperation.CREATE) TenantContext.userName else null,
+            if (dbOperation == DbOperation.CREATE) UserContext.userName else null,
             if (dbOperation == DbOperation.CREATE) date else null,
-            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) TenantContext.userName else null,
+            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) UserContext.userName else null,
             if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) date else null,
             oldObject?.let { getJsonValue(it) },
             newObject?.let { getJsonValue(it) }
@@ -130,7 +130,7 @@ class AuditTrailListener : ApplicationContextAware {
     ) {
         fun insertAudit(auditTrail: AuditTrail?, `object`: Any?) { //we cannot use jpa because of the dynamic table name
             SimpleJdbcInsert(dataSource)
-                .withSchemaName(schemaPrefix + TenantContext.tenantId)
+                .withSchemaName(schemaPrefix + UserContext.tenantId)
                 .withTableName("audit_trail")
                 .execute(BeanPropertySqlParameterSource(auditTrail!!))
         }

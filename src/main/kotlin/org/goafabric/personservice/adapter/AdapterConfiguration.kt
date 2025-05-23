@@ -1,13 +1,9 @@
 package org.goafabric.personservice.adapter
 
-import org.goafabric.personservice.extensions.TenantContext
-import org.springframework.aot.hint.MemberCategory
-import org.springframework.aot.hint.RuntimeHints
-import org.springframework.aot.hint.RuntimeHintsRegistrar
+import org.goafabric.personservice.extensions.UserContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.support.RestClientAdapter
@@ -35,7 +31,7 @@ class AdapterConfiguration {
         requestFactory.setReadTimeout(timeout.toInt())
         builder.baseUrl(url!!)
             .requestInterceptor { request, body, execution ->
-                TenantContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
+                UserContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
                 execution.execute(request, body)
             }
             .requestFactory(requestFactory)

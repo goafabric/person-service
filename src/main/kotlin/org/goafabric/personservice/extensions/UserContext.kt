@@ -5,8 +5,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.util.*
 
-object TenantContext {
-    data class TenantContextRecord(val tenantId: String, val organizationId: String, val userName: String) {
+object UserContext {
+    data class UserContexRecord(val tenantId: String, val organizationId: String, val userName: String) {
         fun toAdapterHeaderMap(): Map<String, String> {
             return java.util.Map.of(
                 "X-TenantId", tenantId,
@@ -16,8 +16,8 @@ object TenantContext {
         }
     }
 
-    private val CONTEXT: ThreadLocal<TenantContextRecord> =
-        ThreadLocal.withInitial { TenantContextRecord("0", "0", "anonymous") }
+    private val CONTEXT: ThreadLocal<UserContexRecord> =
+        ThreadLocal.withInitial { UserContexRecord("0", "0", "anonymous") }
 
     fun setContext(request: HttpServletRequest) {
         setContext(
@@ -28,7 +28,7 @@ object TenantContext {
 
     fun setContext(tenantId: String?, organizationId: String?, userName: String?, userInfo: String?) {
         CONTEXT.set(
-            TenantContextRecord(
+            UserContexRecord(
                 getValue(tenantId, "0"),
                 getValue(organizationId, "0"),
                 getValue(getUserNameFromUserInfo(userInfo), getValue(userName, "anonymous"))
@@ -47,7 +47,7 @@ object TenantContext {
     var tenantId: String
         get() = CONTEXT.get().tenantId
         set(tenant) {
-            CONTEXT.set(TenantContextRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName))
+            CONTEXT.set(UserContexRecord(tenant, CONTEXT.get().organizationId, CONTEXT.get().userName))
         }
 
     val organizationId: String

@@ -3,8 +3,8 @@ package org.goafabric.personservice.persistence.extensions
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.internal.publishing.PublishingConfigurationExtension
 import org.flywaydb.database.postgresql.TransactionalModel
-import org.goafabric.personservice.extensions.TenantContext
-import org.goafabric.personservice.extensions.TenantContext.tenantId
+import org.goafabric.personservice.extensions.UserContext
+import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import java.sql.Connection
 import java.sql.SQLException
-import java.util.*
 import java.util.function.Consumer
 import javax.sql.DataSource
 import kotlin.collections.set
@@ -46,7 +45,7 @@ class TenantResolver(
 
     companion object {
         fun getOrgunitId(): String {
-            return TenantContext.organizationId;
+            return UserContext.organizationId;
         }
     }
 
@@ -64,7 +63,7 @@ class TenantResolver(
     override fun getConnection(schema: String): Connection {
         val connection = dataSource.connection
         connection.schema =
-            if (defaultSchema == schema) defaultSchema else schemaPrefix + TenantContext.tenantId
+            if (defaultSchema == schema) defaultSchema else schemaPrefix + UserContext.tenantId
         return connection
     }
 
