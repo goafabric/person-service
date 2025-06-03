@@ -106,9 +106,9 @@ class PersonControllerIT {
 
 
         //optimistic locking
+        var personLocked = new Person(person.id(), 0L, person.firstName(), "updated2", person.address());
         assertThatThrownBy(
-                () -> personController.save(
-                        new Person(person.id(), 0L, person.firstName(), "updated2", person.address())))
+                () -> personController.save(personLocked))
                 .isInstanceOf(ObjectOptimisticLockingFailureException.class);
 
         personRepository.deleteById(person.id());
@@ -116,16 +116,16 @@ class PersonControllerIT {
 
     @Test
     void saveWithValidationException() {
+        var person = new Person(null,
+                null,
+                "Homer",
+                "",
+                List.of(
+                        createAddress("Evergreen Terrace"),
+                        createAddress("Everblue Terrace")));
+
         assertThatThrownBy(() ->
-            personController.save(
-                new Person(null,
-                        null,
-                        "Homer",
-                        "",
-                        List.of(
-                                createAddress("Evergreen Terrace"),
-                                createAddress("Everblue Terrace"))
-                ))
+            personController.save(person)
         ).isInstanceOf(ConstraintViolationException.class);
     }
 
