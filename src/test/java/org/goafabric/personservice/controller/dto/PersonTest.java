@@ -10,43 +10,43 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PersonTest {
+class PersonTest {
 
     private static Validator validator;
 
     @BeforeAll
-    public static void setUp() {
+    static void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
-    public void testValidPerson() {
+    void testValidPerson() {
         Person person = new Person(null, null, "John", "Doe", List.of());
         var violations = validator.validate(person);
         assertThat(violations).isEmpty();
     }
 
     @Test
-    public void testNullFirstName() {
+    void testNullFirstName() {
         Person person = new Person(null, null, null, "Doe", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
-    public void testShortFirstName() {
+    void testShortFirstName() {
         Person person = new Person(null, null, "Jo", "Doe", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
-    public void testNullLastName() {
+    void testNullLastName() {
         Person person = new Person(null, null, "John", null, List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }
 
     @Test
-    public void testShortLastName() {
+    void testShortLastName() {
         Person person = new Person(null, null, "John", "Do", List.of());
         assertThat(validator.validate(person)).hasSize(1);
     }

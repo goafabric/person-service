@@ -2,6 +2,7 @@ package org.goafabric.personservice.controller;
 
 import jakarta.validation.Valid;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.logic.PersonLogic;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -19,38 +20,31 @@ public class PersonController {
         this.personLogic = personLogic;
     }
 
-    @GetMapping("getById/{id}")
+    @GetMapping("{id}")
     public Person getById(@PathVariable("id") String id) {
         return personLogic.getById(id);
     }
 
-    @GetMapping("findAll")
-    public List<Person> findAll() {
-        return personLogic.findAll();
+    @GetMapping //ModelAttribute automatically applies RequestParams to the GetMapping, please note that there should be indexes inside the DB for every Attribute
+    public List<Person> find(@ModelAttribute PersonSearch personSearch,
+                             @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return personLogic.find(personSearch, page, size);
     }
 
-    @GetMapping("findByFirstName")
-    public List<Person> findByFirstName(@RequestParam("firstName") String firstName) {
-        return personLogic.findByFirstName(firstName);
+    @GetMapping("street")
+    public List<Person> findByStreet(@RequestParam("street") String street,
+                                     @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return personLogic.findByStreet(street, page, size);
     }
 
-    @GetMapping("findByLastName")
-    public List<Person> findByLastName(@RequestParam("lastName") String lastName) {
-        return personLogic.findByLastName(lastName);
-    }
-
-    @GetMapping("findByStreet")
-    public List<Person> findByStreet(String street) {
-        return personLogic.findByStreet(street);
-    }
-
-    @PostMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Person save(@RequestBody @Valid Person person) {
         return personLogic.save(person);
     }
 
-    @GetMapping("sayMyName")
+    @GetMapping("name")
     public Person sayMyName (@RequestParam("name") String name) {
         return personLogic.sayMyName(name);
     }
+
 }

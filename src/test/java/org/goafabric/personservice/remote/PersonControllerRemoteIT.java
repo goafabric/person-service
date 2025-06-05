@@ -1,33 +1,28 @@
-package org.goafabric.personservice.controller;
+package org.goafabric.personservice.remote;
 
-import jakarta.validation.ConstraintViolationException;
 import org.goafabric.personservice.adapter.Callee;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
-import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.persistence.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisabledInAotMode
-class PersonControllerIT {
+class PersonControllerRemoteIT {
 
     @Autowired
-    private PersonController personController;
+    private PersonControllerRemote personController;
 
     @Autowired
     private PersonRepository personRepository;
@@ -37,7 +32,7 @@ class PersonControllerIT {
 
     @Test
     void getById() {
-        List<Person> persons = personController.find(new PersonSearch(null, null), 0, 3);
+        List<Person> persons = personController.find(null, null, 0, 3);
         assertThat(persons).isNotNull().hasSize(3);
 
         final Person person
@@ -49,24 +44,10 @@ class PersonControllerIT {
         assertThat(personRepository.findById(persons.getFirst().id()).get().getOrganizationId()).isEqualTo("0");
     }
 
-    @Test
-    void getByIdEntityNotFound() {
-        assertThatThrownBy(() -> personController.getById("-1")).isInstanceOf(NoSuchElementException.class);
-    }
-
 
     @Test
     void findByFirstName() {
-        List<Person> persons = personController.find(new PersonSearch("Monty", null), 0 , 3);
-        assertThat(persons).isNotNull().hasSize(1);
-        assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
-        assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
-        assertThat(persons.getFirst().address()).isNotEmpty();
-    }
-
-    @Test
-    void findByLastName() {
-        List<Person> persons = personController.find(new PersonSearch(null, "Burns"), 0 , 3);
+        List<Person> persons = personController.find("Monty", null, 0 , 3);
         assertThat(persons).isNotNull().hasSize(1);
         assertThat(persons.getFirst().firstName()).isEqualTo("Monty");
         assertThat(persons.getFirst().lastName()).isEqualTo("Burns");
@@ -104,42 +85,13 @@ class PersonControllerIT {
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
-
-        //optimistic locking
-        var personLocked = new Person(person.id(), 0L, person.firstName(), "updated2", person.address());
-        assertThatThrownBy(
-                () -> personController.save(personLocked))
-                .isInstanceOf(ObjectOptimisticLockingFailureException.class);
-
         personRepository.deleteById(person.id());
-    }
-
-    @Test
-    void saveWithValidationException() {
-        var person = new Person(null,
-                null,
-                "Homer",
-                "",
-                List.of(
-                        createAddress("Evergreen Terrace"),
-                        createAddress("Everblue Terrace")));
-
-        assertThatThrownBy(() ->
-            personController.save(person)
-        ).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     void sayMyName() {
         Mockito.when(calleeServiceAdapter.sayMyName("Heisenberg")).thenReturn(new Callee("", "Heisenberg"));
         assertThat(personController.sayMyName("Heisenberg")).isNotNull();
-    }
-
-    @Test
-    void find() {
-        var persons = personController.find(new PersonSearch("Homer", null), 0, 3);
-        assertThat(persons).isNotNull().hasSize(1);
-        System.out.println(persons);
     }
 
     private Address createAddress(String street) {
