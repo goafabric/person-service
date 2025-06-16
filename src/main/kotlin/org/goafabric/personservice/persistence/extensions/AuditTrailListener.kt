@@ -112,7 +112,7 @@ class AuditTrailListener : ApplicationContextAware {
         @PersistenceContext
         private val entityManager: EntityManager? = null
 
-        @Transactional(propagation = Propagation.REQUIRES_NEW) //new transaction helps us to retrieve the old value still inside the db
+        @Transactional(propagation = Propagation.REQUIRES_NEW) @SuppressWarnings("kotlin:S6619") //new transaction helps us to retrieve the old value still inside the db
         fun <T> findOldObject(clazz: Class<T>?, id: String?): T {
             return entityManager!!.find(clazz, id)
         }
