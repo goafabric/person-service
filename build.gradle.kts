@@ -14,6 +14,7 @@ plugins {
 	id("org.graalvm.buildtools.native") version "0.10.6"
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
+	id("org.sonarqube") version "6.2.0.5505"
 
 	kotlin("jvm") version "2.1.21"
 	kotlin("plugin.spring") version "2.1.21"
