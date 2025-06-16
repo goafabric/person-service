@@ -80,14 +80,14 @@ dependencies {
 	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-	//test
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.mockito.kotlin:mockito-kotlin")
-	
 	//kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+	//test
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 }
 
