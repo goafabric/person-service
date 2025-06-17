@@ -58,19 +58,18 @@ adapter:
 #resilience4j
 resilience4j:
   circuitbreaker:
-    enabled: false
     configs:
       # see for more information under: https://resilience4j.readme.io/docs/circuitbreaker
       shared:
-        #record-failure-predicate: org.goafabric.personservice.adapter.RecordResultPredicate
+        record-failure-predicate: org.goafabric.personservice.adapter.RecordResultPredicate
         registerHealthIndicator: true
-        slowCallDurationThreshold: ${adapter.timeout}
         slowCallRateThreshold: 100 #Percentage of calls that that need be registered a slow for the CB to transitions from close to open
         failureRateThreshold: 50 #Failure rate when the Circuit Breaker transitions from closed to open
         waitDurationInOpenState: 30s #Time the CircuitBreaker should wait before transitioning back from open to half-open.
         minimumNumberOfCalls: 5 #The minimum number of calls which are required before the CircuitBreaker can calculate the error rate.
         permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
 
+    instances:
       my-adapter:
         base-config: shared
         slowCallDurationThreshold: ${adapter.timeout}
@@ -78,6 +77,7 @@ resilience4j:
       my-adapter-long-running:
         base-config: shared
         slowCallDurationThreshold: ${adapter.long-running-timeout} # overriding does not work properly
+
 
 
 #logging
