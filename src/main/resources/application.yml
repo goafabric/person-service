@@ -15,7 +15,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus,heapdump"
+        include: "health,prometheus,heapdump,circuitbreakers,circuitbreakerevents"
 
 #tracing
 spring.application.name: person-service
@@ -48,24 +48,37 @@ elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elastic
 
 #adapter
 adapter:
-  timeout: 10000
+  timeout: 1000
+  long-running-timeout: 5000
   calleeservice:
     url: http://localhost:50900
     user.name: "admin"
     user.password: "admin"
 
 #resilience4j
-resilience4j.circuitbreaker:
-  configs:
-    default:
-      #see for more informations under: https://resilience4j.readme.io/docs/circuitbreaker
-      registerHealthIndicator: true
-      slowCallDurationThreshold: ${adapter.timeout} #Effectively the timeout
-      slowCallRateThreshold: 100 #Percentage of calls that that need be registered a slow for the CB to transitions from close to open
-      failureRateThreshold: 50 #Failure rate when the Circuit Breaker transitions from closed to open
-      waitDurationInOpenState: 30s #Time the CircuitBreaker should wait before transitioning back from open to half-open.
-      minimumNumberOfCalls: 5 #The minimum number of calls which are required before the CircuitBreaker can calculate the error rate.
-      permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
+resilience4j:
+  circuitbreaker:
+    enabled: false
+    configs:
+      # see for more information under: https://resilience4j.readme.io/docs/circuitbreaker
+      shared:
+        #record-failure-predicate: org.goafabric.personservice.adapter.RecordResultPredicate
+        registerHealthIndicator: true
+        slowCallDurationThreshold: ${adapter.timeout}
+        slowCallRateThreshold: 100 #Percentage of calls that that need be registered a slow for the CB to transitions from close to open
+        failureRateThreshold: 50 #Failure rate when the Circuit Breaker transitions from closed to open
+        waitDurationInOpenState: 30s #Time the CircuitBreaker should wait before transitioning back from open to half-open.
+        minimumNumberOfCalls: 5 #The minimum number of calls which are required before the CircuitBreaker can calculate the error rate.
+        permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
+
+      my-adapter:
+        base-config: shared
+        slowCallDurationThreshold: ${adapter.timeout}
+
+      my-adapter-long-running:
+        base-config: shared
+        slowCallDurationThreshold: ${adapter.long-running-timeout} # overriding does not work properly
+
 
 #logging
 logging.pattern.level: "%5p tenantId=%X{tenantId:-}" #"%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}] tenantId=%X{tenantId:-}"

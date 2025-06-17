@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-@CircuitBreaker(name = "calleeservice")
+@CircuitBreaker(name = "my-adapter")
 public interface CalleeServiceAdapter {
 
     @GetExchange("/callees/sayMyName")

@@ -1,6 +1,7 @@
 package org.goafabric.personservice.adapter;
 
 import org.goafabric.personservice.extensions.UserContext;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
+@RegisterReflectionForBinding(RecordResultPredicate.class)
 public class AdapterConfiguration {
 
     @Bean
