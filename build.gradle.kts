@@ -5,7 +5,7 @@ val version: String by project
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
-val baseImage = "azul/zulu-openjdk:24.0.0"
+val baseImage = "azul/zulu-openjdk:24.0.1"
 
 plugins {
 	java
