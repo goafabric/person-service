@@ -18,7 +18,7 @@ public interface PersonRepository extends CrudRepository<PersonEo, String> {
     List<PersonEo> findByLastName(String lastName);
 
     @EntityGraph(attributePaths = "address")
-    List<PersonEo> findByAddressStreetContainsIgnoreCase(String street);
+    List<PersonEo> findByAddressStreetContains(String street);
 
 }
 
