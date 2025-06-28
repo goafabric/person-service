@@ -10,7 +10,7 @@ val baseImage = "azul/zulu-openjdk:24.0.0"
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.5.0-RC1"
+	id("org.springframework.boot") version "4.0.0-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
 
@@ -18,7 +18,7 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "6.1.0.5360"
 
-	id("org.cyclonedx.bom") version "2.2.0"
+	//id("org.cyclonedx.bom") version "2.2.0"
 }
 
 repositories {
@@ -52,7 +52,7 @@ dependencies {
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")

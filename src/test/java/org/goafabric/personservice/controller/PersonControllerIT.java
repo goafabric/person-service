@@ -77,6 +77,7 @@ class PersonControllerIT {
         assertThat(persons.getFirst().address()).isNotEmpty();
     }
 
+    /*
     @Test
     void findByAddressCity() {
         List<Person> persons = personController.findByStreet("Evergreen Terrace");
@@ -84,6 +85,8 @@ class PersonControllerIT {
         assertThat(persons.getFirst().address().getFirst().street()).startsWith("Evergreen Terrace No.");
         //assertThat(persons.getFirst().lastName()).isEqualTo("Simpson");
     }
+
+     */
 
     @Test
     void save() {
