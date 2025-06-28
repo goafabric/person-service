@@ -1,5 +1,6 @@
 package org.goafabric.personservice;
 
+import org.hibernate.annotations.SQLInsert;
 import org.hibernate.boot.model.relational.ColumnOrderingStrategyStandard;
 import org.hibernate.boot.models.annotations.internal.CacheAnnotation;
 import org.springframework.aot.hint.MemberCategory;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestClient;
 
 @SpringBootApplication
-@RegisterReflection(classes = {ColumnOrderingStrategyStandard.class, CacheAnnotation.class}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS})
+@RegisterReflection(classes = {ColumnOrderingStrategyStandard.class, CacheAnnotation.class, SQLInsert.class}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
 public class Application {
 
     public static void main(String[] args) {
