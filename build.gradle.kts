@@ -12,7 +12,7 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "4.0.0-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.graalvm.buildtools.native") version "0.10.6"
+	//id("org.graalvm.buildtools.native") version "0.10.6"
 
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
@@ -102,7 +102,7 @@ tasks.register("dockerImageNative") { description= "Native Image"; group = "buil
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native" + (if (System.getProperty("os.arch").equals("aarch64")) "-arm64v8" else "") + ":${project.version}"
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "24", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "24", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx8000m -march=compatibility"))
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
