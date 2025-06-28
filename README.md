@@ -12,3 +12,6 @@ docker run --pull always --name person-service-native --rm -p50800:50800 goafabr
 
 # run native image arm
 docker run --pull always --name person-service-native --rm -p50800:50800 goafabric/person-service-native-arm64v8:$(grep '^version=' gradle.properties | cut -d'=' -f2) -Xmx64m
+          
+# java25
+https://www.infoq.com/news/2025/06/java-25-compact-object-headers/
