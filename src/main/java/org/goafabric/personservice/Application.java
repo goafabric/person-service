@@ -1,10 +1,12 @@
 package org.goafabric.personservice;
 
 import org.hibernate.annotations.DialectOverride;
-import org.hibernate.annotations.SQLInsert;
 import org.hibernate.boot.model.relational.ColumnOrderingStrategyStandard;
 import org.hibernate.boot.models.DialectOverrideAnnotations;
 import org.hibernate.boot.models.annotations.internal.CacheAnnotation;
+import org.hibernate.engine.internal.VersionLogger_$logger;
+import org.hibernate.internal.SessionFactoryRegistryMessageLogger_$logger;
+import org.hibernate.validator.internal.util.logging.Log_$logger;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +19,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 
-@RegisterReflection(classes = {ColumnOrderingStrategyStandard.class, CacheAnnotation.class, SQLInsert.class, DialectOverride.class, DialectOverrideAnnotations.class,  org.hibernate.validator.internal.util.logging.Log_$logger.class}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
+@RegisterReflection(classes = {ColumnOrderingStrategyStandard.class, CacheAnnotation.class, DialectOverride.class, DialectOverrideAnnotations.class,
+        Log_$logger.class, VersionLogger_$logger.class, SessionFactoryRegistryMessageLogger_$logger.class}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
 public class Application {
 
     public static void main(String[] args) {
