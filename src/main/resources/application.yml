@@ -34,7 +34,7 @@ spring.datasource.hikari.maximum-pool-size: "10"
 spring.datasource.hikari.connection-timeout: "10000"
 
 multi-tenancy.tenants: "0,5"
-multi-tenancy.schema-prefix: "core_"
+multi-tenancy.schema-prefix: "example_"
 database.provisioning.goals: "-migrate -import-demo-data"
 spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
 
