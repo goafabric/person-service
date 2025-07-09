@@ -18,7 +18,7 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "6.1.0.5360"
 
-	id("org.cyclonedx.bom") version "2.2.0"
+	//id("org.cyclonedx.bom") version "2.2.0"
 }
 
 repositories {
@@ -46,10 +46,13 @@ dependencies {
 
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	/*
 	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
+
+	 */
 
 	//openapi
 	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")

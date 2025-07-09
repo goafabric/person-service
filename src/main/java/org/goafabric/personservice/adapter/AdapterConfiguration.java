@@ -13,9 +13,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public class AdapterConfiguration {
 
     @Bean
-    public CalleeServiceAdapter calleeServiceAdapter(RestClient.Builder builder,
+    public CalleeServiceAdapter calleeServiceAdapter(//RestClient.Builder builder,
             @Value("${adapter.calleeservice.url}") String url, @Value("${adapter.timeout}") Long timeout) {
-        return createAdapter(CalleeServiceAdapter.class, builder, url, timeout);
+        return createAdapter(CalleeServiceAdapter.class, RestClient.builder(), url, timeout);
     }
 
     public static <A> A createAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout) {
