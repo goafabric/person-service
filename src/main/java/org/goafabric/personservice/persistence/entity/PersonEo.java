@@ -1,20 +1,22 @@
 package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
+import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
+import org.hibernate.annotations.TenantId;
 
 import java.util.List;
 
 @Entity
 @Table(name = "person")
-//@EntityListeners(AuditTrailListener.class)
+@EntityListeners(AuditTrailListener.class)
 //@Document("#{@httpInterceptor.getTenantPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    //@TenantId
-    private String organizationId = "0";
+    @TenantId
+    private String organizationId;
 
     private String firstName;
 
