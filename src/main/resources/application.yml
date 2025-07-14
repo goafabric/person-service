@@ -17,6 +17,8 @@ management:
       exposure:
         include: "health,prometheus,heapdump"
 
+management.endpoint.health.probes.enabled: "true"
+
 #tracing
 spring.application.name: person-service
 management.tracing.sampling.probability: "1.0"
