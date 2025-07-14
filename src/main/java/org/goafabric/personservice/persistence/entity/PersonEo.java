@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
+//TODO: no Elastic Support
 //@Document("#{@httpInterceptor.getTenantPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
 public class PersonEo {
     @Id
