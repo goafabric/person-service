@@ -5,12 +5,12 @@ val version: String by project
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39" //"ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052"
+val baseImage = "ibm-semeru-runtimes:open-21.0.7_6-jre-jammy@sha256:d4daf069dd4680bd618042943a45f4c11cdf98fe1e07a9994c7c914deefa88ad"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.5.0"
+	id("org.springframework.boot") version "3.5.3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
 
@@ -32,9 +32,9 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.1")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
 
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
