@@ -29,7 +29,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private enum DbOperation { CREATE, READ, UPDATE, DELETE }
+    enum DbOperation { CREATE, READ, UPDATE, DELETE }
 
     record AuditTrail(
             String id,
@@ -73,6 +73,7 @@ public class AuditTrailListener implements ApplicationContextAware {
             var auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject);
             log.debug("New audit:\n{}", auditTrail);
             context.getBean(AuditJpaInserter.class).insertAudit(auditTrail);
+            context.getBean(AuditTrailEventDispatcher.class).dispatchEvent(auditTrail, oldObject != null ? oldObject : newObject);
         } catch (Exception e) {
             log.error("Error during audit:\n{}", e.getMessage(), e);
         }
