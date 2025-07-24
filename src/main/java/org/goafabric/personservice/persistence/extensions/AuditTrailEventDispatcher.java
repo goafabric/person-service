@@ -1,5 +1,6 @@
 package org.goafabric.personservice.persistence.extensions;
 
+import org.goafabric.event.EventData;
 import org.goafabric.personservice.extensions.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Component
-@RegisterReflectionForBinding(AuditTrailEventDispatcher.EventData.class)
+@RegisterReflectionForBinding(EventData.class)
 public class AuditTrailEventDispatcher {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final KafkaTemplate<String, EventData> kafkaTemplate;
@@ -29,10 +28,13 @@ public class AuditTrailEventDispatcher {
         }
     }
 
+    /*
     record EventData(
             String type,
             String operation, //CREATE, UPDATE, DELETE
             Object payload,
             Map<String, String> tenantInfos
     ) {}
+    ‘
+     */
 }
