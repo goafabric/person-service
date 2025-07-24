@@ -35,6 +35,5 @@ public class AuditTrailEventDispatcher {
             Object payload,
             Map<String, String> tenantInfos
     ) {}
-    ‘
      */
 }
