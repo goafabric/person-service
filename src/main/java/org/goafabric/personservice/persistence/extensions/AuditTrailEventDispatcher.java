@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,17 +24,11 @@ public class AuditTrailEventDispatcher {
 
     public void dispatchEvent(AuditTrailListener.AuditTrail auditTrail, Object payload) {
         if (!kafkaServers.isEmpty()) {
-            log.info("producing event for type {}", payload.getClass().getSimpleName());
             kafkaTemplate.send("person", auditTrail.objectId(), new EventData(payload.getClass().getSimpleName(), auditTrail.operation().toString(), payload, UserContext.getAdapterHeaderMap()));
         }
     }
 
-    /*
-    record EventData(
-            String type,
-            String operation, //CREATE, UPDATE, DELETE
-            Object payload,
-            Map<String, String> tenantInfos
-    ) {}
-     */
+    @KafkaListener(topics = {"person"}, groupId = "person")
+    public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
+
 }
