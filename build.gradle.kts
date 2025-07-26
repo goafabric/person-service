@@ -105,7 +105,6 @@ jib {
 	to.image = "${dockerRegistry}/${project.name}:${project.version}"
 	container.jvmFlags = listOf("-Xms256m", "-Xmx256m")
 	from.platforms.set(listOf(amd64, arm64))
-	container.mainClass = "org.goafabric.personservice.Application"  //TODO
 }
 
 interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
@@ -129,4 +128,13 @@ openApi {
 	outputDir.set(file("doc/generated"))
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
+}
+
+//TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
+buildscript {
+	configurations.all {
+		resolutionStrategy {
+			force("org.ow2.asm:asm:9.7.1")
+		}
+	}
 }
