@@ -2,14 +2,14 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-21.0.4.1_7-jre-focal@sha256:8b94f8b14fd1d4660f9dc777b1ad3630f847b8e3dc371203bcb857a5e74d6c39" //"ibm-semeru-runtimes:open-23_37-jre-focal@sha256:04534a98d0e521948b7525c665f9f8871aba56155de9e70d23b14c905a28a052"
+val baseImage = "eclipse-temurin:24.0.1_9-jre@sha256:f46122a0c12ca47dbad8cf145aea4b7373a4c5eccdd9cfbadaf84ed9621e2b56"
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.5.3"
+	id("org.springframework.boot") version "4.0.0-M1"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
 	id("com.google.cloud.tools.jib") version "3.4.5"
@@ -89,6 +89,12 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
+
+	//spring boot 4.0
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry:4.0.0-M1")
+	implementation("org.springframework.boot:spring-boot-starter-flyway")
+	implementation("org.springframework.boot:spring-boot-starter-restclient")
+
 }
 
 tasks.withType<Test> {
@@ -109,9 +115,9 @@ jib {
 interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
 tasks.register("dockerImageNative") { description= "Native Image"; group = "build"; dependsOn("bootBuildImage") }
 tasks.named<BootBuildImage>("bootBuildImage") {
-	val nativeImageName = "${dockerRegistry}/${project.name}-native" + (if (System.getProperty("os.arch").equals("aarch64")) "-arm64v8" else "") + ":${project.version}"
+	val nativeImageName = "${dockerRegistry}/${project.name}-native:${project.version}"
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "24", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx7000m -march=compatibility"))
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
@@ -128,4 +134,13 @@ openApi {
 	outputDir.set(file("doc/generated"))
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
+}
+
+//TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
+buildscript {
+	configurations.all {
+		resolutionStrategy {
+			force("org.ow2.asm:asm:9.7.1")
+		}
+	}
 }
