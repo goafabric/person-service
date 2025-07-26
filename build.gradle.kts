@@ -2,15 +2,15 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-21.0.7_6-jre-jammy@sha256:d4daf069dd4680bd618042943a45f4c11cdf98fe1e07a9994c7c914deefa88ad"
+val baseImage = "eclipse-temurin:24.0.1_9-jre@sha256:f46122a0c12ca47dbad8cf145aea4b7373a4c5eccdd9cfbadaf84ed9621e2b56"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.5.3"
+	id("org.springframework.boot") version "4.0.0-M1"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -32,9 +32,9 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.0")
 
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
@@ -48,9 +48,11 @@ dependencies {
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
+
+
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
+	//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
@@ -80,6 +82,14 @@ dependencies {
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
+
+	//spring boot 4.0
+	implementation("org.springframework.boot:spring-boot-starter-restclient")
+	implementation("org.springframework.boot:spring-boot-starter-flyway")
+
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry:4.0.0-M1")
+
+
 }
 
 tasks.withType<Test> {
@@ -95,6 +105,7 @@ jib {
 	to.image = "${dockerRegistry}/${project.name}:${project.version}"
 	container.jvmFlags = listOf("-Xms256m", "-Xmx256m")
 	from.platforms.set(listOf(amd64, arm64))
+	container.mainClass = "org.goafabric.personservice.Application"  //TODO
 }
 
 interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
@@ -102,7 +113,7 @@ tasks.register("dockerImageNative") { description= "Native Image"; group = "buil
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native:${project.version}"
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "21", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "24", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx7000m -march=compatibility"))
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
