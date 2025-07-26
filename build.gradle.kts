@@ -55,7 +55,7 @@ dependencies {
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
-	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
+	//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
