@@ -33,7 +33,7 @@ class PersonLogic(
 
     fun findByStreet(street: String, page: Int, size: Int): List<Person> {
         return personMapper.map(
-            personRepository.findByAddressStreetContainsIgnoreCase(street, PageRequest.of(page, size))
+            personRepository.findByAddressStreetContains(street, PageRequest.of(page, size))
         )
     }
 

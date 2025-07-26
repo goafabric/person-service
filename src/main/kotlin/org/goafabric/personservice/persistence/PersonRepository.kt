@@ -13,7 +13,7 @@ interface PersonRepository : CrudRepository<PersonEo, String> {
     fun findAll(example: Example<PersonEo>, pageable: Pageable): Page<PersonEo>
 
     //@EntityGraph(attributePaths = "address")
-    fun findByAddressStreetContainsIgnoreCase(street: String, pageable: Pageable): Page<PersonEo>
+    fun findByAddressStreetContains(street: String, pageable: Pageable): Page<PersonEo>
 
     @Transactional(propagation = Propagation.REQUIRES_NEW) //Workaround for getting the version increased, for JPARepository there is already a working method
     fun saveAndFlush(person: PersonEo): PersonEo {
