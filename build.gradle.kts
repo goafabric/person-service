@@ -123,6 +123,13 @@ openApi {
 }
 
 rewrite {
+	tasks.named<JavaCompile>("compileJava") {
+		enabled = false
+	}
+	tasks.named<JavaCompile>("compileTestJava") {
+		enabled = false
+	}
+
 	activeRecipe(
 		"org.goafabric.spring4",
 	)
