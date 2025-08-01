@@ -84,9 +84,10 @@ dependencies {
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
 	//spring boot 4.0
+	//spring boot 4.0
 	implementation("org.springframework.boot:spring-boot-starter-opentelemetry:4.0.0-M1")
-	implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.springframework.boot:spring-boot-starter-restclient")
+	implementation("org.springframework.boot:spring-boot-starter-flyway:4.0.0-M1")
+	implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.0-M1")
 
 }
 
