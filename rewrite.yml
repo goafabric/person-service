@@ -26,21 +26,16 @@ recipeList:
       configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  # remove incompatible dependencies # TODO: somehow add property to application.yaml
+  # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
       artifactId: datasource-micrometer-spring-boot
 
-  - org.openrewrite.gradle.RemoveDependency:
-      groupId: org.springdoc
-      artifactId: springdoc-openapi-starter-webmvc-ui
-
-#  - org.openrewrite.gradle.plugins.RemoveBuildPlugin:
-#      pluginId: org.springdoc.openapi-gradle-plugin
-
-#  - org.openrewrite.yaml.ChangePropertyValue:
-#      propertyKey: springdoc.enable-kotlin
-#      newValue: false
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: src/main/resources/application.yml
+      key: $
+      yaml: |
+        springdoc.enable-kotlin: false
 
   # update packages
   - org.openrewrite.java.ChangePackage:
