@@ -2,10 +2,12 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.goafabric.spring4
 recipeList:
+  # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
       newVersion: 4.0.0-M1
 
+  # add new required dependencies
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-opentelemetry
@@ -33,8 +35,8 @@ recipeList:
       groupId: org.springdoc
       artifactId: springdoc-openapi-starter-webmvc-ui
 
-  - org.openrewrite.gradle.plugins.RemoveBuildPlugin:
-      pluginId: org.springdoc.openapi-gradle-plugin
+#  - org.openrewrite.gradle.plugins.RemoveBuildPlugin:
+#      pluginId: org.springdoc.openapi-gradle-plugin
 
 #  - org.openrewrite.yaml.ChangePropertyValue:
 #      propertyKey: springdoc.enable-kotlin
