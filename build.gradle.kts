@@ -83,12 +83,6 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
-	//spring boot 4.0
-	//spring boot 4.0
-	implementation("org.springframework.boot:spring-boot-starter-opentelemetry:4.0.0-M1")
-	implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.springframework.boot:spring-boot-starter-restclient")
-
 }
 
 tasks.withType<Test> {
@@ -106,16 +100,19 @@ jib {
 	from.platforms.set(listOf(amd64, arm64))
 }
 
-interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
+//interface InjectedExecOps { @get:Inject val execOps: ExecOperations }
 tasks.register("dockerImageNative") { description= "Native Image"; group = "build"; dependsOn("bootBuildImage") }
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native:${project.version}"
 	imageName.set(nativeImageName)
 	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to javaVersion, "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6000m -march=compatibility"))
+	/*
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
 	}
+	
+	 */
 }
 
 configure<net.researchgate.release.ReleaseExtension> {
