@@ -44,8 +44,8 @@ recipeList:
       pluginId: org.springdoc.openapi-gradle-plugin
 
 #  - org.openrewrite.yaml.ChangePropertyValue:
-#      property: springdoc.enable-kotlin
-#      value: false
+#      propertyKey: springdoc.enable-kotlin
+#      newValue: false
 
   # update packages
   - org.openrewrite.java.ChangePackage:
