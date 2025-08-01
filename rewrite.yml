@@ -24,13 +24,6 @@ recipeList:
       configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-
-  #  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
-#      groupId: com.fasterxml.jackson*
-#      artifactId: jackson-module*
-#      newVersion: 29.X
-#
-
   # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
