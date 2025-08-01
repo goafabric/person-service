@@ -8,10 +8,10 @@ recipeList:
       newVersion: 4.0.0-M1
 
   # add new required dependencies #TODO: solve workaround with INjectOps
-  - org.openrewrite.text.FindAndReplace:
-      find: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
-      replace: '//interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
-      filePattern: 'build.gradle.kts'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
+#      replace: '//interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
+#      filePattern: 'build.gradle.kts'
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
@@ -31,10 +31,10 @@ recipeList:
       configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  - org.openrewrite.text.FindAndReplace:
-      find: '//interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
-      replace: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
-      filePattern: 'build.gradle.kts'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: '//interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
+#      replace: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
+#      filePattern: 'build.gradle.kts'
 
   # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
