@@ -110,7 +110,6 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
 	}
-	
 	 */
 }
 
