@@ -36,9 +36,9 @@ recipeList:
       groupId: net.ttddyy.observation
       artifactId: datasource-micrometer-spring-boot
 
-  - org.openrewrite.gradle.RemoveBuildPlugin:
+  - org.openrewrite.gradle.plugins.RemoveBuildPlugin:
       groupId: org.springdoc
-      artifactId: springdoc-openapi-starter-webmvc-ui
+      pluginId: openapi-gradle-plugin
 
 #  - org.openrewrite.yaml.ChangePropertyValue:
 #      property: springdoc.enable-kotlin
