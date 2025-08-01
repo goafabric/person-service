@@ -9,15 +9,18 @@ recipeList:
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-opentelemetry
+      configuration: implementation
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: org.springframework.boot:spring-boot-starter-flyway
+      configuration: implementation
       onlyIfUsing: org.flywaydb.*
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: org.springframework.boot:spring-boot-starter-restclient
+      configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
 
