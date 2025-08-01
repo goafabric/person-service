@@ -128,14 +128,18 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-rewrite {
-	tasks.named<JavaCompile>("compileJava") {
-		enabled = false
+gradle.taskGraph.whenReady {
+	if (hasTask(":rewriteRun")) {
+		tasks.named<JavaCompile>("compileJava").configure {
+			enabled = false
+		}
+		tasks.named<JavaCompile>("compileTestJava").configure {
+			enabled = false
+		}
 	}
-	tasks.named<JavaCompile>("compileTestJava") {
-		enabled = false
-	}
+}
 
+rewrite {
 	activeRecipe(
 		"org.goafabric.spring4",
 	)
