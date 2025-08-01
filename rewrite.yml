@@ -1,0 +1,7 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.goafabric.spring4
+recipeList:
+#  - org.openrewrite.java.ChangePackage:
+#      oldPackageName: org.goafabric.calleeservice
+#      newPackageName: org.goafabric.myservice
