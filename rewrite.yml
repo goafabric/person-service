@@ -44,6 +44,6 @@ recipeList:
       newPackageName: org.springframework.boot.hibernate.autoconfigure
 
   - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.springframework.boot.test.web.server.LocalServerPort
-      newPackageName: org.springframework.boot.web.server.test.LocalServerPort
+      oldPackageName: org.springframework.boot.test.web.server
+      newPackageName: org.springframework.boot.web.server.test
 
