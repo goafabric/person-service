@@ -7,7 +7,7 @@ recipeList:
       pluginIdPattern: org.springframework.boot
       newVersion: 4.0.0-M1
 
-  # add new required dependencies
+  # add new required dependencies #TODO: solve workaround with INjectOps
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-opentelemetry
@@ -26,7 +26,7 @@ recipeList:
       configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  # remove incompatible dependencies
+  # remove incompatible dependencies # TODO: somehow add property to application.yaml
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
       artifactId: datasource-micrometer-spring-boot
