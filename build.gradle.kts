@@ -10,7 +10,7 @@ val baseImage = "ibm-semeru-runtimes:open-21.0.8_9-jre@sha256:551139c6639d176c95
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.5.4"
+	id("org.springframework.boot") version "4.0.0-M1"
 	id("io.spring.dependency-management") version "1.1.7"
 	//id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -52,10 +52,6 @@ dependencies {
 	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
-
-	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
