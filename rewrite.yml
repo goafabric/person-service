@@ -41,8 +41,7 @@ recipeList:
       artifactId: springdoc-openapi-starter-webmvc-ui
 
   - org.openrewrite.gradle.plugins.RemoveBuildPlugin:
-      groupId: org.springdoc
-      pluginId: openapi-gradle-plugin
+      pluginId: org.springdoc.openapi-gradle-plugin
 
 #  - org.openrewrite.yaml.ChangePropertyValue:
 #      property: springdoc.enable-kotlin
