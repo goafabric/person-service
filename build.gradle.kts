@@ -82,7 +82,6 @@ dependencies {
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
-
 }
 
 tasks.withType<Test> {
@@ -124,17 +123,6 @@ openApi {
 	outputDir.set(file("doc/generated"))
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
-}
-
-gradle.taskGraph.whenReady {
-	if (hasTask(":rewriteRun")) {
-		tasks.named<JavaCompile>("compileJava").configure {
-			enabled = false
-		}
-		tasks.named<JavaCompile>("compileTestJava").configure {
-			enabled = false
-		}
-	}
 }
 
 rewrite {
