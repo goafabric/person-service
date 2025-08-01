@@ -2,6 +2,31 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: org.goafabric.spring4
 recipeList:
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.goafabric.bogusservice
-      newPackageName: org.goafabric.myservice
+  - org.openrewrite.gradle.plugins.UpgradePluginVersion:
+      pluginIdPattern: org.springframework.boot
+      newVersion: 4.0.0-M1
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-opentelemetry
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: org.springframework.boot:spring-boot-starter-flyway
+      onlyIfUsing: org.flywaydb.*
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: org.springframework.boot:spring-boot-starter-restclient
+      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
+
+
+  #  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+#      groupId: com.fasterxml.jackson*
+#      artifactId: jackson-module*
+#      newVersion: 29.X
+#
+#  - org.openrewrite.java.ChangePackage:
+#      oldPackageName: org.goafabric.bogusservice
+#      newPackageName: org.goafabric.myservice
+
