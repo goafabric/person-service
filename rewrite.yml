@@ -9,6 +9,7 @@ recipeList:
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-opentelemetry
+      version: 4.0.0-M1
       configuration: implementation
 
   - org.openrewrite.gradle.AddDependency:
