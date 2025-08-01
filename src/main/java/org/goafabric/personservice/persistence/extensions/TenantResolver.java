@@ -9,8 +9,8 @@ import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy;
-import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -107,15 +107,15 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
 
     @Bean
     public Boolean schemaCreator(Flyway flyway,
-                                           @Value("${database.provisioning.goals}") String goals,
-                                           @Value("${multi-tenancy.tenants}") String tenants,
-                                           @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
+                                 @Value("${database.provisioning.goals}") String goals,
+                                 @Value("${multi-tenancy.tenants}") String tenants,
+                                 @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
         if (goals.contains("-migrate")) {
             Arrays.asList(tenants.split(",")).forEach(tenant ->
                     Flyway.configure().configuration(flyway.getConfiguration())
-                    .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
-                    .placeholders(Map.of("tenantId", tenant))
-                    .load().migrate()
+                            .schemas(schemaPrefix + tenant).defaultSchema(schemaPrefix + tenant)
+                            .placeholders(Map.of("tenantId", tenant))
+                            .load().migrate()
             );
         }
         return true;
