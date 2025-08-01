@@ -30,6 +30,11 @@ recipeList:
 #      artifactId: jackson-module*
 #      newVersion: 29.X
 #
+
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: net.ttddyy.observation
+      artifactId: datasource-micrometer-spring-boot
+
   - org.openrewrite.java.ChangePackage:
       oldPackageName: org.springframework.boot.autoconfigure.flyway
       newPackageName: org.springframework.boot.flyway.autoconfigure
