@@ -31,10 +31,16 @@ recipeList:
 #      newVersion: 29.X
 #
 
+  # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
       artifactId: datasource-micrometer-spring-boot
 
+  - org.openrewrite.yaml.ChangePropertyValue:
+      property: springdoc.enable-kotlin
+      value: false
+
+  # update packages
   - org.openrewrite.java.ChangePackage:
       oldPackageName: org.springframework.boot.autoconfigure.flyway
       newPackageName: org.springframework.boot.flyway.autoconfigure
