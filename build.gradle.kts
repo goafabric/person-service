@@ -121,3 +121,8 @@ openApi {
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
+
+rewrite {
+	activeRecipe("name: org.gofabric.java.spring.boot4.UpgradeSpringBoot_4_0")
+}
+
