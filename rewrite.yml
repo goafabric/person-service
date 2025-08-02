@@ -18,7 +18,7 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-flyway
       configuration: implementation
-      onlyIfUsing: org.flywaydb.core.Flyway
+      #onlyIfUsing: org.flywaydb.core.*
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
@@ -26,18 +26,51 @@ recipeList:
       configuration: implementation
       onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  # update packages
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.springframework.boot.autoconfigure.flyway
-      newPackageName: org.springframework.boot.flyway.autoconfigure
+  # Spring Boot Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
+      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy
 
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.springframework.boot.autoconfigure.orm.jpa
-      newPackageName: org.springframework.boot.hibernate.autoconfigure
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
+      newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
 
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.springframework.boot.test.web.server
-      newPackageName: org.springframework.boot.web.server.test
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
+      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
+
+  # Spring Batch Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.Step
+      newFullyQualifiedTypeName: org.springframework.batch.core.step.Step
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecution
+      newFullyQualifiedTypeName: org.springframework.batch.core.step.StepExecution
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecutionListener
+      newFullyQualifiedTypeName: org.springframework.batch.core.listener.StepExecutionListener
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.Job
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.Job
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecution
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecution
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionListener
+      newFullyQualifiedTypeName: org.springframework.batch.core.listener.JobExecutionListener
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionException
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecutionException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParameters
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParameters
 
   # fix deprecations
   - org.openrewrite.java.ChangeType:
