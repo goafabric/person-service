@@ -1,0 +1,72 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.goafabric.spring4
+recipeList:
+  # upgrade spring dependency
+  - org.openrewrite.gradle.plugins.UpgradePluginVersion:
+      pluginIdPattern: org.springframework.boot
+      newVersion: 4.0.0-M1
+
+  # add new starters with autoconfig
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-opentelemetry
+      version: 4.0.0-M1
+      configuration: implementation
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-flyway
+      configuration: implementation
+      onlyIfUsing: org.flywaydb.core.Flyway
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-restclient
+      configuration: implementation
+      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
+
+  # update packages
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: org.springframework.boot.autoconfigure.flyway
+      newPackageName: org.springframework.boot.flyway.autoconfigure
+
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: org.springframework.boot.autoconfigure.orm.jpa
+      newPackageName: org.springframework.boot.hibernate.autoconfigure
+
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: org.springframework.boot.test.web.server
+      newPackageName: org.springframework.boot.web.server.test
+
+  # fix deprecations
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
+      newFullyQualifiedTypeName: org.springframework.test.context.bean.override.mockito.MockitoBean
+
+  # remove incompatible dependencies
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: net.ttddyy.observation
+      artifactId: datasource-micrometer-spring-boot
+
+  # deactivate springdoc kotlin support for now
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: src/main/resources/application.yml
+      key: $
+      yaml: |
+        springdoc.enable-kotlin: false
+
+  # Fix the InjectedExeOps / Dependencies mess left behind
+  - org.openrewrite.text.FindAndReplace:
+      find: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations'
+      replace: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
+      filePattern: 'build.gradle.kts'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: '\n\}\s*\}\s*\ntasks\.'
+      replace: |
+        
+        }
+        tasks.
+      regex: true
+      filePattern: 'build.gradle.kts'
