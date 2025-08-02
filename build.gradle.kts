@@ -122,5 +122,5 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-rewrite { activeRecipe("name: org.gofabric.java.spring.boot4.UpgradeSpringBoot_4_0") }
+rewrite { activeRecipe("org.goafabric.java.spring.boot4.UpgradeSpringBoot_4_0") }
 
