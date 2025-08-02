@@ -1,5 +1,6 @@
 ---
 # TODO: Native Hint Classes for Boot and Batch
+# TODO: create bug for Injection
 type: specs.openrewrite.org/v1beta/recipe
 name: org.goafabric.java.spring.boot4.UpgradeSpringBoot_4_0
 recipeList:
