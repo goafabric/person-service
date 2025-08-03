@@ -57,6 +57,23 @@ recipeList:
       yaml: |
         springdoc.enable-kotlin: false
 
+  # Kotlin
+  - org.openrewrite.text.FindAndReplace:
+      find: 'ResponseEntity<String?>'
+      replace: 'ResponseEntity<String>'
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'createClient(adapterType!!)'
+      replace: 'createClient(adapterType!! as Class<A & Any>)'
+      filePattern: '**/*.kt'
+
+  # Document fix
+  - org.openrewrite.text.FindAndReplace:
+      find: '@Document'
+      replace: '//@Document'
+      filePattern: '**/*.java;**/*.kt'
+  
   # Fix the InjectedExeOps / Dependencies mess left behind, @See: https://github.com/issues/created?issue=openrewrite%7Crewrite-gradle-plugin%7C394
   - org.openrewrite.text.FindAndReplace:
       find: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations'
