@@ -1,4 +1,3 @@
-#TODO: Adding Reflection Hint Classes, Kotlin Support
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: UpgradeSpringBoot_4_0
