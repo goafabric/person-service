@@ -18,7 +18,7 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-flyway
       configuration: implementation
-      #onlyIfUsing: org.flywaydb.core.*
+      onlyIfUsing: org.flywaydb.core.internal.publishing.*
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
