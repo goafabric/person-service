@@ -45,6 +45,19 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
       newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
 
+  # Kafka Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
+      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.Health
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.HealthIndicator
+      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.HealthIndicator
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
+
   # fix deprecations
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
