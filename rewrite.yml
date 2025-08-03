@@ -62,6 +62,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
 
+  - org.openrewrite.java.RemoveAnnotationAttribute:
+      annotationType: org.springframework.kafka.test.context.EmbeddedKafka
+      attributeName: brokerProperties
+
   # fix deprecations
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
