@@ -3,13 +3,14 @@ package org.goafabric.personservice.persistence.entity;
 import jakarta.persistence.*;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
 import org.hibernate.annotations.TenantId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Entity
 @Table(name = "person")
 @EntityListeners(AuditTrailListener.class)
-//@Document("#{@httpInterceptor.getTenantPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
+@Document("#{@httpInterceptor.getTenantPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
