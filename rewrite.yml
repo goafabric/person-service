@@ -45,6 +45,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
       newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
+      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
+
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
