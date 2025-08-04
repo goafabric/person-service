@@ -96,6 +96,13 @@ recipeList:
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
+      find: '^findBy.*IgnoreCase$'
+      replace: 'findBy\1'
+      regex: true
+      filePattern: '**/*.java;**/*.kt'
+
+  # Document fix
+  - org.openrewrite.text.FindAndReplace:
       find: |
         jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
         mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
