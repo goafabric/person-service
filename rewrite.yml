@@ -71,6 +71,11 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
       newFullyQualifiedTypeName: org.springframework.test.context.bean.override.mockito.MockitoBean
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'MemberCategory.DECLARED_CLASSES,'
+      replace: ''
+      filePattern: '**/*.java;**/*.kt'
+
   # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
