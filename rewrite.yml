@@ -96,10 +96,10 @@ recipeList:
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
-      find: '^(\\s*.*findBy.*)IgnoreCase(\\s*\\(.*)'
-      replace: 'yo'
+      find: '(findBy\w+)IgnoreCase'
+      replace: '$1'
       regex: true
-      filePattern: '**/*.java'
+      filePattern: '**/*.java;**/*.kt'
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
