@@ -96,8 +96,8 @@ recipeList:
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
-      find: ^(\\s*.*findBy.*)IgnoreCase(\\s*\\(.*)
-      replace: $1$2
+      find: '^(\\s*.*findBy.*)IgnoreCase(\\s*\\(.*)'
+      replace: 'yo'
       regex: true
       filePattern: '**/*.java'
 
