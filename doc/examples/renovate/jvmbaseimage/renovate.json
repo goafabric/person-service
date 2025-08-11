@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "config:recommended",
+    "docker:disableMajor"
+  ],
+  "enabledManagers": ["gradle","dockerfile"],
+  "dockerfile": {
+    "managerFilePatterns": ["build.gradle.kts"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": "gradle",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "branch",
+      "groupName": "all-updates"
+    },
+    {
+      "matchManagers": "dockerfile",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ibm-semeru-runtimes"],
+
+      "versioning": "regex:^open-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<patch2>\\d+))?_\\d+-jre$",
+
+      "automerge": true,
+      "automergeType": "branch",
+      "groupName": "docker-updates"
+    }
+  ]
+
+
+}
