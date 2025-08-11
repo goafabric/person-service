@@ -238,4 +238,4 @@ recipeList:
         variables:
           IMAGE_JDK_VERSION: 24
 
-#curl -L https://raw.githubusercontent.com/goafabric/person-service/develop/rewrite.yml -o rewrite.yml && sed -i '' $'/^[[:space:]]*plugins[[:space:]]*{/,/^[[:space:]]*}/ { /^[[:space:]]*}/ i\\\n    id("org.openrewrite.rewrite") version "7.12.1"\n}' build.gradle.kts && echo 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }' >> build.gradle.kts && ./gradlew rewriteRun
+#curl -L https://raw.githubusercontent.com/goafabric/person-service/develop/rewrite.yml -o rewrite.yml && sed -i '' $'/^[[:space:]]*plugins[[:space:]]*{/,/^[[:space:]]*}/ { /^[[:space:]]*}/ i\\\n    id("org.openrewrite.rewrite") version "7.12.1"\n}' build.gradle.kts && echo 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }' >> build.gradle.kts && ORG_GRADLE_JVMARGS='-Xmx2048m -XX:MaxMetaspaceSize=512m' ./gradlew rewriteRun
