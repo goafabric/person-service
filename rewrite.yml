@@ -213,7 +213,28 @@ recipeList:
 #        @RegisterReflection(classes = {org.flywaydb.core.internal.publishing.PublishingConfigurationExtension.class,  org.flywaydb.database.postgresql.TransactionalModel.class, java.sql.Types.class}
 #        , memberCategories = {MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.ACCESS_DECLARED_FIELDS })
 #        public class FlywayHints {}
-
-
         
-        
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: UpgradeBuildToJava24
+displayName: Upgrade build to Java 24
+recipeList:
+  - org.openrewrite.text.FindAndReplace:
+      find: 'val\s+baseImage\s*=\s*".*?"'
+      replace: 'val baseImage = "eclipse-temurin:24.0.1_9-jre@sha256:f46122a0c12ca47dbad8cf145aea4b7373a4c5eccdd9cfbadaf84ed9621e2b56"'
+      regex: true
+  - org.openrewrite.text.FindAndReplace:
+      find: 'val javaVersion = "21"'
+      replace: 'val javaVersion = "24"'
+      filePattern: 'build.gradle.kts'
+  - org.openrewrite.text.FindAndReplace:
+      find: 'java.sourceCompatibility = JavaVersion.VERSION_21'
+      replace: 'java.sourceCompatibility = JavaVersion.VERSION_24'
+      filePattern: 'build.gradle.kts'
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: '.gitlab-ci.yml'
+      key: $
+      yaml: |
+        variables:
+          IMAGE_JDK_VERSION: 24
+
