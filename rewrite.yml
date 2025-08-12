@@ -99,6 +99,11 @@ recipeList:
       replace: 'createClient(adapterType!! as Class<A & Any>)'
       filePattern: '**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'createClient(adapterType)'
+      replace: 'createClient(adapterType as Class<A & Any>)'
+      filePattern: '**/*.kt'
+
   # Temp. Spring Data Fix #TODO
   - org.openrewrite.text.FindAndReplace:
       find: '(findBy\w+)IgnoreCase'
