@@ -112,10 +112,12 @@ recipeList:
       regex: true
 
   # TODO - Fix for AotTest Compile Error
-  - org.openrewrite.text.AppendToTextFile:
-      relativeFileName: 'build.gradle.kts'
-      content: |
-        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+      replace: |
+        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }        
 
   # TODO - Fix the InjectedExeOps / Dependencies mess left behind, @See: https://github.com/issues/created?issue=openrewrite%7Crewrite-gradle-plugin%7C394
   - org.openrewrite.text.FindAndReplace:
