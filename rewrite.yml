@@ -106,25 +106,32 @@ recipeList:
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
       find: '(findBy\w+)IgnoreCase'
       replace: '$1'
       regex: true
-      filePattern: '**/*.java;**/*.kt'
+
+  # TODO - Fix for AotTest Compile Error
+  - org.openrewrite.text.AppendToTextFile:
+      relativeFileName: 'build.gradle.kts'
+      content: |
+        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
+          
 
   # TODO - Fix the InjectedExeOps / Dependencies mess left behind, @See: https://github.com/issues/created?issue=openrewrite%7Crewrite-gradle-plugin%7C394
   - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
       find: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations'
       replace: 'interface InjectedExecOps { @get:Inject val execOps: ExecOperations }'
-      filePattern: 'build.gradle.kts'
 
   - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
       find: '\n\}\s*\}\s*\ntasks\.'
       replace: |
         
         }
         tasks.
       regex: true
-      filePattern: 'build.gradle.kts'
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
