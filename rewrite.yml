@@ -61,6 +61,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
       newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
+
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
