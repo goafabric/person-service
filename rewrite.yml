@@ -120,8 +120,8 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'headers.addAll(headersMap)'
-      replace: 'headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
+      find: 'headers -> headers.addAll(headersMap)'
+      replace: 'headers -> headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
       caseSensitive: true
       filePattern: '**/*.kt'
 
