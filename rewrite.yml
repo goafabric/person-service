@@ -118,6 +118,12 @@ recipeList:
       caseSensitive: true
       filePattern: '**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'headers -> headers.addAll(headersMap)'
+      replace: 'headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.java;**/*.kt'
