@@ -139,7 +139,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
-      replace: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
+      replace: 'import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer'
       caseSensitive: true
       filePattern: '**/*.kt'
 
