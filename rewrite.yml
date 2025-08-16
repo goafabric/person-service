@@ -104,6 +104,12 @@ recipeList:
       replace: 'createClient(adapterType as Class<A & Any>)'
       filePattern: '**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'response.body.'
+      replace: 'response.body!!.'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.java;**/*.kt'
