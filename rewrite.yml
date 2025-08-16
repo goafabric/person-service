@@ -53,6 +53,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
       newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
+      newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder;
+
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
