@@ -132,8 +132,8 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer'
-      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer'
+      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy'
+      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy'
       caseSensitive: true
       filePattern: '**/*.kt'
 
