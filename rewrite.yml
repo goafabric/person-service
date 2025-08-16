@@ -112,6 +112,7 @@ recipeList:
       replace: 'createClient(adapterType as Class<A & Any>)'
       filePattern: '**/*.kt'
 
+  # Kotlin Hackz
   - org.openrewrite.text.FindAndReplace:
       find: 'response.body.'
       replace: 'response.body!!.'
@@ -123,6 +124,14 @@ recipeList:
       replace: 'headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
       caseSensitive: true
       filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
+      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
