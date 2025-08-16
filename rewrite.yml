@@ -131,6 +131,17 @@ recipeList:
       caseSensitive: true
       filePattern: '**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer'
+      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
+      replace: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
+      caseSensitive: true
+      filePattern: '**/*.kt'
 
 
   # TODO - Temp. Spring Data Fix
