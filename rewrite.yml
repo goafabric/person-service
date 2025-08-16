@@ -38,6 +38,10 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy
 
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer
+      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer
+
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
       newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
 
