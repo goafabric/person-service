@@ -116,14 +116,10 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'createClient(adapterType!!)'
-      replace: 'createClient(adapterType!! as Class<A & Any>)'
       filePattern: '**/*.kt'
-
-  - org.openrewrite.text.FindAndReplace:
-      find: 'createClient(adapterType)'
-      replace: 'createClient(adapterType as Class<A & Any>)'
-      filePattern: '**/*.kt'
+      find: 'createClient\(adapterType(!!)?\)'
+      replace: 'createClient(adapterType$1 as Class<A & Any>)'
+      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
@@ -131,6 +127,15 @@ recipeList:
       replace: '.$1($2!!)'
       regex: true
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: |
+        wsHandler: WebSocketHandler,
+        attributes: MutableMap<String?, Any?>
+      replace: |
+        wsHandler: WebSocketHandler,
+        attributes: MutableMap<String, Any>
+        
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
