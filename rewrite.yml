@@ -123,7 +123,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '\.(findById(?:OrNull)?)\(([^)!]+)\)'
+      find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
       replace: '.$1($2!!)'
       regex: true
 
@@ -169,6 +169,19 @@ recipeList:
       replace: 'context.carrier!!.requestURI'
       caseSensitive: true
       filePattern: '**/*.kt'
+
+
+  - org.openrewrite.text.FindAndReplace:
+      find: |
+        factory.consumerFactory = DefaultKafkaConsumerFactory(
+            latestConsumerConfigs()
+        )
+      replace: |
+        factory.setConsumerFactory(DefaultKafkaConsumerFactory(
+            latestConsumerConfigs())
+        )        
+      filePattern: '**/*.kt'
+
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
