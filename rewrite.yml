@@ -92,6 +92,11 @@ recipeList:
       replace: ''
       filePattern: '**/*.java;**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'MemberCategory.DECLARED_FIELDS'
+      replace: 'MemberCategory.ACCESS_DECLARED_FIELDS'
+      filePattern: '**/*.java;**/*.kt'
+
   # remove incompatible dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: net.ttddyy.observation
