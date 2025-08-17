@@ -125,6 +125,12 @@ recipeList:
       replace: 'createClient(adapterType as Class<A & Any>)'
       filePattern: '**/*.kt'
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '\.(findById(?:OrNull)?)\(([^)!]+)\)'
+      replace: '.$1($2!!)'
+      regex: true
+
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
