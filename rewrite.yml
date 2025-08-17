@@ -129,13 +129,8 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: |
-        wsHandler: WebSocketHandler,
-        attributes: MutableMap<String?, Any?>
-      replace: |
-        wsHandler: WebSocketHandler,
-        attributes: MutableMap<String, Any>
-        
+      find: 'attributes: MutableMap<String?, Any?'
+      replace: 'attributes: MutableMap<String, Any>'
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
