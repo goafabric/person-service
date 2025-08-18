@@ -123,7 +123,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
+      find: '\.(find(?:ById(?:OrNull)?|AllById))\(([A-Za-z0-9_.(){}]+)\)'
       replace: '.$1($2!!)'
       regex: true
 
@@ -131,6 +131,13 @@ recipeList:
       filePattern: '**/*.kt'
       find: 'attributes: MutableMap<String?, Any?>'
       replace: 'attributes: MutableMap<String, Any>'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'ApplicationContext.getBean(): T = getBean(T::class.java)'
+      replace: 'BeanFactory.getBean(): T = getBean(T::class.java)'
+
+  "ApplicationContext.getBean(): T = getBean(T::class.java)"
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
