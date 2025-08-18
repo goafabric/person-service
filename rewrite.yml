@@ -134,8 +134,8 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: 'ApplicationContext.getBean(): T = getBean(T::class.java)'
-      replace: 'org.springframework.beans.factory.BeanFactory.getBean(): T = getBean(T::class.java)'
+      find: 'private inline fun <reified T> ApplicationContext.getBean()'
+      replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
