@@ -165,16 +165,9 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'context.carrier.requestURI'
-      replace: 'context.carrier!!.requestURI'
-      caseSensitive: true
       filePattern: '**/*.kt'
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: '(?s)factory\\.consumerFactory\\s*=\\s*([A-Za-z0-9_.]*DefaultKafkaConsumerFactory)(<[^>]*>)?\\(\\s*latestConsumerConfigs\\(\\)\\s*,?\\s*\\)'
-      replace: 'factory.setConsumerFactory($1$2(latestConsumerConfigs()))'
-      regex: true
+      find: 'factory.consumerFactory = DefaultKafkaConsumerFactory(latestConsumerConfigs())'
+      replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
