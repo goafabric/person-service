@@ -137,6 +137,18 @@ recipeList:
       find: 'private inline fun <reified T> ApplicationContext.getBean()'
       replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'Repository<T>'
+      replace: 'Repository<T : Any>'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '(\.and\(\w+Spec\([^)]*\))'
+      replace: '$1!!'
+      regex: true
+
+
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
       find: 'import org.springframework.boot.test.web.server.LocalServerPort'
