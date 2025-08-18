@@ -144,7 +144,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '(\.and\(\w+Spec\([^)]*\))'
+      find: '(\.and\(\w+Spec\(.*?\)\))'
       replace: '$1!!'
       regex: true
 
