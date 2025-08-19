@@ -123,15 +123,20 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '\.(findAllById|findById(?:OrNull)?)\(\s*.*\.map\s*\{\s*([^}]+)\s*\}\s*\)'
-      replace: '.$1($0.map { $2!! })'
+      find: '(findAllById|findById(?:OrNull))\([^)]*\.map\s*\{\s*([^}]+)\s*\}(\s*\))'
+      replace: '$1($0.map { $2!! }$3)'
       regex: true
+
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: '**/*.kt'
+#      find: '(class\s+\w+<)T(>)'
+#      replace: '\1T : Any\2'
+#      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '(class\s+\w+<)T(>)'
-      replace: '\1T : Any\2'
-      regex: true
+      find: 'Repository<T>'
+      replace: 'Repository<T : Any>'
 
 
 
