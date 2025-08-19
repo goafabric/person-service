@@ -123,8 +123,14 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
+      find: '\.(findAllById|findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
       replace: '.$1($2!!)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '\.(findAllById|findById(?:OrNull)?)\(\s*.*\.\w+\s*\{\s*([^}]+)\s*\}\s*\)'
+      replace: '.$1!!'
       regex: true
 
   - org.openrewrite.text.FindAndReplace:
