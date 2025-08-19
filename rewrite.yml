@@ -139,9 +139,9 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: 'Repository<T>'
-      replace: 'Repository<T : Any>'
-
+      find: '(class\s+\w+<)T(>)'
+      replace: '\1T : Any\2'
+      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
