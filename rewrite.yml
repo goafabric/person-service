@@ -171,10 +171,9 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '(\.and\((?:[\w$]+\.)*[\w$]+Spec\([^)]*\)\))'
-      replace: '$1!!'
+      find: '\.and\(((?:[\w$]+\.)*[\w$]+Spec\([^)]*\))\)'
+      replace: '.and($1!!)'
       regex: true
-
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
