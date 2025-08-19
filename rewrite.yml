@@ -39,7 +39,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
       find: 'implementation("org.springframework.kafka:spring-kafka")'
-      replace: 'implementation("org.springframework.kafka:spring-boot-starter-kafka")'
+      replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
