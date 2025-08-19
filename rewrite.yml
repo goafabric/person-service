@@ -142,9 +142,29 @@ recipeList:
       find: 'Repository<T>'
       replace: 'Repository<T : Any>'
 
+
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: '(\.and\(\w+Spec\(.*?\)\))'
+      find: 'factory.consumerFactory = DefaultKafkaConsumerFactory(latestConsumerConfigs())'
+      replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
+
+
+  # Kotlin Code Specific Hackz
+  - org.openrewrite.text.FindAndReplace:
+      find: 'response.body.'
+      replace: 'response.body!!.'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'headers -> headers.addAll(headersMap)'
+      replace: 'headers -> headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '(\.and\((?:[\w$]+\.)*[\w$]+Spec\([^)]*\)\))'
       replace: '$1!!'
       regex: true
 
@@ -168,23 +188,8 @@ recipeList:
       caseSensitive: true
       filePattern: '**/*.kt'
 
-  # Kotlin Specific Hackz
-  - org.openrewrite.text.FindAndReplace:
-      find: 'response.body.'
-      replace: 'response.body!!.'
-      caseSensitive: true
-      filePattern: '**/*.kt'
 
-  - org.openrewrite.text.FindAndReplace:
-      find: 'headers -> headers.addAll(headersMap)'
-      replace: 'headers -> headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
-      caseSensitive: true
-      filePattern: '**/*.kt'
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'factory.consumerFactory = DefaultKafkaConsumerFactory(latestConsumerConfigs())'
-      replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
