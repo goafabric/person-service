@@ -30,16 +30,17 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-#  - org.openrewrite.gradle.AddDependency:
-#      groupId: org.springframework.boot
-#      artifactId: spring-boot-starter-kafka
-#      configuration: implementation
-#      onlyIfUsing: org.springframework.kafka.core.*
-
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
       find: 'implementation("org.springframework.kafka:spring-kafka")'
       replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
+
+  # disable incompatible dependency
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
+      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
+
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
@@ -101,11 +102,6 @@ recipeList:
       find: 'MemberCategory.DECLARED_FIELDS'
       replace: 'MemberCategory.ACCESS_DECLARED_FIELDS'
       filePattern: '**/*.java;**/*.kt'
-
-  # remove incompatible dependencies
-  - org.openrewrite.gradle.RemoveDependency:
-      groupId: net.ttddyy.observation
-      artifactId: datasource-micrometer-spring-boot
 
   # deactivate springdoc kotlin support for now
   - org.openrewrite.yaml.MergeYaml:
