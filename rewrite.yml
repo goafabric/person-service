@@ -121,12 +121,6 @@ recipeList:
       replace: '.$1($2!!)'
       regex: true
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: '(findAllById|findById(?:OrNull))\([^)]*\.map\s*\{\s*([^}]+)\s*\}(\s*\))'
-      replace: '$0.map { $2!! }'
-      regex: true
-
 #  - org.openrewrite.text.FindAndReplace:
 #      filePattern: '**/*.kt'
 #      find: '(class\s+\w+<)T(>)'
