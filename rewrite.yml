@@ -196,7 +196,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration'
-      replace: 'org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
+      replace: 'import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
       caseSensitive: true
 
   # TODO - Temp. Spring Data Fix
