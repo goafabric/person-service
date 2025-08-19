@@ -30,11 +30,16 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
-      artifactId: spring-boot-starter-kafka
-      configuration: implementation
-      onlyIfUsing: org.springframework.kafka.core.*
+#  - org.openrewrite.gradle.AddDependency:
+#      groupId: org.springframework.boot
+#      artifactId: spring-boot-starter-kafka
+#      configuration: implementation
+#      onlyIfUsing: org.springframework.kafka.core.*
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("org.springframework.kafka:spring-kafka")'
+      replace: 'implementation("org.springframework.kafka:spring-boot-starter-kafka")'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
