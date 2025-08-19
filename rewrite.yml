@@ -117,12 +117,6 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: 'createClient\(adapterType(!!)?\)'
-      replace: 'createClient(adapterType$1 as Class<A & Any>)'
-      regex: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
       find: '\.(findAllById|findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
       replace: '.$1($2!!)'
       regex: true
@@ -135,6 +129,20 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
+      find: '(class\s+\w+<)T(>)'
+      replace: '\1T : Any\2'
+      regex: true
+
+
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'createClient\(adapterType(!!)?\)'
+      replace: 'createClient(adapterType$1 as Class<A & Any>)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'attributes: MutableMap<String?, Any?>'
       replace: 'attributes: MutableMap<String, Any>'
 
@@ -142,12 +150,6 @@ recipeList:
       filePattern: '**/*.kt'
       find: 'private inline fun <reified T> ApplicationContext.getBean()'
       replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: '(class\s+\w+<)T(>)'
-      replace: '\1T : Any\2'
-      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
