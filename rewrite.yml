@@ -176,25 +176,28 @@ recipeList:
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'import org.springframework.boot.test.web.server.LocalServerPort'
       replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
       caseSensitive: true
-      filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy'
       replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy'
       caseSensitive: true
-      filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
       replace: 'import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer'
       caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-
-
-
+      find: 'import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration'
+      replace: 'org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
+      caseSensitive: true
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
