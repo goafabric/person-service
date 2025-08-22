@@ -124,9 +124,10 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'SpringApplication.exit(applicationContext'
-      replace: 'SpringApplication.exit(applicationContext!!'
       filePattern: '**/*.kt'
+      find: 'SpringApplication\.exit\((applicationContext|context)'
+      replace: 'SpringApplication.exit($1!!'
+      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       find: 'override fun run(vararg args: String?)'
