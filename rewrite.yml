@@ -157,6 +157,11 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
+      find: 'hibernateProperties: MutableMap<String?, Any?>'
+      replace: 'hibernateProperties: MutableMap<String, Any>'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'private inline fun <reified T> ApplicationContext.getBean()'
       replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
 
