@@ -30,17 +30,17 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("org.springframework.kafka:spring-kafka")'
-      replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
-
   # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
       find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
       replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
 
+  # kafka
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("org.springframework.kafka:spring-kafka")'
+      replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
@@ -163,6 +163,11 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
+      find: ': SqlStatementInspector?)'
+      replace: ': SqlStatementInspector)'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
       find: 'private inline fun <reified T> ApplicationContext.getBean()'
       replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
 
@@ -250,6 +255,12 @@ recipeList:
         rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
         tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }  
         tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
+
+  # TODO - Temp fix for java temp dir error
+  - org.openrewrite.text.FindAndReplace:
+      find: '@EmbeddedKafka('
+      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+      filePattern: '**/*.java;**/*.kt'
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
