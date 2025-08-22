@@ -1,0 +1,367 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: UpgradeSpringBoot_4_0
+recipeList:
+  # upgrade spring dependency
+  - org.openrewrite.gradle.plugins.UpgradePluginVersion:
+      pluginIdPattern: org.springframework.boot
+      newVersion: 4.0.0-M2
+
+  - org.openrewrite.gradle.plugins.UpgradePluginVersion:
+      pluginIdPattern: org.hibernate.orm
+      newVersion: 7.0.7.Final
+
+  # add new starters with autoconfig
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-opentelemetry
+      version: 4.0.0-M2
+      configuration: implementation
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-flyway
+      configuration: implementation
+#      onlyIfUsing: org.flywaydb.database.postgresql.TransactionalModel
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-restclient
+      configuration: implementation
+#      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
+
+  # disable incompatible dependency
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+
+  # kafka
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("org.springframework.kafka:spring-kafka")'
+      replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
+
+  # Spring Boot Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
+      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer
+      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
+      newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
+      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
+      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
+      newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
+
+  # Kafka Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
+      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.Health
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.HealthIndicator
+      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.HealthIndicator
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
+
+  - org.openrewrite.java.RemoveAnnotationAttribute:
+      annotationType: org.springframework.kafka.test.context.EmbeddedKafka
+      attributeName: brokerProperties
+
+  # fix deprecations
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
+      newFullyQualifiedTypeName: org.springframework.test.context.bean.override.mockito.MockitoBean
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'MemberCategory.DECLARED_CLASSES,'
+      replace: ''
+      filePattern: '**/*.java;**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'MemberCategory.DECLARED_FIELDS'
+      replace: 'MemberCategory.ACCESS_DECLARED_FIELDS'
+      filePattern: '**/*.java;**/*.kt'
+
+  # deactivate springdoc kotlin support for now
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: src/main/resources/application.yml
+      key: $
+      yaml: |
+        springdoc.enable-kotlin: false
+
+  # shut of disconnected otel
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: src/main/resources/application.yml
+      key: $
+      yaml: |
+        logging.level.io.micrometer.registry.otlp: "OFF"    
+
+  # Kotlin
+  - org.openrewrite.text.FindAndReplace:
+      find: 'ResponseEntity<String?>'
+      replace: 'ResponseEntity<String>'
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'SpringApplication\.exit\((applicationContext|context)'
+      replace: 'SpringApplication.exit($1!!'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'override fun run(vararg args: String?)'
+      replace: 'override fun run(vararg args: String)'
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
+      replace: '.$1($2!!)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'Repository<T>'
+      replace: 'Repository<T : Any>'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'createClient\(adapterType(!!)?\)'
+      replace: 'createClient(adapterType$1 as Class<A & Any>)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'attributes: MutableMap<String?, Any?>'
+      replace: 'attributes: MutableMap<String, Any>'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '(hibernateProperties|properties): MutableMap<String\?, Any\?>'
+      replace: '$1: MutableMap<String, Any>'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: ': SqlStatementInspector?)'
+      replace: ': SqlStatementInspector)'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'private inline fun <reified T> ApplicationContext.getBean()'
+      replace: 'private inline fun <reified T : Any> ApplicationContext.getBean()'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'factory.consumerFactory = DefaultKafkaConsumerFactory(latestConsumerConfigs())'
+      replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
+
+
+  # Kotlin Code Specific Hackz
+  - org.openrewrite.text.FindAndReplace:
+      find: 'response.body.'
+      replace: 'response.body!!.'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'headers -> headers.addAll(headersMap)'
+      replace: 'headers -> headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
+      caseSensitive: true
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '\.and\(((?:[\w$]+\.)*[\w$]+Spec\([^)]*\))\)'
+      replace: '.and($1!!)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'assertThat(underTest.exitOnCheckIntegrity(null)).isNotNull()'
+      replace: 'assertThat(underTest.exitOnCheckIntegrity(org.mockito.Mockito.mock())).isNotNull()'
+
+  # Kotlin Changetype Hackz
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
+      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy'
+      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
+      replace: 'import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration'
+      replace: 'import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.test.web.client.TestRestTemplate'
+      replace: 'import org.springframework.boot.web.server.test.client.TestRestTemplate'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
+      replace: 'import org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration'
+      caseSensitive: true
+
+  ####
+
+  # TODO - Temp. Spring Data Fix
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: '(findBy\w+)IgnoreCase'
+      replace: '$1'
+      regex: true
+
+  # TODO - Fix for AotTest Compile Error
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+      replace: |
+        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }  
+        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
+
+  # TODO - Temp fix for java temp dir error
+  - org.openrewrite.text.FindAndReplace:
+      find: '@EmbeddedKafka('
+      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+      filePattern: '**/*.java;**/*.kt'
+
+  # Document fix
+  - org.openrewrite.text.FindAndReplace:
+      find: |
+        jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
+        elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticsearchRestHealthContributorAutoConfiguration"
+      replace: |
+        jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.JpaRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoRepositoriesAutoConfiguration"
+        elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
+      filePattern: 'src/main/resources/application.yml'
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: UpgradeSpringBatch_6_0
+recipeList:
+  # Spring Batch Imports
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.Step
+      newFullyQualifiedTypeName: org.springframework.batch.core.step.Step
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecution
+      newFullyQualifiedTypeName: org.springframework.batch.core.step.StepExecution
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecutionListener
+      newFullyQualifiedTypeName: org.springframework.batch.core.listener.StepExecutionListener
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.Job
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.Job
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecution
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecution
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionListener
+      newFullyQualifiedTypeName: org.springframework.batch.core.listener.JobExecutionListener
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionException
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecutionException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParameters
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParameters
+
+  # Document fix
+  - org.openrewrite.text.FindAndReplace:
+      find: |
+        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
+        jdbc.autoconfiguration: "org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration"
+      replace: |
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoRepositoriesAutoConfiguration"
+        jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.JdbcRepositoriesAutoConfiguration"
+    filePattern: 'src/main/resources/application.yml'
+
+
+  # Reflection Hints
+#  - org.openrewrite.text.CreateTextFile:
+#      relativeFileName: src/main/java/org/goafabric/nativehints/HibernateHints.java
+#      overwrite: true
+#      fileContents: |
+#        package org.goafabric.nativehints;
+#
+#        import org.springframework.aot.hint.MemberCategory;
+#        import org.springframework.aot.hint.annotation.RegisterReflection;
+#        import org.springframework.context.annotation.Configuration;
+#
+#        @Configuration
+#        @RegisterReflection(classes = {org.hibernate.boot.model.relational.ColumnOrderingStrategyStandard.class, org.hibernate.boot.models.annotations.internal.CacheAnnotation.class, org.hibernate.annotations.DialectOverride.class, org.hibernate.boot.models.DialectOverrideAnnotations.class,
+#        org.hibernate.validator.internal.util.logging.Log_$logger.class, org.hibernate.engine.internal.VersionLogger_$logger.class, org.hibernate.internal.SessionFactoryRegistryMessageLogger_$logger.class,
+#        org.hibernate.dialect.type.PostgreSQLInetJdbcType.class,  org.hibernate.dialect.type.PostgreSQLIntervalSecondJdbcType.class, org.hibernate.dialect.type.PostgreSQLStructPGObjectJdbcType.class, org.hibernate.dialect.type.PostgreSQLJsonPGObjectJsonbType.class, org.hibernate.dialect.type.PostgreSQLJsonArrayPGObjectJsonbJdbcTypeConstructor.class
+#        }, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
+#        public class HibernateHints {}
+#
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: UpgradeBuildToJava24
+displayName: Upgrade build to Java 24
+recipeList:
+  - org.openrewrite.text.FindAndReplace:
+      find: 'val\s+baseImage\s*=\s*".*?"'
+      replace: 'val baseImage = "ibm-semeru-runtimes:open-jdk-24.0.2_12-jre@sha256:0f84531e2832b5f9cd13b06911114f00c35c499033150c62b6c5acba770e06bf"'
+      regex: true
+  - org.openrewrite.text.FindAndReplace:
+      find: 'val javaVersion = "21"'
+      replace: 'val javaVersion = "24"'
+      filePattern: 'build.gradle.kts'
+  - org.openrewrite.text.FindAndReplace:
+      find: 'java.sourceCompatibility = JavaVersion.VERSION_21'
+      replace: 'java.sourceCompatibility = JavaVersion.VERSION_24'
+      filePattern: 'build.gradle.kts'
+  - org.openrewrite.yaml.MergeYaml:
+      filePattern: '.gitlab-ci.yml'
+      key: $
+      yaml: |
+        variables:
+          IMAGE_JDK_VERSION: 24
