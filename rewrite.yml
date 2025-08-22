@@ -129,6 +129,11 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
+      find: 'override fun run(vararg args: String?)'
+      replace: 'override fun run(vararg args: String)'
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
       replace: '.$1($2!!)'
