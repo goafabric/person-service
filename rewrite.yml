@@ -157,8 +157,9 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: 'hibernateProperties: MutableMap<String?, Any?>'
-      replace: 'hibernateProperties: MutableMap<String, Any>'
+      find: '(hibernateProperties|properties): MutableMap<String\?, Any\?>'
+      replace: '$1: MutableMap<String, Any>'
+      regex: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
