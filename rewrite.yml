@@ -180,6 +180,11 @@ recipeList:
       replace: '.and($1!!)'
       regex: true
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'assertThat(underTest.exitOnCheckIntegrity(null)).isNotNull()'
+      replace: 'assertThat(underTest.exitOnCheckIntegrity(org.mockito.Mockito.mock())).isNotNull()'
+
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
