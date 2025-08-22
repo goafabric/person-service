@@ -33,8 +33,8 @@ recipeList:
   # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
-      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
-      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
+      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
 
   # kafka
   - org.openrewrite.text.FindAndReplace:
