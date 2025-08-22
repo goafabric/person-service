@@ -41,6 +41,10 @@ recipeList:
       find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
       replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")'
 
+  - org.openrewrite.text.FindAndReplace:
+      find: 'logging.level.io.opentelemetry.exporter: "OFF"'
+      replace: 'logging.level.io.micrometer.registry.otlp: "OFF"'
+      filePattern: 'src/main/resources/application.yml'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
