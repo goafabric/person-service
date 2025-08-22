@@ -15,7 +15,8 @@ import org.springframework.web.client.RestClient;
 
 @RegisterReflection(classes = {org.hibernate.boot.model.relational.ColumnOrderingStrategyStandard.class, org.hibernate.boot.models.annotations.internal.CacheAnnotation.class, org.hibernate.annotations.DialectOverride.class, org.hibernate.boot.models.DialectOverrideAnnotations.class,
         org.hibernate.validator.internal.util.logging.Log_$logger.class, org.hibernate.engine.internal.VersionLogger_$logger.class, org.hibernate.internal.SessionFactoryRegistryMessageLogger_$logger.class,
-        org.hibernate.dialect.type.PostgreSQLInetJdbcType.class,  org.hibernate.dialect.type.PostgreSQLIntervalSecondJdbcType.class, org.hibernate.dialect.type.PostgreSQLStructPGObjectJdbcType.class, org.hibernate.dialect.type.PostgreSQLJsonPGObjectJsonbType.class, org.hibernate.dialect.type.PostgreSQLJsonArrayPGObjectJsonbJdbcTypeConstructor.class
+        org.hibernate.dialect.type.PostgreSQLInetJdbcType.class,  org.hibernate.dialect.type.PostgreSQLIntervalSecondJdbcType.class, org.hibernate.dialect.type.PostgreSQLStructPGObjectJdbcType.class, org.hibernate.dialect.type.PostgreSQLJsonPGObjectJsonbType.class, org.hibernate.dialect.type.PostgreSQLJsonArrayPGObjectJsonbJdbcTypeConstructor.class,
+        org.hibernate.boot.archive.scan.internal.ScannerLogger.class, org.hibernate.boot.archive.scan.internal.ScannerLogger_$logger.class
 }, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
 public class Application {
 
