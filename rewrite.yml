@@ -43,47 +43,58 @@ recipeList:
       replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
 
   # Spring Boot Imports
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
-      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy'
+      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer
-      newFullyQualifiedTypeName: org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer'
+      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayConfigurationCustomizer'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
-      newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
+      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
-      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
+      replace: 'import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
-      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.test.web.client.TestRestTemplate'
+      replace: 'import org.springframework.boot.web.server.test.client.TestRestTemplate'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
-      newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.web.client.RestTemplateBuilder'
+      replace: 'import org.springframework.boot.restclient.RestTemplateBuilder'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
+      replace: 'import org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration'
 
   # Kafka Imports
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
-      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.Health
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.actuate.health.Health'
+      replace: 'import org.springframework.boot.health.contributor.Health'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.HealthIndicator
-      newFullyQualifiedTypeName: org.springframework.boot.health.contributor.HealthIndicator
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.actuate.health.HealthIndicator'
+      replace: 'import org.springframework.boot.health.contributor.HealthIndicator'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
-      newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration'
+      replace: 'import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
 
+  # remove
   - org.openrewrite.java.RemoveAnnotationAttribute:
       annotationType: org.springframework.kafka.test.context.EmbeddedKafka
       attributeName: brokerProperties
@@ -178,7 +189,7 @@ recipeList:
       replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
 
 
-  # Kotlin Code Specific Hackz
+  # Kotlin Code Specific Code
   - org.openrewrite.text.FindAndReplace:
       find: 'response.body.'
       replace: 'response.body!!.'
@@ -202,42 +213,6 @@ recipeList:
       find: 'assertThat(underTest.exitOnCheckIntegrity(null)).isNotNull()'
       replace: 'assertThat(underTest.exitOnCheckIntegrity(org.mockito.Mockito.mock())).isNotNull()'
 
-  # Kotlin Changetype Hackz
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
-      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy'
-      replace: 'import org.springframework.boot.flyway.autoconfigure.FlywayMigrationStrategy'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer'
-      replace: 'import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration'
-      replace: 'import org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.test.web.client.TestRestTemplate'
-      replace: 'import org.springframework.boot.web.server.test.client.TestRestTemplate'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
-      replace: 'import org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration'
-      caseSensitive: true
 
   ####
 
@@ -280,37 +255,46 @@ type: specs.openrewrite.org/v1beta/recipe
 name: UpgradeSpringBatch_6_0
 recipeList:
   # Spring Batch Imports
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.Step
-      newFullyQualifiedTypeName: org.springframework.batch.core.step.Step
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.Step'
+      replace: 'import org.springframework.batch.core.step.Step'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecution
-      newFullyQualifiedTypeName: org.springframework.batch.core.step.StepExecution
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.StepExecution'
+      replace: 'import org.springframework.batch.core.step.StepExecution'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.StepExecutionListener
-      newFullyQualifiedTypeName: org.springframework.batch.core.listener.StepExecutionListener
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.StepExecutionListener'
+      replace: 'import org.springframework.batch.core.listener.StepExecutionListener'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.Job
-      newFullyQualifiedTypeName: org.springframework.batch.core.job.Job
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.Job'
+      replace: 'import org.springframework.batch.core.job.Job'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecution
-      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecution
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.JobExecution'
+      replace: 'import org.springframework.batch.core.JobExecution'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionListener
-      newFullyQualifiedTypeName: org.springframework.batch.core.listener.JobExecutionListener
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.JobExecutionListener'
+      replace: 'import org.springframework.batch.core.listener.JobExecutionListener'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.JobExecutionException
-      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobExecutionException
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.JobExecutionException'
+      replace: 'import org.springframework.batch.core.job.JobExecutionException'
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParameters
-      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParameters
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import org.springframework.batch.core.JobParameters'
+      replace: 'import org.springframework.batch.core.job.parameters.JobParameters'
+
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
