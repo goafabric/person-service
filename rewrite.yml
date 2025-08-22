@@ -124,8 +124,8 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
-      find: 'context: ApplicationContext?'
-      replace: 'context: ApplicationContext'
+      find: 'SpringApplication.exit(applicationContext'
+      replace: 'SpringApplication.exit(applicationContext!!'
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
