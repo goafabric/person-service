@@ -10,7 +10,7 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-24.0.2_12-jre@sha256:0f84531e2832b
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "4.0.0-M1"
+	id("org.springframework.boot") version "4.0.0-M2"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -70,7 +70,7 @@ dependencies {
 
 	//mongodb + elastic
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
@@ -84,7 +84,7 @@ dependencies {
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
 	//spring boot 4.0
-	implementation("org.springframework.boot:spring-boot-starter-opentelemetry:4.0.0-M1")
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.springframework.boot:spring-boot-starter-restclient")
 
