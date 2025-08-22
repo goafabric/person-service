@@ -124,22 +124,20 @@ recipeList:
       filePattern: '**/*.kt'
 
   - org.openrewrite.text.FindAndReplace:
+      find: 'context: ApplicationContext?'
+      replace: 'context: ApplicationContext'
+      filePattern: '**/*.kt'
+
+  - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: '\.(findById(?:OrNull)?)\(([A-Za-z0-9_.]+)\)'
       replace: '.$1($2!!)'
       regex: true
 
-#  - org.openrewrite.text.FindAndReplace:
-#      filePattern: '**/*.kt'
-#      find: '(class\s+\w+<)T(>)'
-#      replace: '\1T : Any\2'
-#      regex: true
-
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'Repository<T>'
       replace: 'Repository<T : Any>'
-
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
