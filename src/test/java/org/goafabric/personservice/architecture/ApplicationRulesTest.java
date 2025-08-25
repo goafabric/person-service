@@ -11,9 +11,9 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
+import org.springframework.scheduling.annotation.Async;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 
 @AnalyzeClasses(packagesOf = Application.class, importOptions = {ImportOption.DoNotIncludeTests.class, ApplicationRulesTest.IgnoreCglib.class})
 public class ApplicationRulesTest {
@@ -115,5 +115,16 @@ public class ApplicationRulesTest {
             .andShould()
             .haveSimpleNameEndingWith("Management")
             .because("Avoid filler names like Impl or Management, use neutral Bean instead");
+
+    @ArchTest
+    static final ArchRule asyncIsBanished =
+            noMethods().should().beAnnotatedWith(Async.class)
+                    .because("Using Async leads to ThreadLocals being erased, Exceptions being swallowed, Resilience4j not working and possible Concurrency Issues in General");
+
+    @ArchTest
+    static final ArchRule flywayJavaMigrationsAreBanished =
+            noClasses().should().dependOnClassesThat()
+                    .resideInAnyPackage("org.flywaydb.core.api.migration..")
+                    .because("Flyway Java Migrations should not be used, complex import logic should go to a separate batch, simple ones with a simple Java class if aware of the consequences");
 
 }
