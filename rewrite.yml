@@ -353,7 +353,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*BatchConfiguration.java'
       find: '@Override'
-      replace: 'org.springframework.batch.core.repository.dao.AbstractJdbcBatchMetadataDao.DEFAULT_TABLE_PREFIX'
+      replace: ''
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
