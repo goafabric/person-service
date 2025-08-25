@@ -344,6 +344,11 @@ recipeList:
       oldFullyQualifiedTypeName: org.hibernate.query.sqm.mutation.internal.temptable.BeforeUseAction
       newFullyQualifiedTypeName: import org.hibernate.query.sqm.mutation.spi.BeforeUseAction;
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*BatchConfiguration.java'
+      find: 'getTablePrefix()'
+      replace: 'org.springframework.batch.core.repository.dao.AbstractJdbcBatchMetadataDao.DEFAULT_TABLE_PREFIX'
+
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
