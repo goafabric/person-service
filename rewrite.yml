@@ -258,10 +258,10 @@ recipeList:
         tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
 
   # TODO - Temp fix for java temp dir error
-  - org.openrewrite.text.FindAndReplace:
-      find: '@EmbeddedKafka('
-      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
-      filePattern: '**/*.java;**/*.kt'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: '@EmbeddedKafka('
+#      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+#      filePattern: '**/*.java;**/*.kt'
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
