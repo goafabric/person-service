@@ -185,7 +185,7 @@ recipeList:
       caseSensitive: true
       filePattern: '**/*.kt'
 
-  - org.openrewrite.text.FindAndReplace:
+  - org.openrewrite.text.FindAndReplace: # websocket stuff
       find: 'headers -> headers.addAll(headersMap)'
       replace: 'headers -> headers.addAll(org.springframework.http.HttpHeaders.copyOf(headersMap))'
       caseSensitive: true
@@ -201,6 +201,12 @@ recipeList:
       filePattern: '**/*.kt'
       find: 'assertThat(underTest.exitOnCheckIntegrity(null)).isNotNull()'
       replace: 'assertThat(underTest.exitOnCheckIntegrity(org.mockito.Mockito.mock())).isNotNull()'
+
+  - org.openrewrite.text.FindAndReplace: # kafka serialier
+      filePattern: '**/*.kt'
+      find: 'failedDeserializationInfo.headers.'
+      replace: 'failedDeserializationInfo!!.headers.'
+
 
   # Kotlin Changetype Hackz
   - org.openrewrite.text.FindAndReplace:
