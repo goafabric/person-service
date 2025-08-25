@@ -88,6 +88,7 @@ public class ApplicationRulesTest {
                     "jakarta..",
                     "org.springframework..",
                     "org.slf4j..",
+                    "org.aspectj.lang..",
                     "com.fasterxml.jackson..",
                     "org.flywaydb..",
                     "org.hibernate..",
