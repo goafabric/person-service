@@ -205,7 +205,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace: # kafka serialier
       filePattern: '**/*.kt'
       find: 'failedDeserializationInfo.headers.'
-      replace: 'failedDeserializationInfo!!.headers.'
+      replace: 'failedDeserializationInfo.headers!!.'
 
 
   # Kotlin Changetype Hackz
