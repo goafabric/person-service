@@ -329,6 +329,10 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.batch.core.repository.explore.JobExplorer
 
   - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.explore.support.JobExplorerFactoryBean
+      newFullyQualifiedTypeName: org.springframework.batch.core.repository.explore.support.JobExplorerFactoryBean
+
+  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.batch.core.JobParametersBuilder
       newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersBuilder
 
