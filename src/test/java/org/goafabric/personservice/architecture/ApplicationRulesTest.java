@@ -94,11 +94,12 @@ public class ApplicationRulesTest {
                     "org.mapstruct..",
                     "io.github.resilience4j..",
                     "io.micrometer..",
-
                     "org.springdoc..",
                     "net.ttddyy..",
-                    "org.javers..",
 
+                    "org.javers..",
+                    "com.nimbusds.jwt..",
+                    
                     "kotlin..",
                     "org.jetbrains.annotations.."
             )
