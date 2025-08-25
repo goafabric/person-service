@@ -336,6 +336,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.core.JobParametersIncrementer
       newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersIncrementer
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.hibernate.query.sqm.mutation.internal.temptable.BeforeUseAction
+      newFullyQualifiedTypeName: import org.hibernate.query.sqm.mutation.spi.BeforeUseAction;
+
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
