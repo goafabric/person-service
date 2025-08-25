@@ -312,6 +312,31 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.core.JobParameters
       newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParameters
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.ItemWriteListener
+      newFullyQualifiedTypeName: org.springframework.batch.core.listener.ItemWriteListener
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.StepContribution
+      newFullyQualifiedTypeName: org.springframework.batch.core.step.StepContribution
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParametersInvalidException
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersInvalidException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.explore.JobExplorer
+      newFullyQualifiedTypeName: import org.springframework.batch.core.repository.explore.JobExplorer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParametersBuilder
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersBuilder
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobParametersIncrementer
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersIncrementer
+
+
   # Document fix
   - org.openrewrite.text.FindAndReplace:
       find: |
