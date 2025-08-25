@@ -74,8 +74,10 @@ public class ApplicationRulesTest {
                     .orShould()
                     .dependOnClassesThat()
                     .resideInAPackage("org.apache.commons..")
-                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");@ArchTest
+                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");
 
+
+    @ArchTest
     static final ArchRule onlyAllowedLibraries = ArchRuleDefinition.classes()
             .should()
             .onlyDependOnClassesThat()
@@ -95,8 +97,10 @@ public class ApplicationRulesTest {
 
                     "org.springdoc..",
                     "net.ttddyy..",
+                    "org.javers..",
 
-                    "org.javers.."
+                    "kotlin..",
+                    "org.jetbrains.annotations.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 
