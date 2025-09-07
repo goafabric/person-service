@@ -14,8 +14,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: 'oracle'
+          java-version: '25-ea'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -56,8 +56,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: 'oracle'
+          java-version: '25-ea'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -65,7 +65,7 @@ jobs:
           gradle-version: 9.0.0
 
       - name: Container Images
-        run: gradle jib dockerImageNative
+        run: gradle jib #dockerImageNative
 
   release:
     runs-on: ubuntu-24.04-arm
@@ -84,8 +84,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: 'oracle'
+          java-version: '25-ea'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
