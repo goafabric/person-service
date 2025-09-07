@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
-val javaVersion = "21"
+val javaVersion = "25"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
@@ -122,5 +122,11 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-
+//TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
+buildscript {
+	configurations.all {
+		resolutionStrategy {
+			force("org.ow2.asm:asm:9.8")
+		}
+	}
+}
