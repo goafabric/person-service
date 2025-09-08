@@ -128,3 +128,5 @@ openApi {
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
+
+kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")
