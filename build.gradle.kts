@@ -16,12 +16,12 @@ plugins {
 
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
-	//id("org.sonarqube") version "6.3.0.5676"
+	id("org.sonarqube") version "6.3.1.5724"
 
 	id("org.cyclonedx.bom") version "2.3.1"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 
-	id("org.openrewrite.rewrite") version "7.14.1"
+	id("org.openrewrite.rewrite") version "7.15.0"
 }
 
 repositories {
@@ -34,7 +34,7 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.11")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
 
