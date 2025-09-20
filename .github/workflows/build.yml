@@ -65,7 +65,7 @@ jobs:
           gradle-version: 9.0.0
 
       - name: Container Images
-        run: gradle jib #dockerImageNative
+        run: gradle jib dockerImageNative
 
   release:
     runs-on: ubuntu-24.04-arm
