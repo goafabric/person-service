@@ -1,6 +1,6 @@
 #!/bin/bash
-export GRAALVM_HOME=~/Library/Java/JavaVirtualMachines/graalvm-jdk-ea-25.0.0-ea.36/Contents/Home
-export JAVA_HOME=~/Library/Java/JavaVirtualMachines/openjdk-ea-25+36-3489/Contents/Home
+export JAVA_HOME=/Users/andreas/Library/Java/JavaVirtualMachines/azul-25/Contents/Home
+export GRAALVM_HOME=/Users/andreas/Library/Java/JavaVirtualMachines/graalvm-ce-25/Contents/Home
 
 ./gradlew clean nativeCompile
 ./build/native/nativeCompile/person-service -Xmx64m
