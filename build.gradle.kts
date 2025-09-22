@@ -10,7 +10,7 @@ val baseImage = "azul/zulu-openjdk:25-jre"
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "4.0.0-M2"
+	id("org.springframework.boot") version "4.0.0-M3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -59,7 +59,7 @@ dependencies {
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
-	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
 	//persistence
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
