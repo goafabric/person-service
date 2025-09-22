@@ -10,13 +10,13 @@ val baseImage = "azul/zulu-openjdk:25-jre"
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "4.0.0-M3"
+	id("org.springframework.boot") version "4.0.0-M2"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
-	id("org.sonarqube") version "6.2.0.5505"
+	id("org.sonarqube") version "6.3.1.5724"
 
 	id("org.cyclonedx.bom") version "2.3.1"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
@@ -32,9 +32,9 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.0")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
 
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
