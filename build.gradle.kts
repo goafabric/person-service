@@ -1,16 +1,16 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
-val group: String by project
 val version: String by project
-java.sourceCompatibility = JavaVersion.VERSION_24
+val javaVersion = "24"
+java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-jdk-24.0.2_12-jre@sha256:0f84531e2832b5f9cd13b06911114f00c35c499033150c62b6c5acba770e06bf"
+val baseImage = "azul/zulu-openjdk:25-jre"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "4.0.0-M2"
+	id("org.springframework.boot") version "4.0.0-M3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -128,11 +128,4 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-//TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
-buildscript {
-	configurations.all {
-		resolutionStrategy {
-			force("org.ow2.asm:asm:9.8")
-		}
-	}
-}
+buildscript { configurations.all { resolutionStrategy { force("org.ow2.asm:asm:9.8") } } } //TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
