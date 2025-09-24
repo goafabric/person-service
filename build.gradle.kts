@@ -21,7 +21,7 @@ plugins {
 	id("org.cyclonedx.bom") version "2.4.1"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 
-	id("org.openrewrite.rewrite") version "7.16.0"
+	id("org.openrewrite.rewrite") version "7.17.0"
 }
 
 repositories {
