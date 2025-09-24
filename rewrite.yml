@@ -29,10 +29,11 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("org.springframework.boot:spring-boot-starter-aop")'
-      replace: 'implementation("org.springframework.boot:spring-boot-starter-aspectj")'
+  - org.openrewrite.gradle.ChangeDependency:
+      oldGroupId: org.springframework.boot
+      oldArtifactId: spring-boot-starter-aop
+      newGroupId: org.springframework.boot
+      newArtifactId: spring-boot-starter-aspectj
 
   # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
