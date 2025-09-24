@@ -29,23 +29,24 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
+  # dependency changes
   - org.openrewrite.gradle.ChangeDependency:
       oldGroupId: org.springframework.boot
       oldArtifactId: spring-boot-starter-aop
       newGroupId: org.springframework.boot
       newArtifactId: spring-boot-starter-aspectj
 
+  - org.openrewrite.gradle.ChangeDependency:
+      oldGroupId: org.springframework.kafka
+      oldArtifactId: spring-kafka
+      newGroupId: org.springframework.boot
+      newArtifactId: spring-boot-starter-kafka
+
   # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
       find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
       replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
-
-  # kafka
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("org.springframework.kafka:spring-kafka")'
-      replace: 'implementation("org.springframework.boot:spring-boot-starter-kafka")'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
