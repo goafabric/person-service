@@ -5,7 +5,7 @@ recipeList:
   # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
-      newVersion: 4.0.0-M3
+      newVersion: 4.0.0-M2
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
@@ -29,11 +29,10 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("org.springframework.boot:spring-boot-starter-aop")'
-      replace: 'implementation("org.springframework.boot:spring-boot-starter-aspectj")'
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: 'build.gradle.kts'
+#      find: 'implementation("org.springframework.boot:spring-boot-starter-aop")'
+#      replace: 'implementation("org.springframework.boot:spring-boot-starter-aspectj")'
 
   # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
