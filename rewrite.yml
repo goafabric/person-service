@@ -90,6 +90,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
+      newFullyQualifiedTypeName: import org.springframework.boot.persistence.autoconfigure.EntityScan
+
   - org.openrewrite.java.RemoveAnnotationAttribute:
       annotationType: org.springframework.kafka.test.context.EmbeddedKafka
       attributeName: brokerProperties
