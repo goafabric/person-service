@@ -122,5 +122,5 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+//rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
 
