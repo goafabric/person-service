@@ -104,9 +104,15 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration
 
   # jackson
-  - org.openrewrite.java.ChangeType:
-    oldFullyQualifiedTypeName: com.fasterxml.jackson.databind.ObjectMapper
-    newFullyQualifiedTypeName: tools.jackson.databind.ObjectMapper
+#  - org.openrewrite.java.ChangeType:
+#    oldFullyQualifiedTypeName: com.fasterxml.jackson.databind.ObjectMapper
+#    newFullyQualifiedTypeName: tools.jackson.databind.ObjectMapper
+
+  - org.openrewrite.text.FindAndReplace:
+      find: 'com.fasterxml.jackson.databind.ObjectMapper'
+      replace: 'tools.jackson.databind.ObjectMapper'
+      filePattern: '**/*.java;**/*.kt'
+
 
   # fix deprecations
   - org.openrewrite.java.ChangeType:
