@@ -92,7 +92,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
-      newFullyQualifiedTypeName: import org.springframework.boot.persistence.autoconfigure.EntityScan
+      newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
 
   - org.openrewrite.java.RemoveAnnotationAttribute:
       annotationType: org.springframework.kafka.test.context.EmbeddedKafka
