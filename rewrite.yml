@@ -77,6 +77,10 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
+      newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
+
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
@@ -90,17 +94,19 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.kafka.autoconfigure.KafkaAutoConfiguration
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
-      newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
+  - org.openrewrite.java.RemoveAnnotationAttribute:
+      annotationType: org.springframework.kafka.test.context.EmbeddedKafka
+      attributeName: brokerProperties
 
+  # elastic
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration
 
-  - org.openrewrite.java.RemoveAnnotationAttribute:
-      annotationType: org.springframework.kafka.test.context.EmbeddedKafka
-      attributeName: brokerProperties
+  # jackson
+  - org.openrewrite.java.ChangeType:
+    oldFullyQualifiedTypeName: com.fasterxml.jackson.databind.ObjectMapper
+    newFullyQualifiedTypeName: tools.jackson.databind.ObjectMapper
 
   # fix deprecations
   - org.openrewrite.java.ChangeType:
