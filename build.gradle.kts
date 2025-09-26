@@ -5,7 +5,7 @@ val javaVersion = "24"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
-val baseImage = "azul/zulu-openjdk:25-jre"
+val baseImage = "eclipse-temurin:25-jre@sha256:74d5c631e5db5a44e7f5a2dd49f93f0c6f7b8c22c1dc1b8e1caec7009872c5c3"
 
 plugins {
 	java
