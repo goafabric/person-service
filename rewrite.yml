@@ -19,17 +19,17 @@ recipeList:
 
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
-      artifactId: spring-boot-starter-flyway
-      configuration: implementation
-#      onlyIfUsing: org.flywaydb.database.postgresql.TransactionalModel
-
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
       artifactId: spring-boot-starter-restclient
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
   # dependency changes
+  - org.openrewrite.gradle.ChangeDependency:
+      oldGroupId: org.flywaydb
+      oldArtifactId: flyway-core
+      newGroupId: org.springframework.boot
+      newArtifactId: spring-boot-starter-flyway
+
   - org.openrewrite.gradle.ChangeDependency:
       oldGroupId: org.springframework.boot
       oldArtifactId: spring-boot-starter-aop
