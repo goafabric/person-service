@@ -225,15 +225,15 @@ recipeList:
       replace: '.and($1!!)'
       regex: true
 
-#  - org.openrewrite.text.FindAndReplace:
-#      filePattern: '**/*.kt'
-#      find: 'assertThat(underTest.exitOnCheckIntegrity(null)).isNotNull()'
-#      replace: 'assertThat(underTest.exitOnCheckIntegrity(org.mockito.Mockito.mock())).isNotNull()'
-
   - org.openrewrite.text.FindAndReplace: # kafka serialier
       filePattern: '**/*.kt'
       find: 'failedDeserializationInfo.headers.'
       replace: 'failedDeserializationInfo.headers!!.'
+
+  - org.openrewrite.text.FindAndReplace: # kafka serialier
+      filePattern: '**/*It.kt'
+      find: 'StringDeserializer::class.qualifiedName'
+      replace: 'StringDeserializer::class.qualifiedName as Any'
 
 
   # Kotlin Changetype Hackz
