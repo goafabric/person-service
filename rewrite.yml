@@ -201,6 +201,10 @@ recipeList:
       find: 'factory.consumerFactory = DefaultKafkaConsumerFactory(latestConsumerConfigs())'
       replace: 'factory.setConsumerFactory(DefaultKafkaConsumerFactory(latestConsumerConfigs()))'
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: '.buildConsumerProperties(null)'
+      replace: '.buildConsumerProperties()'
 
   # Kotlin Code Specific Hackz
   - org.openrewrite.text.FindAndReplace:
