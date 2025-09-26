@@ -48,6 +48,15 @@ recipeList:
       find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
       replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
 
+  # spring aws s3 crap
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
+      replace: 'implementation("software.amazon.awssdk:s3:2.31.54") //implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: "@org.springframework.context.annotation.Import(io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration)"
+
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
