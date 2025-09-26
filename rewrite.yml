@@ -48,29 +48,6 @@ recipeList:
       find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
       replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
 
-  # spring aws s3 crap
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
-      replace: 'implementation("software.amazon.awssdk:s3:2.31.54") //implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.java;**/*.kt'
-      find: '@Import(AwsAutoConfiguration'
-      replace: '//@Import(AwsAutoConfiguration'
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.java;**/*.kt'
-      find: 'import io\.awspring\.cloud\.autoconfigure\.core\.AwsAutoConfiguration;?'
-      replace: ''
-      regex: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.java'
-      find: 'S3Client s3Client) {'
-      replace: '@org.springframework.beans.factory.annotation.Autowired(required = false) S3Client s3Client) {'
-
-
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
@@ -129,11 +106,6 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration
-
-  # jackson
-#  - org.openrewrite.java.ChangeType:
-#    oldFullyQualifiedTypeName: com.fasterxml.jackson.databind.ObjectMapper
-#    newFullyQualifiedTypeName: tools.jackson.databind.ObjectMapper
 
   # fix deprecations
   - org.openrewrite.java.ChangeType:
@@ -319,6 +291,30 @@ recipeList:
 #      find: '@EmbeddedKafka('
 #      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
 #      filePattern: '**/*.java;**/*.kt'
+
+
+  # TODO: spring aws s3 crap
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
+      replace: 'implementation("software.amazon.awssdk:s3:2.31.54") //implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: '@Import(AwsAutoConfiguration'
+      replace: '//@Import(AwsAutoConfiguration'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'import io\.awspring\.cloud\.autoconfigure\.core\.AwsAutoConfiguration;?'
+      replace: ''
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java'
+      find: 'S3Client s3Client) {'
+      replace: '@org.springframework.beans.factory.annotation.Autowired(required = false) S3Client s3Client) {'
+
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
