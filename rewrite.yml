@@ -401,6 +401,11 @@ recipeList:
       oldFullyQualifiedTypeName: org.hibernate.query.sqm.mutation.internal.temptable.BeforeUseAction
       newFullyQualifiedTypeName: org.hibernate.query.sqm.mutation.spi.BeforeUseAction
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.JobInstance
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.JobInstance
+
+
   # Code specific changes
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*BatchConfiguration.java'
