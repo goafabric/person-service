@@ -1,16 +1,16 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
-val javaVersion = "21"
+val javaVersion = "25"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-21.0.8_9-jre@sha256:551139c6639d176c9591c2e2eee16b0092b97a31761c8a9202cf9fffc844d845" //"ibm-semeru-runtimes:open-${javaVersion}-jre"
+val baseImage = "eclipse-temurin:25-jre@sha256:74d5c631e5db5a44e7f5a2dd49f93f0c6f7b8c22c1dc1b8e1caec7009872c5c3"
 
 plugins {
 	java
 	jacoco
-	id("org.springframework.boot") version "3.5.6"
+	id("org.springframework.boot") version "3.5.5"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.0"
 
@@ -18,10 +18,10 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "6.3.1.5724"
 
-	id("org.cyclonedx.bom") version "2.4.1"
+	id("org.cyclonedx.bom") version "2.3.1"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 
-	//id("org.openrewrite.rewrite") version "7.16.0"
+	id("org.openrewrite.rewrite") version "7.15.0"
 }
 
 repositories {
@@ -34,7 +34,7 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
 
@@ -122,5 +122,4 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-//rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-
+buildscript { configurations.all { resolutionStrategy { force("org.ow2.asm:asm:9.8") } } } //TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
