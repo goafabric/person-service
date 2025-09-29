@@ -18,10 +18,10 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "6.3.1.5724"
 
-	id("org.cyclonedx.bom") version "2.3.1"
+	id("org.cyclonedx.bom") version "2.4.1"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 
-	id("org.openrewrite.rewrite") version "7.16.0"
+	id("org.openrewrite.rewrite") version "7.17.0"
 }
 
 repositories {
@@ -34,7 +34,7 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.1.2")
 
@@ -122,5 +122,5 @@ openApi {
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
 
-//buildscript { configurations.all { resolutionStrategy { force("org.ow2.asm:asm:9.8") } } } //TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
+buildscript { configurations.all { resolutionStrategy { force("org.ow2.asm:asm:9.8") } } } //TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
 rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
