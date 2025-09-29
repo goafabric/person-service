@@ -17,7 +17,7 @@ metadata:
     - microservice
   annotations:
     github.com/project-slug: goafabric/person-service
-    backstage.io/techdocs-ref: url:https://github.com/goafabric/backstage/tree/techdos/catalog/techdocs/person-service/docs
+    backstage.io/techdocs-ref: url:https://github.com/goafabric/backstage/tree/techdos/catalog/techdocs/person-service
   links:
     - url: https://github.com/goafabric/person-service
       title: GitHub Repository
