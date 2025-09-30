@@ -102,6 +102,12 @@ recipeList:
       annotationType: org.springframework.kafka.test.context.EmbeddedKafka
       attributeName: brokerProperties
 
+  # Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
+  - org.openrewrite.text.FindAndReplace:
+      find: '@EmbeddedKafka('
+      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+      filePattern: '**/*.java;**/*.kt'
+
   # elastic
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
@@ -285,12 +291,6 @@ recipeList:
         rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
         tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }  
         tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
-
-  # TODO - Temp fix for java temp dir error
-#  - org.openrewrite.text.FindAndReplace:
-#      find: '@EmbeddedKafka('
-#      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
-#      filePattern: '**/*.java;**/*.kt'
 
 
   # TODO: spring aws s3 crap
