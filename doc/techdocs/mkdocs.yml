@@ -1,6 +1,6 @@
-site_name: person-service
+site_name: Documentation
 nav:
-  - Introduction: description/description.md
+  - Description: description/description.md
 
 plugins:
   - techdocs-core
