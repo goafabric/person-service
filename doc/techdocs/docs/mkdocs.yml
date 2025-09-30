@@ -1,6 +1,6 @@
 site_name: person-service
 nav:
-  - Introduction: index.md
+  - Introduction: introduction/index.md
 
 plugins:
   - techdocs-core
