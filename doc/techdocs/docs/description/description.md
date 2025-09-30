@@ -2,7 +2,7 @@
 
 The **Person-Service** provides a RESTful API for managing **Person** entities, including their associated **Address** records. It leverages **Hibernate** for persistence, supports **multi-tenancy**, and integrates **auditing** to ensure data integrity and traceability.
 
-I AM STUPID KI GENERATED CONTENT, PLEASE JUST TAKE IT JUST AS AN EXAMPLE 
+I AM STUPID AI GENERATED CONTENT, PLEASE JUST TAKE IT JUST AS AN EXAMPLE 
 ---
 
 ## **1. Data Model**
