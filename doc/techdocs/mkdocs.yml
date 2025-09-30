@@ -1,6 +1,7 @@
 site_name: Documentation
 nav:
   - Description: description/description.md
+  - Concepts: concepts/concepts.md
 
 plugins:
   - techdocs-core
