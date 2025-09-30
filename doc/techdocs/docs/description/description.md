@@ -2,6 +2,7 @@
 
 The **Person-Service** provides a RESTful API for managing **Person** entities, including their associated **Address** records. It leverages **Hibernate** for persistence, supports **multi-tenancy**, and integrates **auditing** to ensure data integrity and traceability.
 
+I AM STUPID KI GENERATED CONTENT, PLEASE JUST TAKE IT JUST AS AN EXAMPLE 
 ---
 
 ## **1. Data Model**
@@ -34,23 +35,10 @@ public record Address (
 * **Entities** are mapped to the underlying database via Hibernate.
 * **Auditing** ensures `id` and `version` are tracked automatically.
 
----
-
-## **2. Controller Endpoints**
-
-The controller exposes several REST endpoints to interact with `Person` resources:
-
-| **HTTP Method** | **Endpoint**     | **Description**                                        | **Parameters**                                  |
-| --------------- | ---------------- | ------------------------------------------------------ | ----------------------------------------------- |
-| `GET`           | `/person/{id}`   | Retrieve a person by their unique identifier.          | `id` (PathVariable)                             |
-| `GET`           | `/person`        | Search persons based on filter criteria.               | `PersonSearch` (ModelAttribute), `page`, `size` |
-| `GET`           | `/person/street` | Find persons by street name.                           | `street`, `page`, `size`                        |
-| `POST`          | `/person`        | Save a new or updated person record.                   | Request body: `Person` (validated DTO)          |
-| `GET`           | `/person/name`   | Retrieve a person using the custom "sayMyName" method. | `name` (RequestParam)                           |
 
 ---
 
-## **3. Features**
+## **2. Features**
 
 ### **Multi-Tenancy**
 
@@ -79,7 +67,7 @@ The controller exposes several REST endpoints to interact with `Person` resource
 
 ---
 
-## **4. Usage Notes**
+## **3. Usage Notes**
 
 * ⚠️ **Indexing**: Ensure all searchable fields are indexed for performance.
 * 🛡️ **Validation**: Input DTOs are validated before persistence.
