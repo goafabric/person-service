@@ -2,6 +2,7 @@ package org.goafabric.personservice.architecture;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
@@ -49,6 +50,8 @@ public class PersistenceRulesTest {
 
 
 
+    private static final JavaClasses classes = new ClassFileImporter().importPackagesOf(Application.class);
+
     @ArchTest
     static final ArchRule logicAnnotatedWithTransactional = classes()
             .that().areAssignableTo("org.springframework.data.repository.Repository")
@@ -59,7 +62,7 @@ public class PersistenceRulesTest {
                                     .that().haveSimpleNameEndingWith("Logic")
                                     .should().beAnnotatedWith("org.springframework.transaction.annotation.Transactional")
                                     .because("Logic Classes should be annotated with @Transactional")
-                                    .check(new ClassFileImporter().importPackagesOf(Application.class));
+                                    .check(classes);
                         }
                     }
             ).allowEmptyShould(true);
