@@ -25,7 +25,7 @@ plugins {
 	kotlin("plugin.jpa") version "2.2.20"
 	kotlin("kapt") version "2.2.20"
 
-	id("org.cyclonedx.bom") version "2.4.1"
+	id("org.cyclonedx.bom") version "3.0.0"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
