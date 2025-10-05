@@ -41,6 +41,7 @@ object PersistenceRulesTest {
         .because("all classes extending Repository should end with 'Repository' in their name")
         .allowEmptyShould(true)
 
+    val classes = ClassFileImporter().importPackagesOf(Application::class.java);
 
     @ArchTest
     val logicAnnotatedWithTransactional: ArchRule = ArchRuleDefinition.classes()
@@ -51,7 +52,7 @@ object PersistenceRulesTest {
                     .that().haveSimpleNameEndingWith("Logic")
                     .should().beAnnotatedWith("org.springframework.transaction.annotation.Transactional")
                     .because("Logic Classes should be annotated with @Transactional")
-                    .check(ClassFileImporter().importPackagesOf(Application::class.java))
+                    .check(classes)
             }
         }
         ).allowEmptyShould(true)
