@@ -1,24 +1,24 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
-val javaVersion = "24"
+val javaVersion = "25"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
-val baseImage = "azul/zulu-openjdk:25-jre"
+val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116cfd51ec37b26c3a1c25de9336d436354e0be4271bda1463e119c"
 
 plugins {
 	java
 	jacoco
 	id("org.springframework.boot") version "4.0.0-M3"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.graalvm.buildtools.native") version "0.11.0"
+	id("org.graalvm.buildtools.native") version "0.11.1"
 
 	id("com.google.cloud.tools.jib") version "3.4.5"
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "6.3.1.5724"
 
-	id("org.cyclonedx.bom") version "2.3.1"
+	id("org.cyclonedx.bom") version "3.0.0"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
@@ -127,5 +127,3 @@ openApi {
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
-
-buildscript { configurations.all { resolutionStrategy { force("org.ow2.asm:asm:9.8") } } } //TODO: workaround for jib + java24, https://github.com/GoogleContainerTools/jib/pull/4252
