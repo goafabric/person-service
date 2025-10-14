@@ -284,14 +284,14 @@ recipeList:
       replace: '$1'
       regex: true
 
-  # TODO - Fix for AotTest Compile Error
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
-      replace: |
-        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }  
-        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
+#  # TODO - Fix for AotTest Compile Error
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: 'build.gradle.kts'
+#      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+#      replace: |
+#        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+#        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
+#        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
 
 
   # TODO: spring aws s3 crap
