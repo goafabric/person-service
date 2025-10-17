@@ -46,7 +46,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	//monitoring
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
     //implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
@@ -62,6 +63,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
 	implementation("com.h2database:h2")
 	implementation("org.postgresql:postgresql")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
 	//mongodb + elastic
@@ -80,8 +82,6 @@ dependencies {
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
 	//spring boot 4.0
-	implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
-	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.springframework.boot:spring-boot-starter-restclient")
 
 }
