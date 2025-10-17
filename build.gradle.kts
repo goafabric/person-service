@@ -49,10 +49,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
-
-	implementation("io.micrometer:micrometer-tracing-bridge-otel")
-	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-	//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
+    //implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
@@ -65,7 +62,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
 	implementation("com.h2database:h2")
 	implementation("org.postgresql:postgresql")
-	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
 	//mongodb + elastic
