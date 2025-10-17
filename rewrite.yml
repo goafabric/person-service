@@ -23,6 +23,15 @@ recipeList:
       configuration: implementation
 #      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
 
+  # remove dependencies
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: io.micrometer
+      artifactId: micrometer-tracing-bridge-otel
+
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: io.opentelemetry
+      artifactId: opentelemetry-exporter-otlp
+
   # dependency changes
   - org.openrewrite.gradle.ChangeDependency:
       oldGroupId: org.flywaydb
