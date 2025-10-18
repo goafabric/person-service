@@ -27,10 +27,6 @@ import kotlin.collections.set
 
 @Component
 @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-@RegisterReflection(
-    classes = [PublishingConfigurationExtension::class, TransactionalModel::class],
-    memberCategories = [MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS]
-)
 class TenantResolver(
     private val dataSource: DataSource,
     @param:Value("\${multi-tenancy.default-schema:PUBLIC}") private val defaultSchema: String,
