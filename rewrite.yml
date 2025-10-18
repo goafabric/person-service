@@ -51,11 +51,18 @@ recipeList:
       newGroupId: org.springframework.boot
       newArtifactId: spring-boot-starter-kafka
 
-  # disable incompatible dependency
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
-      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+  # upgrade depencies
+  - org.openrewrite.gradle.UpgradeDependencyVersion:
+      groupId: net.ttddyy.observation
+      artifactId: datasource-micrometer-spring-boot
+      newVersion: 2.0.0-RC1
+
+
+#  # disable incompatible dependency
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: 'build.gradle.kts'
+#      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+#      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
