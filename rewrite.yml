@@ -287,10 +287,10 @@ recipeList:
   ####
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
-  - org.openrewrite.text.FindAndReplace:
-      find: '@EmbeddedKafka('
-      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
-      filePattern: '**/*.java;**/*.kt'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: '@EmbeddedKafka('
+#      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+#      filePattern: '**/*.java;**/*.kt'
 
 
   # TODO - Temp. Spring Data Fix
