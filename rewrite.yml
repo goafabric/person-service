@@ -133,6 +133,11 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration
 
+  # redis
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
+
   # fix deprecations
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.mock.mockito.MockBean
