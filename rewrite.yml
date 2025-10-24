@@ -301,8 +301,8 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
-      find: 'RedisAutoConfiguration::class'
-      replace: 'DataRedisAutoConfiguration::class'
+      find: '[RedisAutoConfiguration::class]'
+      replace: '[DataRedisAutoConfiguration::class]'
       caseSensitive: true
 
   ####
