@@ -293,18 +293,6 @@ recipeList:
       replace: 'import org.springframework.boot.resttestclient.TestRestTemplate'
       caseSensitive: true
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
-      replace: 'import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration'
-      caseSensitive: true
-
-#  - org.openrewrite.text.FindAndReplace:
-#      filePattern: '**/*.kt'
-#      find: '[RedisAutoConfiguration::class]'
-#      replace: '[DataRedisAutoConfiguration::class]'
-#      caseSensitive: true
-
   ####
   # TODO: TestRestTemplate
   - org.openrewrite.java.RemoveAnnotation:
