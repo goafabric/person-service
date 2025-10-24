@@ -22,6 +22,12 @@ recipeList:
       artifactId: spring-boot-starter-restclient
       configuration: implementation
 
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-resttestclient
+      configuration: testImplementation
+#      onlyIfUsing: org.springframework.boot.resttestclient.TestRestTemplate
+
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: io.micrometer
@@ -152,12 +158,6 @@ recipeList:
         logging.level.io.micrometer.registry.otlp: "OFF" 
 
   # TestRestTemplate
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
-      artifactId: spring-boot-resttestclient
-      configuration: testImplementation
-      #onlyIfUsing: org.springframework.boot.resttestclient.TestRestTemplate
-
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
 
