@@ -28,6 +28,11 @@ recipeList:
       configuration: testImplementation
       #onlyIfUsing: org.springframework.boot.test.web.client.*
 
+  # jackson 2 backwards compatibility
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-jackson2
+
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: io.micrometer
