@@ -5,7 +5,7 @@ recipeList:
   # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
-      newVersion: 4.0.0-RC1
+      newVersion: 4.0.0-M3
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
@@ -77,9 +77,9 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
       newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
 
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
-#      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
+      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
