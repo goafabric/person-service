@@ -96,10 +96,6 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
 
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
-
-  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
       newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
 
@@ -300,7 +296,13 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
-      replace: 'import org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration'
+      replace: 'import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'RedisAutoConfiguration'
+      replace: 'DataRedisAutoConfiguration'
       caseSensitive: true
 
   ####
