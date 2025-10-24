@@ -22,12 +22,6 @@ recipeList:
       artifactId: spring-boot-starter-restclient
       configuration: implementation
 
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
-      artifactId: spring-boot-resttestclient
-      configuration: testImplementation
-#      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
-
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: io.micrometer
@@ -155,7 +149,23 @@ recipeList:
       filePattern: src/main/resources/application.yml
       key: $
       yaml: |
-        logging.level.io.micrometer.registry.otlp: "OFF"    
+        logging.level.io.micrometer.registry.otlp: "OFF" 
+
+  # TestRestTemplate
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-resttestclient
+      configuration: testImplementation
+      #onlyIfUsing: org.springframework.boot.resttestclient.TestRestTemplate
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
+
+#  - org.openrewrite.text.FindAndReplace:
+#      find: '@SpringBootTest'
+#      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
+#      filePattern: '**/*.java;**/*.kt'
+
 
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
@@ -290,11 +300,6 @@ recipeList:
       caseSensitive: true
 
   ####
-  # TODO TestRestTemplate Crap
-#  - org.openrewrite.text.FindAndReplace:
-#      find: '@SpringBootTest'
-#      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
-#      filePattern: '**/*.java;**/*.kt'
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
 #  - org.openrewrite.text.FindAndReplace:
