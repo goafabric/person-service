@@ -157,6 +157,10 @@ recipeList:
       yaml: |
         logging.level.io.micrometer.registry.otlp: "OFF" 
 
+  # DataJPATest
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"'
+
   # TestRestTemplate
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
