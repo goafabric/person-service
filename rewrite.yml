@@ -418,6 +418,21 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.core.JobInstance
       newFullyQualifiedTypeName: org.springframework.batch.core.job.JobInstance
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.launch.support.RunIdIncrementer
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.RunIdIncrementer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemWriter
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemWriter
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder
 
   # Code specific changes
   - org.openrewrite.text.FindAndReplace:
