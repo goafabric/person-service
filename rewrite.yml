@@ -161,19 +161,6 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"'
 
-  # TestRestTemplate
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
-
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
-
-#  - org.openrewrite.text.FindAndReplace:
-#      find: '@SpringBootTest'
-#      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
-#      filePattern: '**/*.java;**/*.kt'
-
-
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
       find: 'ResponseEntity<String?>'
@@ -307,6 +294,17 @@ recipeList:
       caseSensitive: true
 
   ####
+  # TODO: TestRestTemplate
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
+
+  #  - org.openrewrite.text.FindAndReplace:
+  #      find: '@SpringBootTest'
+  #      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
+  #      filePattern: '**/*.java;**/*.kt'
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
 #  - org.openrewrite.text.FindAndReplace:
