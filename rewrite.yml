@@ -87,10 +87,6 @@ recipeList:
 #      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
 
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
-      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
-
-  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
       newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
 
@@ -284,7 +280,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'import org.springframework.boot.test.web.client.TestRestTemplate'
-      replace: 'import org.springframework.boot.web.server.test.client.TestRestTemplate'
+      replace: 'import org.springframework.boot.resttestclient.TestRestTemplate'
       caseSensitive: true
 
   - org.openrewrite.text.FindAndReplace:
