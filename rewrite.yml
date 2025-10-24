@@ -165,6 +165,9 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
 
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
+
 #  - org.openrewrite.text.FindAndReplace:
 #      find: '@SpringBootTest'
 #      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
