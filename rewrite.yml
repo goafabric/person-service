@@ -26,7 +26,7 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-resttestclient
       configuration: testImplementation
-      onlyIfUsing: org.springframework.boot.test.web.client.*
+      #onlyIfUsing: org.springframework.boot.test.web.client.*
 
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
