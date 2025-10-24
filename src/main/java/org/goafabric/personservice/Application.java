@@ -1,7 +1,5 @@
 package org.goafabric.personservice;
 
-import org.springframework.aot.hint.MemberCategory;
-import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +11,6 @@ import org.springframework.web.client.RestClient;
 
 @SpringBootApplication
 
-@RegisterReflection(classes = {
-        org.flywaydb.core.internal.configuration.extensions.PrepareScriptFilenameConfigurationExtension.class, tools.jackson.databind.jsontype.NamedType.class, org.hibernate.boot.models.annotations.internal.TenantIdAnnotation.class
-}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS})
 public class Application {
 
     public static void main(String[] args) {
