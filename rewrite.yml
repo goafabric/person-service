@@ -22,11 +22,18 @@ recipeList:
       artifactId: spring-boot-starter-restclient
       configuration: implementation
 
+  # add optinoal dependencies
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-resttestclient
       configuration: testImplementation
       #onlyIfUsing: org.springframework.boot.test.web.client.*
+
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-data-jpa-test
+      configuration: testImplementation
+      #onlyIfUsing: org.springframework.boot.data.jpa.test.autoconfigure.*
 
   # jackson 2 backwards compatibility
   - org.openrewrite.gradle.AddDependency:
@@ -102,6 +109,10 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
       newFullyQualifiedTypeName: org.springframework.boot.resttestclient.TestRestTemplate
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
