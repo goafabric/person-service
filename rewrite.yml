@@ -29,11 +29,10 @@ recipeList:
       configuration: testImplementation
       #onlyIfUsing: org.springframework.boot.test.web.client.*
 
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
-      artifactId: spring-boot-data-jpa-test
-      configuration: testImplementation
-      #onlyIfUsing: org.springframework.boot.data.jpa.test.autoconfigure.*
+#  - org.openrewrite.gradle.AddDependency:
+#      groupId: org.springframework.boot
+#      artifactId: spring-boot-data-jpa-test
+#      configuration: testImplementation
 
   # jackson 2 backwards compatibility
   - org.openrewrite.gradle.AddDependency:
@@ -110,9 +109,13 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
       newFullyQualifiedTypeName: org.springframework.boot.resttestclient.TestRestTemplate
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+  # DataJPATest
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+#      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"'
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
