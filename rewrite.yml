@@ -21,18 +21,19 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-restclient
       configuration: implementation
+      #onlyIfUsing: org.springframework.web.client.RestClient
 
   # add optinoal dependencies
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-resttestclient
       configuration: testImplementation
-      #onlyIfUsing: org.springframework.boot.test.web.client.*
+      onlyIfUsing: org.springframework.boot.test.web.client.TestRestTemplate
 
-#  - org.openrewrite.gradle.AddDependency:
-#      groupId: org.springframework.boot
-#      artifactId: spring-boot-data-jpa-test
-#      configuration: testImplementation
+  #  - org.openrewrite.gradle.AddDependency:
+  #      groupId: org.springframework.boot
+  #      artifactId: spring-boot-data-jpa-test
+  #      configuration: testImplementation
 
   # jackson 2 backwards compatibility
   - org.openrewrite.gradle.AddDependency:
@@ -67,18 +68,10 @@ recipeList:
       newGroupId: org.springframework.boot
       newArtifactId: spring-boot-starter-kafka
 
-#  # upgrade depencies
-#  - org.openrewrite.gradle.UpgradeDependencyVersion:
-#      groupId: net.ttddyy.observation
-#      artifactId: datasource-micrometer-spring-boot
-#      newVersion: 2.0.0-RC1
-
-
-  # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
-      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+      find: "implementation\\([\"']net\\.ttddyy\\.observation:datasource-micrometer-spring-boot:[^\"']+[\"']\\)"
+      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
+      regex: true
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
@@ -93,10 +86,6 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer
       newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
 
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
-#      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
-
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
       newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
@@ -110,9 +99,9 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.resttestclient.TestRestTemplate
 
   # DataJPATest
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-#      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+  #  - org.openrewrite.java.ChangeType:
+  #      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+  #      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
@@ -270,11 +259,11 @@ recipeList:
 
 
   # Kotlin Changetype Hackz
-#  - org.openrewrite.text.FindAndReplace:
-#      filePattern: '**/*.kt'
-#      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
-#      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
-#      caseSensitive: true
+  #  - org.openrewrite.text.FindAndReplace:
+  #      filePattern: '**/*.kt'
+  #      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
+  #      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
+  #      caseSensitive: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
@@ -311,16 +300,16 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
-#  - org.openrewrite.text.FindAndReplace:
-#      find: '@SpringBootTest'
-#      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
-#      filePattern: '**/*.java;**/*.kt'
+  #  - org.openrewrite.text.FindAndReplace:
+  #      find: '@SpringBootTest'
+  #      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
+  #      filePattern: '**/*.java;**/*.kt'
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
-#  - org.openrewrite.text.FindAndReplace:
-#      find: '@EmbeddedKafka('
-#      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
-#      filePattern: '**/*.java;**/*.kt'
+  #  - org.openrewrite.text.FindAndReplace:
+  #      find: '@EmbeddedKafka('
+  #      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
+  #      filePattern: '**/*.java;**/*.kt'
 
 
   # TODO - Temp. Spring Data Fix
@@ -330,14 +319,14 @@ recipeList:
       replace: '$1'
       regex: true
 
-#  # TODO - Fix for AotTest Compile Error
-#  - org.openrewrite.text.FindAndReplace:
-#      filePattern: 'build.gradle.kts'
-#      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
-#      replace: |
-#        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-#        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
-#        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
+  #  # TODO - Fix for AotTest Compile Error
+  #  - org.openrewrite.text.FindAndReplace:
+  #      filePattern: 'build.gradle.kts'
+  #      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+  #      replace: |
+  #        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
+  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
 
 
   # TODO: spring aws s3 crap
