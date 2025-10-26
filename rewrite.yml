@@ -370,10 +370,10 @@ recipeList:
       filePattern: 'src/main/resources/application.yml'
 
   # deprecated h2 dialect
-  - org.openrewrite.text.FindAndReplace:
-      find: 'spring.jpa.database-platform: org.hibernate.dialect.H2Dialect'
-      replace: ''
-      filePattern: 'src/main/resources/application.yml'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: 'spring.jpa.database-platform: org.hibernate.dialect.H2Dialect'
+#      replace: ''
+#      filePattern: 'src/main/resources/application.yml'
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
