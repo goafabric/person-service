@@ -114,9 +114,6 @@ recipeList:
 #      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 #      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"'
-
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.actuate.health.Health
@@ -304,12 +301,15 @@ recipeList:
       caseSensitive: true
 
   ####
-  # TODO: TestRestTemplate
+  # TODO: Removal
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
 
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
   #  - org.openrewrite.text.FindAndReplace:
   #      find: '@SpringBootTest'
