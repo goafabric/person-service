@@ -174,10 +174,6 @@ recipeList:
       yaml: |
         logging.level.io.micrometer.registry.otlp: "OFF" 
 
-  # DataJPATest
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest"'
-
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
       find: 'ResponseEntity<String?>'
