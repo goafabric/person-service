@@ -311,10 +311,10 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
-  - org.openrewrite.text.FindAndReplace:
-      find: '@SpringBootTest'
-      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
-      filePattern: '**/*.java;**/*.kt'
+#  - org.openrewrite.text.FindAndReplace:
+#      find: '@SpringBootTest'
+#      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
+#      filePattern: '**/*.java;**/*.kt'
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
 #  - org.openrewrite.text.FindAndReplace:
