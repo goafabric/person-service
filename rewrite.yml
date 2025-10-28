@@ -39,6 +39,7 @@ recipeList:
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
       artifactId: spring-boot-jackson2
+      onlyIfUsing: com.fasterxml.jackson.databind.ObjectMapper
 
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
