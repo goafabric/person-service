@@ -5,11 +5,11 @@ recipeList:
   # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
-      newVersion: 4.0.0-M3
+      newVersion: 4.0.0-RC1
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
-      newVersion: 7.0.7.Final
+      newVersion: 7.1.4.Final
 
   # add new starters with autoconfig
   - org.openrewrite.gradle.AddDependency:
@@ -21,7 +21,34 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-starter-restclient
       configuration: implementation
-#      onlyIfUsing: org.springframework.web.client.support.RestClientAdapter
+      #onlyIfUsing: org.springframework.web.client.RestClient
+
+  # add optinoal dependencies
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-resttestclient
+      configuration: testImplementation
+      onlyIfUsing: org.springframework.boot.test.web.client.TestRestTemplate
+
+  #  - org.openrewrite.gradle.AddDependency:
+  #      groupId: org.springframework.boot
+  #      artifactId: spring-boot-data-jpa-test
+  #      configuration: testImplementation
+
+  # jackson 2 backwards compatibility
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-jackson2
+      onlyIfUsing: com.fasterxml.jackson.databind.ObjectMapper
+
+  # remove dependencies
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: io.micrometer
+      artifactId: micrometer-tracing-bridge-otel
+
+  - org.openrewrite.gradle.RemoveDependency:
+      groupId: io.opentelemetry
+      artifactId: opentelemetry-exporter-otlp
 
   # dependency changes
   - org.openrewrite.gradle.ChangeDependency:
@@ -42,11 +69,10 @@ recipeList:
       newGroupId: org.springframework.boot
       newArtifactId: spring-boot-starter-kafka
 
-  # disable incompatible dependency
   - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
-      replace: '//implementation("net.ttddyy.observation:datasource-micrometer-spring-boot'
+      find: "implementation\\([\"']net\\.ttddyy\\.observation:datasource-micrometer-spring-boot:[^\"']+[\"']\\)"
+      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
+      regex: true
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
@@ -62,24 +88,21 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer
 
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
-      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.LocalServerPort
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
-      newFullyQualifiedTypeName: org.springframework.boot.web.server.test.client.TestRestTemplate
-
-  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.web.client.RestTemplateBuilder
       newFullyQualifiedTypeName: org.springframework.boot.restclient.RestTemplateBuilder
 
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration
-
-  - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
       newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
+      newFullyQualifiedTypeName: org.springframework.boot.resttestclient.TestRestTemplate
+
+  # DataJPATest
+  #  - org.openrewrite.java.ChangeType:
+  #      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+  #      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
@@ -106,6 +129,11 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
       newFullyQualifiedTypeName: org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration
+
+  # redis
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      newFullyQualifiedTypeName: org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
 
   # fix deprecations
   - org.openrewrite.java.ChangeType:
@@ -134,7 +162,7 @@ recipeList:
       filePattern: src/main/resources/application.yml
       key: $
       yaml: |
-        logging.level.io.micrometer.registry.otlp: "OFF"    
+        logging.level.io.micrometer.registry.otlp: "OFF" 
 
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
@@ -232,11 +260,11 @@ recipeList:
 
 
   # Kotlin Changetype Hackz
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
-      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
-      caseSensitive: true
+  #  - org.openrewrite.text.FindAndReplace:
+  #      filePattern: '**/*.kt'
+  #      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
+  #      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
+  #      caseSensitive: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
@@ -259,16 +287,24 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'import org.springframework.boot.test.web.client.TestRestTemplate'
-      replace: 'import org.springframework.boot.web.server.test.client.TestRestTemplate'
-      caseSensitive: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.kt'
-      find: 'import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration'
-      replace: 'import org.springframework.boot.data.redis.autoconfigure.RedisAutoConfiguration'
+      replace: 'import org.springframework.boot.resttestclient.TestRestTemplate'
       caseSensitive: true
 
   ####
+  # TODO: Removal
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
+
+  #  - org.openrewrite.text.FindAndReplace:
+  #      find: '@SpringBootTest'
+  #      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
+  #      filePattern: '**/*.java;**/*.kt'
 
   # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
   #  - org.openrewrite.text.FindAndReplace:
@@ -284,14 +320,14 @@ recipeList:
       replace: '$1'
       regex: true
 
-  # TODO - Fix for AotTest Compile Error
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: 'build.gradle.kts'
-      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
-      replace: |
-        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }  
-        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
+  #  # TODO - Fix for AotTest Compile Error
+  #  - org.openrewrite.text.FindAndReplace:
+  #      filePattern: 'build.gradle.kts'
+  #      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+  #      replace: |
+  #        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
+  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
+  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
 
 
   # TODO: spring aws s3 crap
@@ -316,18 +352,28 @@ recipeList:
       find: 'S3Client s3Client) {'
       replace: '@org.springframework.beans.factory.annotation.Autowired(required = false) S3Client s3Client) {'
 
-
   # Document fix
+  - org.openrewrite.text.FindAndReplace:
+      find: spring.data.mongodb.
+      replace: spring.mongodb.
+      filePattern: 'src/main/resources/application.yml'
+
   - org.openrewrite.text.FindAndReplace:
       find: |
         jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
         mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
         elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticsearchRestHealthContributorAutoConfiguration"
       replace: |
-        jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.JpaRepositoriesAutoConfiguration"
-        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoRepositoriesAutoConfiguration"
+        jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
         elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
       filePattern: 'src/main/resources/application.yml'
+
+  # deprecated h2 dialect
+#  - org.openrewrite.text.FindAndReplace:
+#      find: 'spring.jpa.database-platform: org.hibernate.dialect.H2Dialect'
+#      replace: ''
+#      filePattern: 'src/main/resources/application.yml'
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -402,6 +448,21 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.core.JobInstance
       newFullyQualifiedTypeName: org.springframework.batch.core.job.JobInstance
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.launch.support.RunIdIncrementer
+      newFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.RunIdIncrementer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemWriter
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemWriter
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder
 
   # Code specific changes
   - org.openrewrite.text.FindAndReplace:
@@ -420,6 +481,6 @@ recipeList:
         mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
         jdbc.autoconfiguration: "org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration"
       replace: |
-        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoRepositoriesAutoConfiguration"
-        jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.JdbcRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
+        jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration"
     filePattern: 'src/main/resources/application.yml'
