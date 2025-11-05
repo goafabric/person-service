@@ -68,3 +68,17 @@ spec:
     type:  person
     key: person_id
     EventData.operation: CREATE | UPDATE | DELETE 
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: amautsch
+  annotations:
+    'github.com/user-login': goafabric
+spec:
+  profile:
+    displayName: Andreas Mautsch
+    email: amautsch@gmx.de
+  memberOf: []
