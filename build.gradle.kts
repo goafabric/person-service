@@ -53,7 +53,7 @@ dependencies {
     implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
 
 	//openapi
-	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui") //TODO
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
