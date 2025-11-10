@@ -53,7 +53,7 @@ dependencies {
     implementation("net.ttddyy.observation:datasource-micrometer-spring-boot") //TODO
 
 	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+	//implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3")
@@ -65,6 +65,7 @@ dependencies {
 	implementation("org.postgresql:postgresql")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 	//mongodb + elastic
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
