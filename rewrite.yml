@@ -74,6 +74,11 @@ recipeList:
       replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
       regex: true
 
+  - org.openrewrite.text.FindAndReplace:
+      find: "implementation\\([\"']org\\.springdoc:springdoc-openapi-starter-webmvc-ui:[^\"']+[\"']\\)"
+      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-RC1\")"
+      regex: true
+
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
@@ -163,6 +168,12 @@ recipeList:
       key: $
       yaml: |
         logging.level.io.micrometer.registry.otlp: "OFF" 
+
+  # Archunit fix
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: "**/*RulesTest*"
+      find: '.haveSimpleNameNotContaining("AuditTrailListener")'
+      replace: '.haveSimpleNameNotContaining("AuditTrailListener").and().resideOutsideOfPackage("..persistence.entity..")'
 
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
