@@ -23,13 +23,6 @@ recipeList:
       configuration: implementation
       #onlyIfUsing: org.springframework.web.client.RestClient
 
-  # add optinoal dependencies
-  - org.openrewrite.gradle.AddDependency:
-      groupId: org.springframework.boot
-      artifactId: spring-boot-resttestclient
-      configuration: testImplementation
-      onlyIfUsing: org.springframework.boot.test.web.client.TestRestTemplate
-
   #  - org.openrewrite.gradle.AddDependency:
   #      groupId: org.springframework.boot
   #      artifactId: spring-boot-data-jpa-test
@@ -40,6 +33,13 @@ recipeList:
       groupId: org.springframework.boot
       artifactId: spring-boot-jackson2
       onlyIfUsing: com.fasterxml.jackson.databind.ObjectMapper
+
+  # test rest template
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-resttestclient
+      configuration: testImplementation
+      onlyIfUsing: org.springframework.boot.test.web.client.TestRestTemplate
 
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
@@ -74,6 +74,11 @@ recipeList:
       replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
       regex: true
 
+  - org.openrewrite.text.FindAndReplace:
+      find: "implementation\\([\"']org\\.springdoc:springdoc-openapi-starter-webmvc-ui:[^\"']+[\"']\\)"
+      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-RC1\")"
+      regex: true
+
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy
@@ -95,9 +100,19 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.domain.EntityScan
       newFullyQualifiedTypeName: org.springframework.boot.persistence.autoconfigure.EntityScan
 
+  # Test Resttemplate
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.web.client.TestRestTemplate
       newFullyQualifiedTypeName: org.springframework.boot.resttestclient.TestRestTemplate
+
+  - org.openrewrite.text.FindAndReplace:
+      # Match class declarations that contain a TestRestTemplate field somewhere inside
+      find: '(class\s+\w+\s*\{)(?=[\s\S]*?(@?Autowired\s+)?TestRestTemplate\s+\w+\s*;)'
+      replace: |
+        @org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate        
+        $1
+      regex: true
+
 
   # DataJPATest
   #  - org.openrewrite.java.ChangeType:
@@ -163,6 +178,12 @@ recipeList:
       key: $
       yaml: |
         logging.level.io.micrometer.registry.otlp: "OFF" 
+
+  # Archunit fix
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: "**/*RulesTest*"
+      find: '.haveSimpleNameNotContaining("AuditTrailListener")'
+      replace: '.haveSimpleNameNotContaining("AuditTrailListener").and().resideOutsideOfPackage("..persistence.entity..")'
 
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
@@ -301,34 +322,12 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
-  #  - org.openrewrite.text.FindAndReplace:
-  #      find: '@SpringBootTest'
-  #      replace: '@org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate @SpringBootTest'
-  #      filePattern: '**/*.java;**/*.kt'
-
-  # TODO: Set DirtiesContext for Kafka (to avoid FileNotFoundException) as recommended by Spring to avoid, also causes hang when enabled ??: https://docs.spring.io/spring-kafka/reference/testing.html#embedded-broker-with-springjunitconfig-annotations
-  #  - org.openrewrite.text.FindAndReplace:
-  #      find: '@EmbeddedKafka('
-  #      replace: '@org.springframework.test.annotation.DirtiesContext @EmbeddedKafka('
-  #      filePattern: '**/*.java;**/*.kt'
-
-
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.java;**/*.kt'
       find: '(findBy\w+)IgnoreCase'
       replace: '$1'
       regex: true
-
-  #  # TODO - Fix for AotTest Compile Error
-  #  - org.openrewrite.text.FindAndReplace:
-  #      filePattern: 'build.gradle.kts'
-  #      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
-  #      replace: |
-  #        rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
-  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessTestAot>().configureEach {  enabled = false }
-  #        tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {  enabled = false }
-
 
   # TODO: spring aws s3 crap
   - org.openrewrite.text.FindAndReplace:
@@ -368,12 +367,6 @@ recipeList:
         mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
         elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
       filePattern: 'src/main/resources/application.yml'
-
-  # deprecated h2 dialect
-#  - org.openrewrite.text.FindAndReplace:
-#      find: 'spring.jpa.database-platform: org.hibernate.dialect.H2Dialect'
-#      replace: ''
-#      filePattern: 'src/main/resources/application.yml'
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
