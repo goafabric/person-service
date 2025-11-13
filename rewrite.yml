@@ -41,6 +41,13 @@ recipeList:
       configuration: testImplementation
       onlyIfUsing: org.springframework.boot.test.web.client.TestRestTemplate
 
+  # mockmvc
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-webmvc-test
+      configuration: testImplementation
+      onlyIfUsing: org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: io.micrometer
@@ -113,6 +120,10 @@ recipeList:
         $1
       regex: true
 
+  # MockMVC
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+      newFullyQualifiedTypeName: org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 
   # DataJPATest
   #  - org.openrewrite.java.ChangeType:
@@ -311,11 +322,14 @@ recipeList:
       replace: 'import org.springframework.boot.resttestclient.TestRestTemplate'
       caseSensitive: true
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
+      replace: 'org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc'
+      caseSensitive: true
+
   ####
   # TODO: Removal
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
-
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
