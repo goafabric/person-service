@@ -107,7 +107,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       # Match class declarations that contain a TestRestTemplate field somewhere inside
-      find: '(class\s+\w+\s*\{)(?=[\s\S]*?(@?Autowired\s+)?TestRestTemplate\s+\w+\s*;)'
+      find: '(class\s+\w+\s*(?:\(|\{))(?=[\s\S]*?TestRestTemplate)'
       replace: |
         @org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate        
         $1
