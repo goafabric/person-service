@@ -23,11 +23,6 @@ recipeList:
       configuration: implementation
       #onlyIfUsing: org.springframework.web.client.RestClient
 
-  #  - org.openrewrite.gradle.AddDependency:
-  #      groupId: org.springframework.boot
-  #      artifactId: spring-boot-data-jpa-test
-  #      configuration: testImplementation
-
   # jackson 2 backwards compatibility
   - org.openrewrite.gradle.AddDependency:
       groupId: org.springframework.boot
@@ -47,6 +42,13 @@ recipeList:
       artifactId: spring-boot-starter-webmvc-test
       configuration: testImplementation
       onlyIfUsing: org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+
+  # DataJPATest
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-data-jpa-test
+      configuration: testImplementation
+      onlyIfUsing: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
@@ -126,9 +128,9 @@ recipeList:
       newFullyQualifiedTypeName: org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 
   # DataJPATest
-  #  - org.openrewrite.java.ChangeType:
-  #      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-  #      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+      newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
@@ -325,7 +327,13 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
       find: 'import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc'
-      replace: 'org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc'
+      replace: 'import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc'
+      caseSensitive: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.kt'
+      find: 'import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
+      replace: 'import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest'
       caseSensitive: true
 
   ####
@@ -333,8 +341,8 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
+  #  - org.openrewrite.java.RemoveAnnotation:
+  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
