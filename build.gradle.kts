@@ -16,7 +16,7 @@ plugins {
 	id("org.springframework.boot") version "3.5.7"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.3"
-	id("com.google.cloud.tools.jib") version "3.4.5"
+	id("com.google.cloud.tools.jib") version "3.5.0"
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.0.1.6134"
 
@@ -25,7 +25,7 @@ plugins {
 	kotlin("plugin.jpa") version "2.2.21"
 	kotlin("kapt") version "2.2.21"
 
-	id("org.cyclonedx.bom") version "3.0.1"
+	id("org.cyclonedx.bom") version "3.0.2"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
