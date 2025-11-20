@@ -1,6 +1,6 @@
 package org.goafabric.personservice.openrewrite;
 
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 class DataJpaIT {
