@@ -179,11 +179,11 @@ recipeList:
       filePattern: '**/*.java;**/*.kt'
 
   # deactivate springdoc kotlin support for now
-  - org.openrewrite.yaml.MergeYaml:
-      filePattern: src/main/resources/application.yml
-      key: $
-      yaml: |
-        springdoc.enable-kotlin: false
+  #  - org.openrewrite.yaml.MergeYaml:
+  #      filePattern: src/main/resources/application.yml
+  #      key: $
+  #      yaml: |
+  #        springdoc.enable-kotlin: false
 
   # shut of disconnected otel
   - org.openrewrite.yaml.MergeYaml:
@@ -263,6 +263,9 @@ recipeList:
       find: '.buildConsumerProperties(null)'
       replace: '.buildConsumerProperties()'
 
+  ########## Hack Section ##########
+
+
   # Kotlin Code Specific Hackz
   - org.openrewrite.text.FindAndReplace:
       find: 'response.body.'
@@ -340,6 +343,9 @@ recipeList:
   # TODO: Removal
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
+
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
 
   #  - org.openrewrite.java.RemoveAnnotation:
   #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
