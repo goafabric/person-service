@@ -3,11 +3,10 @@
 
 # code changes  + rewrite change
 - Jackson Import Changes
-- reflection hint changes tenantresolver
+- reflection hint changes Flyway, Type, Kafka
 
 # bug create (verify with snapshot)
 - Kotlin 2.3.0 + kapt + mapstruct
- 
 
 # reverify
 - springdoc version upgrade after 4.0 GA : https://github.com/springdoc/springdoc-openapi/releases
