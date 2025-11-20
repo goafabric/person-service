@@ -1,7 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
-val javaVersion = "25"
+val javaVersion = "21"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
@@ -21,7 +21,7 @@ plugins {
 	id("org.cyclonedx.bom") version "3.0.2"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 
-	//id("org.openrewrite.rewrite") version "7.17.0"
+    id("org.openrewrite.rewrite") version "7.20.0"
 }
 
 repositories {
@@ -121,3 +121,4 @@ openApi {
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
+rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
