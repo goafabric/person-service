@@ -21,8 +21,6 @@ import java.util.Map;
 @Component
 @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
 @SuppressWarnings("java:S2095") //connection closing is handled by framework
-//@RegisterReflection(classes = {org.flywaydb.core.internal.configuration.extensions.PrepareScriptFilenameConfigurationExtension.class, tools.jackson.databind.jsontype.NamedType.class
-//}, memberCategories = {MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS})
 public class TenantResolver implements CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
 
     private final transient DataSource dataSource;
