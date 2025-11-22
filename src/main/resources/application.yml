@@ -69,6 +69,7 @@ resilience4j.circuitbreaker:
       waitDurationInOpenState: 30s #Time the CircuitBreaker should wait before transitioning back from open to half-open.
       minimumNumberOfCalls: 5 #The minimum number of calls which are required before the CircuitBreaker can calculate the error rate.
       permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
+      recordExceptions: "org.springframework.web.client.ResourceAccessException" #Only record Connection Exceptions, all other functional Exceptions are HttpClientExceptions
 
 #logging
 logging.pattern.level: "%5p tenantId=%X{tenantId:-}" #"%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}] tenantId=%X{tenantId:-}"
