@@ -24,7 +24,8 @@ spring.application.name: person-service
 management.tracing.sampling.probability: "1.0"
 logging.level.io.opentelemetry: "OFF"
 logging.level.io.micrometer.registry.otlp: "OFF"
-management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
+#management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
+management.opentelemetry.tracing.export.otlp.endpoint: "http://localhost:4318/v1/traces"
 
 #persistence
 spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
