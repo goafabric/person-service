@@ -1,6 +1,7 @@
 package org.goafabric.personservice.adapter;
 
 import org.goafabric.personservice.extensions.UserContext;
+import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
