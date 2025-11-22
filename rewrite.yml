@@ -385,6 +385,12 @@ recipeList:
       find: 'nativeImageName -check-integrity")'
       replace: 'nativeImageName -Dspring.context.exit=onRefresh")'
 
+  # otel, warning this needs changes in kubernetes configmap also !
+  - org.openrewrite.text.FindAndReplace:
+      find: management.otlp.tracing.endpoint
+      replace: management.opentelemetry.tracing.export.otlp.endpoint
+      filePattern: 'src/main/resources/application.yml'
+
   # Document fix
   - org.openrewrite.text.FindAndReplace:
       find: spring.data.mongodb.
