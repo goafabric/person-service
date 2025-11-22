@@ -80,13 +80,13 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       find: "implementation\\([\"']net\\.ttddyy\\.observation:datasource-micrometer-spring-boot:[^\"']+[\"']\\)"
-      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
+      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0\")"
       regex: true
 
-#  - org.openrewrite.text.FindAndReplace:
-#      find: "implementation\\([\"']org\\.springdoc:springdoc-openapi-starter-webmvc-ui:[^\"']+[\"']\\)"
-#      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0\")"
-#      regex: true
+  - org.openrewrite.text.FindAndReplace:
+      find: "implementation\\([\"']org\\.springdoc:springdoc-openapi-starter-webmvc-ui:[^\"']+[\"']\\)"
+      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0\")"
+      regex: true
 
   # Spring Boot Imports
   - org.openrewrite.java.ChangeType:
@@ -179,11 +179,11 @@ recipeList:
       filePattern: '**/*.java;**/*.kt'
 
   # deactivate springdoc kotlin support for now
-  - org.openrewrite.yaml.MergeYaml:
-      filePattern: src/main/resources/application.yml
-      key: $
-      yaml: |
-        springdoc.enable-kotlin: false
+#  - org.openrewrite.yaml.MergeYaml:
+#      filePattern: src/main/resources/application.yml
+#      key: $
+#      yaml: |
+#        springdoc.enable-kotlin: false
 
   # shut of disconnected otel
   - org.openrewrite.yaml.MergeYaml:
@@ -297,11 +297,6 @@ recipeList:
 
 
   # Kotlin Changetype Hackz
-  #  - org.openrewrite.text.FindAndReplace:
-  #      filePattern: '**/*.kt'
-  #      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
-  #      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
-  #      caseSensitive: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
