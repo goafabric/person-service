@@ -379,6 +379,12 @@ recipeList:
       find: 'S3Client s3Client) {'
       replace: '@org.springframework.beans.factory.annotation.Autowired(required = false) S3Client s3Client) {'
 
+  # check-integrity
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'nativeImageName -check-integrity")'
+      replace: 'nativeImageName -Dspring.context.exit=onRefresh")'
+
   # Document fix
   - org.openrewrite.text.FindAndReplace:
       find: spring.data.mongodb.
