@@ -198,6 +198,11 @@ recipeList:
       find: '.haveSimpleNameNotContaining("AuditTrailListener")'
       replace: '.haveSimpleNameNotContaining("AuditTrailListener").and().resideOutsideOfPackage("..persistence.entity..")'
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: "**/*RulesTest*"
+      find: '"com.fasterxml.jackson..",'
+      replace: '"com.fasterxml.jackson..","tools.jackson..",'
+
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
       find: 'ResponseEntity<String?>'
