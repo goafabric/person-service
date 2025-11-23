@@ -5,11 +5,11 @@ recipeList:
   # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
-      newVersion: 4.0.0-RC1
+      newVersion: 4.0.0
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
-      newVersion: 7.1.4.Final
+      newVersion: 7.1.8.Final
 
   # add new starters with autoconfig
   - org.openrewrite.gradle.AddDependency:
@@ -80,12 +80,12 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       find: "implementation\\([\"']net\\.ttddyy\\.observation:datasource-micrometer-spring-boot:[^\"']+[\"']\\)"
-      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1\")"
+      replace: "implementation(\"net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0\")"
       regex: true
 
   - org.openrewrite.text.FindAndReplace:
       find: "implementation\\([\"']org\\.springdoc:springdoc-openapi-starter-webmvc-ui:[^\"']+[\"']\\)"
-      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-RC1\")"
+      replace: "implementation(\"org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0\")"
       regex: true
 
   # Spring Boot Imports
@@ -198,6 +198,11 @@ recipeList:
       find: '.haveSimpleNameNotContaining("AuditTrailListener")'
       replace: '.haveSimpleNameNotContaining("AuditTrailListener").and().resideOutsideOfPackage("..persistence.entity..")'
 
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: "**/*RulesTest*"
+      find: '"com.fasterxml.jackson..",'
+      replace: '"com.fasterxml.jackson..","tools.jackson..",'
+
   # Kotlin
   - org.openrewrite.text.FindAndReplace:
       find: 'ResponseEntity<String?>'
@@ -297,11 +302,6 @@ recipeList:
 
 
   # Kotlin Changetype Hackz
-  #  - org.openrewrite.text.FindAndReplace:
-  #      filePattern: '**/*.kt'
-  #      find: 'import org.springframework.boot.test.web.server.LocalServerPort'
-  #      replace: 'import org.springframework.boot.web.server.test.LocalServerPort'
-  #      caseSensitive: true
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.kt'
@@ -344,8 +344,8 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
-  - org.openrewrite.java.RemoveAnnotation:
-      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
+  #  - org.openrewrite.java.RemoveAnnotation:
+  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
 
   #  - org.openrewrite.java.RemoveAnnotation:
   #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
@@ -378,6 +378,18 @@ recipeList:
       filePattern: '**/*.java'
       find: 'S3Client s3Client) {'
       replace: '@org.springframework.beans.factory.annotation.Autowired(required = false) S3Client s3Client) {'
+
+  # check-integrity
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'nativeImageName -check-integrity")'
+      replace: 'nativeImageName -Dspring.context.exit=onRefresh")'
+
+  # otel, warning this needs changes in kubernetes configmap also !
+  - org.openrewrite.text.FindAndReplace:
+      find: management.otlp.tracing.endpoint
+      replace: management.opentelemetry.tracing.export.otlp.endpoint
+      filePattern: 'src/main/resources/application.yml'
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
