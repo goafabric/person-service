@@ -13,7 +13,7 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116c
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "4.0.0-RC1"
+	id("org.springframework.boot") version "4.0.0"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.3"
 	id("com.google.cloud.tools.jib") version "3.5.1"
@@ -40,9 +40,9 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-RC1")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0")
 		implementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
