@@ -43,5 +43,14 @@ class ApplicationRuntimeHints : RuntimeHintsRegistrar {
         hints.reflection().registerType(
             TypeReference.of("org.springframework.web.client.ResourceAccessException"),
             Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("java.lang.reflect.Parameter"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("java.lang.reflect.Executable"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
     }
 }
