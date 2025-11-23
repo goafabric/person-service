@@ -44,6 +44,7 @@ class ApplicationRuntimeHints : RuntimeHintsRegistrar {
             TypeReference.of("org.springframework.web.client.ResourceAccessException"),
             Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
 
+        //kotlin reflection stuff
         hints.reflection().registerType(
             TypeReference.of("java.lang.reflect.Parameter"),
             Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
