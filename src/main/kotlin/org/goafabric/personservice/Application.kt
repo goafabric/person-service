@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient
 @SpringBootApplication
 class Application(@Autowired private val context: ConfigurableApplicationContext):
     CommandLineRunner {
-    override fun run(vararg args: String?) {
+    override fun run(vararg args: String) {
         if (args.isNotEmpty() && "-check-integrity" == args[0]) {
             context.addApplicationListener(ApplicationListener { _: ApplicationReadyEvent? ->
                 RestClient.create().get()
@@ -22,7 +22,7 @@ class Application(@Autowired private val context: ConfigurableApplicationContext
                     .retrieve().body(
                         String::class.java
                     )
-                SpringApplication.exit(context, ExitCodeGenerator { 0 })
+                SpringApplication.exit(context!!, ExitCodeGenerator { 0 })
             })
         }
     }

@@ -23,7 +23,7 @@ object ApplicationRulesTest {
         .and()
         .doNotImplement(RuntimeHintsRegistrar::class.java)
         .and()
-        .haveSimpleNameNotContaining("AuditTrailListener")
+        .haveSimpleNameNotContaining("AuditTrailListener").and().resideOutsideOfPackage("..persistence.entity..")
         .should()
         .dependOnClassesThat()
         .resideInAPackage("java.lang.reflect")

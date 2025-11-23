@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
-val javaVersion = "24" //has to be set to 25 for open rewrite script
+val javaVersion = "21" //has to be set to 25 for open rewrite script
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 tasks.withType<KotlinCompile>().all { compilerOptions { jvmTarget.set(JvmTarget.fromTarget(javaVersion)) } }
 
@@ -13,7 +13,7 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116c
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "3.5.7"
+	id("org.springframework.boot") version "4.0.0-RC1"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.3"
 	id("com.google.cloud.tools.jib") version "3.5.1"
@@ -27,6 +27,7 @@ plugins {
 
 	id("org.cyclonedx.bom") version "3.0.2"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
+    id("org.openrewrite.rewrite") version "7.20.0"
 }
 
 repositories {
@@ -39,12 +40,16 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-RC1")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.2.0")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0-RC1")
 		implementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
+
+    implementation("org.springframework.boot:spring-boot-jackson2")
+    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
 }
 
 dependencies {
@@ -56,18 +61,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
-	implementation("io.micrometer:micrometer-tracing-bridge-otel")
-	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-
 	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
-	implementation("io.projectreactor:reactor-core")
+	implementation("org.springframework.boot:spring-boot-jackson2")
+    implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
-	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
@@ -78,14 +81,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
 	implementation("com.h2database:h2")
 	implementation("org.postgresql:postgresql")
-	implementation("org.flywaydb:flyway-core")
+	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
 	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
 	//kotlin
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -134,3 +139,4 @@ openApi {
 }
 
 kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")
+rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }

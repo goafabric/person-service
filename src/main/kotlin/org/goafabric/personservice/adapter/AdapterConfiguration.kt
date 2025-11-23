@@ -36,6 +36,6 @@ class AdapterConfiguration {
             }
             .requestFactory(requestFactory)
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
-            .createClient(adapterType!!)
+            .createClient(adapterType!! as Class<A & Any>)
     }
 }
