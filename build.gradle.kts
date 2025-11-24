@@ -69,7 +69,7 @@ dependencies {
 	implementation("org.flywaydb:flyway-database-postgresql")
 
 	//mongodb + elastic
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	//implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
 	//code generation
