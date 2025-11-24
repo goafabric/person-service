@@ -382,8 +382,8 @@ recipeList:
   # check-integrity
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
-      find: 'nativeImageName -check-integrity")'
-      replace: 'nativeImageName -Dspring.context.exit=onRefresh")'
+      find: '-check-integrity'
+      replace: '-Dspring.context.exit=onRefresh'
 
   # otel, warning this needs changes in kubernetes configmap also !
   - org.openrewrite.text.FindAndReplace:
