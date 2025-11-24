@@ -40,6 +40,15 @@ public class ApplicationBaseRuntimeHints implements RuntimeHintsRegistrar {
         hints.reflection().registerType(TypeReference.of("org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
 
+        //kotlin reflection stuff
+        hints.reflection().registerType(
+                TypeReference.of("java.lang.reflect.Parameter"),
+                builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
+
+        hints.reflection().registerType(
+                TypeReference.of("java.lang.reflect.Executable"),
+                builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
+
         //adapter
         hints.reflection().registerType(TypeReference.of("org.springframework.web.client.ResourceAccessException"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
