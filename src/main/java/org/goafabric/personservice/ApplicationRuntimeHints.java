@@ -44,10 +44,9 @@ public class ApplicationRuntimeHints implements RuntimeHintsRegistrar {
         hints.reflection().registerType(TypeReference.of("org.springframework.web.client.ResourceAccessException"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
 
-
         //flyway scripts
-        hints.resources().registerPattern("db/migration/h2/*.sql")
-        hints.resources().registerPattern("db/migration/common/*.sql")
-        hints.resources().registerPattern("db/migration/postgresql/*.sql")
+        hints.resources().registerPattern("db/migration/h2/*.sql");
+        hints.resources().registerPattern("db/migration/common/*.sql");
+        hints.resources().registerPattern("db/migration/postgresql/*.sql");
     }
 }
