@@ -53,5 +53,10 @@ class ApplicationBaseRuntimeHints : RuntimeHintsRegistrar {
             TypeReference.of("java.lang.reflect.Executable"),
             Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
 
+
+        //flyway scripts
+        hints.resources().registerPattern("db/migration/h2/*.sql")
+        hints.resources().registerPattern("db/migration/common/*.sql")
+        hints.resources().registerPattern("db/migration/postgresql/*.sql")
     }
 }
