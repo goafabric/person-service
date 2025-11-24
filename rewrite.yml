@@ -178,13 +178,6 @@ recipeList:
       replace: 'MemberCategory.ACCESS_DECLARED_FIELDS'
       filePattern: '**/*.java;**/*.kt'
 
-  # deactivate springdoc kotlin support for now
-#  - org.openrewrite.yaml.MergeYaml:
-#      filePattern: src/main/resources/application.yml
-#      key: $
-#      yaml: |
-#        springdoc.enable-kotlin: false
-
   # shut of disconnected otel
   - org.openrewrite.yaml.MergeYaml:
       filePattern: src/main/resources/application.yml
@@ -268,8 +261,7 @@ recipeList:
       find: '.buildConsumerProperties(null)'
       replace: '.buildConsumerProperties()'
 
-  ########## Hack Section ##########
-
+  ########## Kotlin Hack Section ##########
 
   # Kotlin Code Specific Hackz
   - org.openrewrite.text.FindAndReplace:
@@ -340,15 +332,10 @@ recipeList:
       caseSensitive: true
 
   ####
-  # TODO: Removal
+  #  Removal
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
-#  - org.openrewrite.java.RemoveAnnotation:
-#      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
-  
-#  - org.openrewrite.java.RemoveAnnotation:
-#      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
@@ -395,17 +382,6 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       find: spring.data.mongodb.
       replace: spring.mongodb.
-      filePattern: 'src/main/resources/application.yml'
-
-  - org.openrewrite.text.FindAndReplace:
-      find: |
-        jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
-        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
-        elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticsearchRestHealthContributorAutoConfiguration"
-      replace: |
-        jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration"
-        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
-        elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
       filePattern: 'src/main/resources/application.yml'
 
 ---
@@ -507,13 +483,3 @@ recipeList:
       filePattern: '**/*BatchConfiguration.java'
       find: '@Override'
       replace: ''
-
-  # Document fix
-  - org.openrewrite.text.FindAndReplace:
-      find: |
-        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
-        jdbc.autoconfiguration: "org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration"
-      replace: |
-        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
-        jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration"
-    filePattern: 'src/main/resources/application.yml'
