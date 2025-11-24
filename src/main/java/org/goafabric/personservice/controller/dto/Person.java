@@ -11,5 +11,16 @@ public record Person (
     @Nullable Long version,
     @NotNull @Size(min = 3, max = 255) String firstName,
     @NotNull @Size(min = 3, max = 255) String lastName,
+    //Temporal birthDate,
     List<Address> address) {
+    /*
+    public Person(String id,
+                  Long version,
+                  String firstName,
+                  String lastName,
+                  List<Address> address) {
+        this(id, version, firstName, lastName, LocalDate.now(), address);
+    }
+
+     */
 }
