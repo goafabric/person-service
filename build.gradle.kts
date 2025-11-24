@@ -27,7 +27,6 @@ plugins {
 
 	id("org.cyclonedx.bom") version "3.0.2"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-    id("org.openrewrite.rewrite") version "7.20.0"
 }
 
 repositories {
@@ -140,4 +139,3 @@ openApi {
 }
 
 kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")
-rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }
