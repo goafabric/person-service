@@ -29,8 +29,11 @@ public class ObjectMapperConfig {
         var objectMapper = new ObjectMapper();
         objectMapper.registerModule(buildTemporalModule());
         return objectMapper;
-        //return JsonMapper.builder().addModule(buildTemporalModule()).build();
     }
+
+
+    //@Bean
+    //public JsonMapper jsonMapper() { return JsonMapper.builder().addModule(buildTemporalModule()).build(); }
 
     private static SimpleModule buildTemporalModule() {
         return  new SimpleModule()
