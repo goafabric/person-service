@@ -97,7 +97,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         );
     }
 
-    private String getJsonValue(final Object object) throws JsonProcessingException {
+    private String getJsonValue(final Object object)  {
         return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
     }
 
