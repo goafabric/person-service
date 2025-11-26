@@ -65,7 +65,6 @@ dependencies {
 	implementation("org.postgresql:postgresql")
     implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 	//mongodb + elastic
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
