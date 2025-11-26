@@ -1,6 +1,5 @@
 package org.goafabric.personservice.persistence.extensions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.*;
 import org.goafabric.personservice.extensions.UserContext;
 import org.slf4j.Logger;
@@ -80,7 +79,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     }
 
     private AuditTrail createAuditTrail(
-            DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) throws JsonProcessingException {
+            DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) {
         final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
                 UUID.randomUUID().toString(),
