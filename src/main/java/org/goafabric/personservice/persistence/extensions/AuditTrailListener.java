@@ -1,8 +1,5 @@
 package org.goafabric.personservice.persistence.extensions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.*;
 import org.goafabric.personservice.extensions.UserContext;
 import org.slf4j.Logger;
@@ -18,6 +15,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.json.JsonMapper;
 
 import javax.sql.DataSource;
 import java.util.Date;
@@ -28,6 +26,8 @@ public class AuditTrailListener implements ApplicationContextAware {
     private static ApplicationContext context;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
 
     private enum DbOperation { CREATE, READ, UPDATE, DELETE }
 
@@ -79,7 +79,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     }
 
     private AuditTrail createAuditTrail(
-            DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) throws JsonProcessingException {
+            DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) {
         final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
                 UUID.randomUUID().toString(),
@@ -96,8 +96,8 @@ public class AuditTrailListener implements ApplicationContextAware {
         );
     }
 
-    private String getJsonValue(final Object object) throws JsonProcessingException {
-        return new ObjectMapper().registerModule(new JavaTimeModule()).writerWithDefaultPrettyPrinter().writeValueAsString(object);
+    private String getJsonValue(final Object object)  {
+        return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
     }
 
     @Component

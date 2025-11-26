@@ -14,7 +14,7 @@ public interface PersonRepository extends CrudRepository<PersonEo, String> {
     Page<PersonEo> findAll(Example<PersonEo> example, Pageable pageable);
 
     @EntityGraph(attributePaths = "address")
-    Page<PersonEo> findByAddressStreetContainsIgnoreCase(String street, Pageable pageable);
+    Page<PersonEo> findByAddressStreetContains(String street, Pageable pageable);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW) //Workaround for getting the version increased, for JPARepository there is already a working method
     default PersonEo saveAndFlush(PersonEo person) { return save(person); }

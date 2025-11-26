@@ -86,7 +86,7 @@ public class ApplicationRulesTest {
                     "jakarta..",
                     "org.springframework..",
                     "org.slf4j..",
-                    "com.fasterxml.jackson..",
+                    "com.fasterxml.jackson..","tools.jackson..",
                     "org.flywaydb..",
                     "org.hibernate..",
                     "org.mapstruct..",
@@ -96,7 +96,8 @@ public class ApplicationRulesTest {
                     "org.springdoc..",
                     "net.ttddyy..",
 
-                    "org.javers.."
+                    "org.javers..",
+                    "tools.jackson.databind.jsontype.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 
