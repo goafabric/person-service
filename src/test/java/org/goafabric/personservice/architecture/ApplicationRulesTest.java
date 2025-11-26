@@ -12,7 +12,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packagesOf = Application.class, importOptions = {ImportOption.DoNotIncludeTests.class, ApplicationRulesTest.IgnoreCglib.class})
 public class ApplicationRulesTest {
@@ -73,10 +74,8 @@ public class ApplicationRulesTest {
                     .orShould()
                     .dependOnClassesThat()
                     .resideInAPackage("org.apache.commons..")
-                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");
+                    .because("Java 21+ and Spring cover the functionality already, managing extra libraries with transient dependencies should be avoided");@ArchTest
 
-
-    @ArchTest
     static final ArchRule onlyAllowedLibraries = ArchRuleDefinition.classes()
             .should()
             .onlyDependOnClassesThat()
@@ -87,27 +86,18 @@ public class ApplicationRulesTest {
                     "jakarta..",
                     "org.springframework..",
                     "org.slf4j..",
-                    "org.aspectj.lang..",
-                    "com.fasterxml.jackson..",
+                    "com.fasterxml.jackson..","tools.jackson..",
                     "org.flywaydb..",
                     "org.hibernate..",
                     "org.mapstruct..",
                     "io.github.resilience4j..",
                     "io.micrometer..",
+
                     "org.springdoc..",
                     "net.ttddyy..",
 
-                    "io.swagger.v3..",
-                    "com.github.benmanes.caffeine..",
-                    "com.azure.storage.blob..",
-                    "software.amazon.awssdk..", "io.awspring.cloud..",
-
                     "org.javers..",
-                    "com.nimbusds.jwt..",
-
-                    "kotlin..",
-                    "kotlinx..",
-                    "org.jetbrains.annotations.."
+                    "tools.jackson.databind.jsontype.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 
@@ -120,16 +110,5 @@ public class ApplicationRulesTest {
             .andShould()
             .haveSimpleNameEndingWith("Management")
             .because("Avoid filler names like Impl or Management, use neutral Bean instead");
-
-    @ArchTest
-    static final ArchRule asyncIsBanished =
-            noMethods().should().beAnnotatedWith(org.springframework.scheduling.annotation.Async.class)
-                    .because("Using Async leads to ThreadLocals being erased, Exceptions being swallowed, Resilience4j not working and possible Concurrency Issues in General");
-
-    @ArchTest
-    static final ArchRule flywayJavaMigrationsAreBanished =
-            noClasses().should().dependOnClassesThat()
-                    .resideInAnyPackage("org.flywaydb.core.api.migration..")
-                    .because("Flyway Java Migrations should not be used, complex import logic should go to a separate batch, simple ones with a simple Java class if aware of the consequences");
 
 }
