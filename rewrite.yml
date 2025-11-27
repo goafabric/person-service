@@ -50,6 +50,13 @@ recipeList:
       configuration: testImplementation
       onlyIfUsing: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
+  # WebTestclient
+  - org.openrewrite.gradle.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-webflux-test
+      configuration: testImplementation
+      onlyIfUsing: org.springframework.test.web.reactive.server.WebTestClient
+
   # remove dependencies
   - org.openrewrite.gradle.RemoveDependency:
       groupId: io.micrometer
@@ -131,6 +138,11 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
       newFullyQualifiedTypeName: org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+
+  # WebTestClient
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
+      newFullyQualifiedTypeName: org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient
 
   # Kafka Imports
   - org.openrewrite.java.ChangeType:
