@@ -178,6 +178,13 @@ recipeList:
       replace: 'MemberCategory.ACCESS_DECLARED_FIELDS'
       filePattern: '**/*.java;**/*.kt'
 
+  # deactivate springdoc kotlin support for now
+  #  - org.openrewrite.yaml.MergeYaml:
+  #      filePattern: src/main/resources/application.yml
+  #      key: $
+  #      yaml: |
+  #        springdoc.enable-kotlin: false
+
   # shut of disconnected otel
   - org.openrewrite.yaml.MergeYaml:
       filePattern: src/main/resources/application.yml
@@ -261,7 +268,8 @@ recipeList:
       find: '.buildConsumerProperties(null)'
       replace: '.buildConsumerProperties()'
 
-  ########## Kotlin Hack Section ##########
+  ########## Hack Section ##########
+
 
   # Kotlin Code Specific Hackz
   - org.openrewrite.text.FindAndReplace:
@@ -332,10 +340,15 @@ recipeList:
       caseSensitive: true
 
   ####
-  #  Removal
+  # TODO: Removal
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
+  #  - org.openrewrite.java.RemoveAnnotation:
+  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
+
+  #  - org.openrewrite.java.RemoveAnnotation:
+  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
 
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
@@ -382,6 +395,17 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       find: spring.data.mongodb.
       replace: spring.mongodb.
+      filePattern: 'src/main/resources/application.yml'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: |
+        jpa.autoconfiguration: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
+        elasticsearch.autoconfiguration: "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration, org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticsearchRestHealthContributorAutoConfiguration"
+      replace: |
+        jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration"
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
+        elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
       filePattern: 'src/main/resources/application.yml'
 
 ---
@@ -473,6 +497,100 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder
       newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder
 
+  ##
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemProcessor
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemProcessor
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.FlatFileItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.FlatFileItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.json.JsonItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.json.JsonItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ExecutionContext
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ExecutionContext
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemStreamException
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemStreamException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.MultiResourceItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.MultiResourceItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.repeat.RepeatStatus
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.repeat.RepeatStatus
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.mapping.BeanWrapperFieldSetMapper
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.mapping.DefaultLineMapper
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.separator.DefaultRecordSeparatorPolicy
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.Chunk
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.Chunk
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.data.RepositoryItemWriter
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.data.RepositoryItemWriter
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.json.JsonObjectReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.json.JsonObjectReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ParseException
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ParseException
+
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersInvalidException
+#      newFullyQualifiedTypeName:
+
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobExecutionAlreadyRunningException
+#      newFullyQualifiedTypeName:
+#
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException
+#      newFullyQualifiedTypeName:
+#
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobRestartException
+#      newFullyQualifiedTypeName:
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.AbstractLineTokenizer
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.transform.AbstractLineTokenizer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.DelimitedLineTokenizer
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer
+
+  # chunk
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'chunk\(\s*([^,]+)\s*,\s*transactionManager\s*\)'
+      replace: 'chunk($1)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'jobExecution.getJobId()'
+      replace: 'jobExecution.getJobInstanceId()'
+
   # Code specific changes
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*BatchConfiguration.java'
@@ -483,3 +601,25 @@ recipeList:
       filePattern: '**/*BatchConfiguration.java'
       find: '@Override'
       replace: ''
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'throws JobParametersInvalidException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobRestartException'
+      replace: ''
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'throw new JobParametersInvalidException'
+      replace: 'throw new IllegalStateException'
+
+
+
+  # Document fix
+  - org.openrewrite.text.FindAndReplace:
+      find: |
+        mongodb.autoconfiguration: "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration, org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration"
+        jdbc.autoconfiguration: "org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration"
+      replace: |
+        mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
+        jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration"
+    filePattern: 'src/main/resources/application.yml'
