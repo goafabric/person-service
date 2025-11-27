@@ -555,21 +555,17 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.item.ParseException
       newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ParseException
 
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersInvalidException
-#      newFullyQualifiedTypeName:
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobExecutionAlreadyRunningException
+      newFullyQualifiedTypeName: org.springframework.batch.core.launch.JobExecutionAlreadyRunningException
 
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobExecutionAlreadyRunningException
-#      newFullyQualifiedTypeName:
-#
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException
-#      newFullyQualifiedTypeName:
-#
-#  - org.openrewrite.java.ChangeType:
-#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobRestartException
-#      newFullyQualifiedTypeName:
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException
+      newFullyQualifiedTypeName: org.springframework.batch.core.launch.JobInstanceAlreadyCompleteException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobRestartException
+      newFullyQualifiedTypeName: org.springframework.batch.core.launch.JobRestartException
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.AbstractLineTokenizer
@@ -578,6 +574,11 @@ recipeList:
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.DelimitedLineTokenizer
       newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'throw new JobParametersInvalidException'
+      replace: 'throw new IllegalStateException'
 
   # chunk
   - org.openrewrite.text.FindAndReplace:
@@ -602,11 +603,6 @@ recipeList:
       find: '@Override'
       replace: ''
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.java;**/*.kt'
-      find: 'throws JobParametersInvalidException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobRestartException'
-      replace: ''
-
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
@@ -617,5 +613,3 @@ recipeList:
         mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
         jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration"
     filePattern: 'src/main/resources/application.yml'
-rewrite:
-  yml:
