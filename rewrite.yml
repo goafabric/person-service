@@ -607,12 +607,6 @@ recipeList:
       find: 'throws JobParametersInvalidException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobRestartException'
       replace: ''
 
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: '**/*.java;**/*.kt'
-      find: 'throw new JobParametersInvalidException'
-      replace: 'throw new IllegalStateException'
-
-
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
@@ -623,3 +617,5 @@ recipeList:
         mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
         jdbc.autoconfiguration: "org.springframework.boot.data.jdbc.autoconfigure.DataJdbcRepositoriesAutoConfiguration"
     filePattern: 'src/main/resources/application.yml'
+rewrite:
+  yml:
