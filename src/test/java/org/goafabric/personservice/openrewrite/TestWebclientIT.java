@@ -1,4 +1,3 @@
-/*
 package org.goafabric.personservice.openrewrite;
 
 import org.junit.jupiter.api.Test;
@@ -19,5 +18,3 @@ class TestWebclientIT {
         webTestClient.toString();
     }
 }
-
- */

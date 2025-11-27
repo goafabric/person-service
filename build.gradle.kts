@@ -78,7 +78,7 @@ dependencies {
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-    //testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
