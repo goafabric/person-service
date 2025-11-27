@@ -497,6 +497,100 @@ recipeList:
       oldFullyQualifiedTypeName: org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder
       newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder
 
+  ##
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemProcessor
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemProcessor
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.FlatFileItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.FlatFileItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.json.JsonItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.json.JsonItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ExecutionContext
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ExecutionContext
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ItemStreamException
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ItemStreamException
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.MultiResourceItemReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.MultiResourceItemReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.repeat.RepeatStatus
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.repeat.RepeatStatus
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.mapping.BeanWrapperFieldSetMapper
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.mapping.DefaultLineMapper
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.mapping.DefaultLineMapper
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.separator.DefaultRecordSeparatorPolicy
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.Chunk
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.Chunk
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.data.RepositoryItemWriter
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.data.RepositoryItemWriter
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.json.JsonObjectReader
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.json.JsonObjectReader
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.ParseException
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.ParseException
+
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.job.parameters.JobParametersInvalidException
+#      newFullyQualifiedTypeName:
+
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobExecutionAlreadyRunningException
+#      newFullyQualifiedTypeName:
+#
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException
+#      newFullyQualifiedTypeName:
+#
+#  - org.openrewrite.java.ChangeType:
+#      oldFullyQualifiedTypeName: org.springframework.batch.core.repository.JobRestartException
+#      newFullyQualifiedTypeName:
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.AbstractLineTokenizer
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.transform.AbstractLineTokenizer
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.batch.item.file.transform.DelimitedLineTokenizer
+      newFullyQualifiedTypeName: org.springframework.batch.infrastructure.item.file.transform.DelimitedLineTokenizer
+
+  # chunk
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'chunk\(\s*([^,]+)\s*,\s*transactionManager\s*\)'
+      replace: 'chunk($1)'
+      regex: true
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'jobExecution.getJobId()'
+      replace: 'jobExecution.getJobInstanceId()'
+
   # Code specific changes
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*BatchConfiguration.java'
@@ -507,6 +601,18 @@ recipeList:
       filePattern: '**/*BatchConfiguration.java'
       find: '@Override'
       replace: ''
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'throws JobParametersInvalidException, JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobRestartException'
+      replace: ''
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: '**/*.java;**/*.kt'
+      find: 'throw new JobParametersInvalidException'
+      replace: 'throw new IllegalStateException'
+
+
 
   # Document fix
   - org.openrewrite.text.FindAndReplace:
