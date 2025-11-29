@@ -1,8 +1,5 @@
 package org.goafabric.personservice.persistence.extensions
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import jakarta.persistence.*
 import org.goafabric.personservice.extensions.UserContext
 import org.slf4j.LoggerFactory
@@ -17,12 +14,15 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.jacksonMapperBuilder
 import java.util.*
 import javax.sql.DataSource
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 class AuditTrailListener : ApplicationContextAware {
     private val log = LoggerFactory.getLogger(this.javaClass)
+    private val jacksonMapper : JsonMapper = jacksonMapperBuilder().build()
 
     enum class DbOperation {
         CREATE, READ, UPDATE, DELETE
@@ -80,7 +80,6 @@ class AuditTrailListener : ApplicationContextAware {
         }
     }
 
-    @Throws(JsonProcessingException::class)
     private fun createAuditTrail(
         dbOperation: DbOperation, referenceId: String, oldObject: Any?, newObject: Any?
     ): AuditTrail {
@@ -100,10 +99,8 @@ class AuditTrailListener : ApplicationContextAware {
         )
     }
 
-    @Throws(JsonProcessingException::class)
     private fun getJsonValue(`object`: Any): String {
-        return ObjectMapper().registerModule(JavaTimeModule()).writerWithDefaultPrettyPrinter()
-            .writeValueAsString(`object`)
+        return jacksonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(`object`)
     }
 
     @Component

@@ -73,7 +73,7 @@ object ApplicationRulesTest {
             "jakarta..",
             "org.springframework..",
             "org.slf4j..",
-            "com.fasterxml.jackson..",
+            "com.fasterxml.jackson..","tools.jackson..",
             "org.flywaydb..",
             "org.hibernate..",
             "org.mapstruct..",

@@ -60,8 +60,6 @@ dependencies {
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
-	implementation("org.springframework.boot:spring-boot-jackson2")
-    implementation("io.projectreactor:reactor-core")
 
 	//adapter
 	implementation("io.github.resilience4j:resilience4j-spring-boot3") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
@@ -87,8 +85,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-restclient")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    //implementation("tools.jackson.module:jackson-module-kotlin")
+    implementation("tools.jackson.module:jackson-module-kotlin")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
