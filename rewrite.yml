@@ -8,6 +8,10 @@ recipeList:
       newVersion: 4.0.0
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
+      pluginIdPattern: org.graalvm.buildtools.native
+      newVersion: 0.11.3
+
+  - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
       newVersion: 7.1.8.Final
 
