@@ -27,7 +27,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private static final JsonMapper jsonMapper = JsonMapper.builder().build();
+    private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
 
     private enum DbOperation { CREATE, READ, UPDATE, DELETE }
 
@@ -97,7 +97,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     }
 
     private String getJsonValue(final Object object)  {
-        return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        return JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
     }
 
     @Component
