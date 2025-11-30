@@ -115,7 +115,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	imageName.set(nativeImageName)
 	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to "25", "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx6500m -march=compatibility"))
 	doLast {
-		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -check-integrity") }
+		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -Dspring.context.exit=onRefresh") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
 	}
 }
