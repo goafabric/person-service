@@ -424,7 +424,12 @@ recipeList:
       find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
       replace: 'sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }'
 
-
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'id\\("org\\.openrewrite\\.rewrite"\\) version ".*"'
+      replace: ''
+      regex: true
+      
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: UpgradeSpringBatch_6_0
