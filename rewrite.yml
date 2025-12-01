@@ -434,7 +434,7 @@ recipeList:
   - org.openrewrite.text.FindAndReplace:
       filePattern: "build.gradle.kts"
       find: 'val javaVersion = "21"'
-      replace: 'val javaVersion = (findProperty("javaVersion") as String?) ?: "24"'
+      replace: 'val javaVersion = (findProperty("javaVersion") as String?) ?: "25"'
       regex: true
 
   - org.openrewrite.text.FindAndReplace:
