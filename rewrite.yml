@@ -431,17 +431,17 @@ recipeList:
       regex: true
 
   # java 25
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: "build.gradle.kts"
-      find: 'val javaVersion = "21"'
-      replace: 'val javaVersion = (findProperty("javaVersion") as String?) ?: "25"'
-      regex: true
-
-  - org.openrewrite.text.FindAndReplace:
-      filePattern: "build.gradle.kts"
-      find: 'ibm-semeru-runtimes:open-[^@]+@sha256:[a-fA-F0-9]+'
-      replace: 'ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116cfd51ec37b26c3a1c25de9336d436354e0be4271bda1463e119c'
-      regex: true
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: "build.gradle.kts"
+#      find: 'val javaVersion = "21"'
+#      replace: 'val javaVersion = (findProperty("javaVersion") as String?) ?: "25"'
+#      regex: true
+#
+#  - org.openrewrite.text.FindAndReplace:
+#      filePattern: "build.gradle.kts"
+#      find: 'ibm-semeru-runtimes:open-[^@]+@sha256:[a-fA-F0-9]+'
+#      replace: 'ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116cfd51ec37b26c3a1c25de9336d436354e0be4271bda1463e119c'
+#      regex: true
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
