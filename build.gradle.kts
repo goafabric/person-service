@@ -5,7 +5,7 @@ val javaVersion = "21"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116cfd51ec37b26c3a1c25de9336d436354e0be4271bda1463e119c"
+val baseImage = "ibm-semeru-runtimes:open-21.0.9_10-jre@sha256:032a056ffa74e5c9f2d95480f704b8c5389882ebc77b3e52b5a628d4eb631aa0"
 
 plugins {
 	java
