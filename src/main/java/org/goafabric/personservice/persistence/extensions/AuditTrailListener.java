@@ -136,7 +136,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     }
 
     private static String getTableName(Object object) {
-        return object.getClass().getSimpleName().replace("Eo", "").toLowerCase();
+        return object != null ? object.getClass().getSimpleName().replace("Eo", "").toLowerCase() : "";
     }
 }
 
