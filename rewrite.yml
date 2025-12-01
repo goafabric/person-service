@@ -360,12 +360,6 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
-  #  - org.openrewrite.java.RemoveAnnotation:
-  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
-
-  #  - org.openrewrite.java.RemoveAnnotation:
-  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
-
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.java;**/*.kt'
@@ -423,6 +417,18 @@ recipeList:
         mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
         elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
       filePattern: 'src/main/resources/application.yml'
+
+  # cleanups
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: 'rewrite { activeRecipe("UpgradeSpringBoot_4_0", "UpgradeSpringBatch_6_0") }'
+      replace: 'sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }'
+
+  - org.openrewrite.text.FindAndReplace:
+      filePattern: 'build.gradle.kts'
+      find: "id\\(\"org\\.openrewrite\\.rewrite\"\\)\\s*version\\s*\"[^\"]+\""
+      replace: ''
+      regex: true
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
