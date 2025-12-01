@@ -360,12 +360,6 @@ recipeList:
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@org.springframework.boot.test.autoconfigure.web.client.RestClientTest'
 
-  #  - org.openrewrite.java.RemoveAnnotation:
-  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.json.JsonTest'
-
-  #  - org.openrewrite.java.RemoveAnnotation:
-  #      annotationPattern: '@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest'
-
   # TODO - Temp. Spring Data Fix
   - org.openrewrite.text.FindAndReplace:
       filePattern: '**/*.java;**/*.kt'
