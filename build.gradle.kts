@@ -56,7 +56,8 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
-	implementation("io.github.resilience4j:resilience4j-spring-boot3")
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
+    implementation("io.github.resilience4j:resilience4j-spring-boot3")
 	implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
 	//persistence
@@ -80,10 +81,6 @@ dependencies {
 	//devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
-
-	//spring boot 4.0
-	implementation("org.springframework.boot:spring-boot-starter-restclient")
-
 }
 
 tasks.withType<Test> {
