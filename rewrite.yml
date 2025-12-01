@@ -426,7 +426,7 @@ recipeList:
 
   - org.openrewrite.text.FindAndReplace:
       filePattern: 'build.gradle.kts'
-      find: 'id\\("org\\.openrewrite\\.rewrite"\\) version ".*"'
+      find: "id\\(\"org\\.openrewrite\\.rewrite\"\\)\\s*version\\s*\"[^\"]+\""
       replace: ''
       regex: true
       
