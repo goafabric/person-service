@@ -5,7 +5,6 @@ import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import tools.jackson.module.kotlin.readValue
 import java.util.*
-import kotlin.to
 
 object UserContext {
     data class UserContextRecord(val tenantId: String, val organizationId: String, val userName: String) {

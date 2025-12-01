@@ -18,7 +18,7 @@ class PersonLogic(
 ) {
     fun getById(id: String): Person {
         return personMapper.map(
-            personRepository.findById(id!!).orElseThrow()
+            personRepository.findById(id).orElseThrow()
         )
     }
 
