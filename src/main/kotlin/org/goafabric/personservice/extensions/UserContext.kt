@@ -17,7 +17,7 @@ object UserContext {
         }
     }
 
-    private val jacksonMapper : JsonMapper = jacksonMapperBuilder().build()
+    private val jsonMapper : JsonMapper = jacksonMapperBuilder().build()
 
     private val CONTEXT: ThreadLocal<UserContextRecord> =
         ThreadLocal.withInitial { UserContextRecord("0", "0", "anonymous") }
@@ -64,7 +64,7 @@ object UserContext {
 
     private fun getUserNameFromUserInfo(userInfo: String?): String? {
         return if (userInfo != null) {
-            val map: Map<String, Any>? = jacksonMapper.readValue(Base64.getUrlDecoder().decode(userInfo))
+            val map: Map<String, Any>? = jsonMapper.readValue(Base64.getUrlDecoder().decode(userInfo))
             map?.get("preferred_username") as? String
         } else { null }
     }
