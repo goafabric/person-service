@@ -1,16 +1,12 @@
 package org.goafabric.personservice.persistence.extensions
 
 import org.flywaydb.core.Flyway
-import org.flywaydb.core.internal.publishing.PublishingConfigurationExtension
-import org.flywaydb.database.postgresql.TransactionalModel
 import org.goafabric.personservice.extensions.UserContext
 import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider
 import org.slf4j.LoggerFactory
-import org.springframework.aot.hint.MemberCategory
-import org.springframework.aot.hint.annotation.RegisterReflection
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
