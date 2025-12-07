@@ -57,6 +57,32 @@ class AuditTrailListenerIT {
                 .isNotNull().contains("updatedFirstName", "updatedLastName");
     }
 
+    @Test
+    public void creatUpdateDeleteAddress() {
+        var address = save().address().getFirst();
+
+        var createAddress = selectFrom("CREATE", address.id());
+        assertThat(createAddress.get("oldValue")).isNull();
+        assertThat(createAddress.get("newValue")).isNotNull();
+        assertThat(Objects.requireNonNull(createAddress.get("newValue")).toString())
+                .isNotNull().contains("Terrace");
+
+
+        /*
+        var updateAddress = selectFrom("UPDATE", address.id());
+        assertThat(updateAddress.get("oldValue")).isNotNull();
+        assertThat(updateAddress.get("newValue")).isNotNull();
+         */
+
+        var deleteAddress = selectFrom("DELETE", address.id());
+        assertThat(deleteAddress.get("oldValue")).isNotNull();
+        assertThat(deleteAddress.get("newValue")).isNull();
+        assertThat(Objects.requireNonNull(deleteAddress.get("oldValue")).toString())
+                .isNotNull().contains("Terrace");
+
+    }
+
+
     @NotNull
     private Map<String, @Nullable Object> selectFrom(String operation, String id) {
         var tableName = schemaPrefix + UserContext.getTenantId() + ".audit_trail";
