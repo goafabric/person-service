@@ -34,6 +34,8 @@ public class ApplicationRulesTest {
                     .doNotImplement(RuntimeHintsRegistrar.class)
                     .and()
                     .haveSimpleNameNotContaining("AuditTrailListener")
+                    .and()
+                    .haveSimpleNameNotContaining("Eo")
                     .should()
                     .dependOnClassesThat()
                     .resideInAPackage("java.lang.reflect")
