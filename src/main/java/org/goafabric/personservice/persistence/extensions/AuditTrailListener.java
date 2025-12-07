@@ -107,7 +107,8 @@ public class AuditTrailListener implements ApplicationContextAware {
 
         @Transactional(propagation = Propagation.REQUIRES_NEW) //new transaction helps us to retrieve the old value still inside the db
         public <T> T findOldObject(Class<T> clazz, String id) {
-            return entityManager.find(clazz, id);
+            var T = entityManager.find(clazz, id);
+            return JSON_MAPPER.readValue(JSON_MAPPER.writeValueAsBytes(T), clazz);
         }
     }
 

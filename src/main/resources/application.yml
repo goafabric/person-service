@@ -40,7 +40,7 @@ spring.datasource.hikari.connection-timeout: "10000"
 multi-tenancy.tenants: "0,5"
 multi-tenancy.schema-prefix: "example_"
 database.provisioning.goals: "-migrate -import-demo-data"
-spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
+#spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
 
 #nosql databases
 spring.autoconfigure.exclude: ${.jpa.autoconfiguration},${mongodb.autoconfiguration},${elasticsearch.autoconfiguration}
@@ -78,7 +78,7 @@ logging.pattern.level: "%5p tenantId=%X{tenantId:-}" #"%5p [${spring.application
 logging.level.root: "WARN"
 logging.level.org.springframework: "INFO"
 
-logging.level.org.goafabric: "INFO"
+logging.level.org.goafabric: "DEBUG"
 logging.level.org.flywaydb.core: "INFO"
 logging.level.org.hibernate.SQL: "INFO"
 
