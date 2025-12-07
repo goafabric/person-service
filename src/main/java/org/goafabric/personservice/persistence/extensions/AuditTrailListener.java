@@ -79,7 +79,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     public void afterUpdate(Object object) {
         final String id = getId(object);
         insertAudit(DbOperation.UPDATE, id,
-                context.getBean(AuditLogic.class).findOldObject(object.getClass(), id), object);
+                context.getBean(AuditDao.class).findOldObject(object.getClass(), id), object);
     }
 
     @PostRemove
@@ -91,7 +91,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         try {
             var auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject);
             log.debug("New audit:\n{}", auditTrail);
-            context.getBean(AuditLogic.class).insertAudit(auditTrail);
+            context.getBean(AuditDao.class).insertAudit(auditTrail);
         } catch (Exception e) {
             log.error("Error during audit:\n{}", e.getMessage(), e);
         }
@@ -120,7 +120,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     @Component
     @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    static class AuditLogic {
+    static class AuditDao {
         @PersistenceContext
         private EntityManager entityManager;
 
