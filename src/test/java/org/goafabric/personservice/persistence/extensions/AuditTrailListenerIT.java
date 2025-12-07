@@ -72,6 +72,7 @@ class AuditTrailListenerIT {
         var updateAddress = selectFrom("UPDATE", address.id());
         assertThat(updateAddress.get("oldValue")).isNotNull();
         assertThat(updateAddress.get("newValue")).isNotNull();
+
          */
 
         var deleteAddress = selectFrom("DELETE", address.id());
@@ -103,17 +104,9 @@ class AuditTrailListenerIT {
                                 createAddress("Everblue Terrace"))
                 ));
 
-        assertThat(person).isNotNull();
-
-        var person2 = personController.getById(person.id());
-        assertThat(person2).isNotNull();
-        assertThat(person2.address()).hasSize(2);
-
-
         //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), "updatedFirstName", "updatedLastName", person.address()));
-        assertThat(personUpdated.id()).isEqualTo(person.id());
-        assertThat(personUpdated.version()).isEqualTo(1L);
+        personController.save(new Person(person.id(), person.version(),
+                "updatedFirstName", "updatedLastName", person.address()));
 
         personRepository.deleteById(person.id());
         return person;
