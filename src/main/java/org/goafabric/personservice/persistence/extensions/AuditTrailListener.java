@@ -23,7 +23,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
 
-    private enum DbOperation { CREATE, READ, UPDATE, DELETE }
+    private enum DbOperation { CREATE, UPDATE, DELETE }
 
     @Entity
     @Table(name = "audit_trail")
