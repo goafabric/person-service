@@ -33,7 +33,7 @@ class AuditTrailListenerIT {
     @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix;
 
     @Test
-    public void test() {
+    public void creatUpdateDeletePerson() {
         var person = save();
 
         var createPerson = selectFrom("CREATE", person.id());
