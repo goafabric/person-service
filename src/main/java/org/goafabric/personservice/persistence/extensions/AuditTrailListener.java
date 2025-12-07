@@ -56,6 +56,12 @@ public class AuditTrailListener implements ApplicationContextAware {
             this.oldvalue = oldValue;
             this.newvalue = newValue;
         }
+
+        @Override
+        public String toString() {
+            return "AuditTrail{id='%s', organizationId='%s', objectType='%s', objectId='%s', operation=%s, createdBy='%s', createdAt=%s, modifiedBy='%s', modifiedAt=%s, oldvalue='%s', newvalue='%s'}"
+                    .formatted(id, organizationId, objectType, objectId, operation, createdBy, createdAt, modifiedBy, modifiedAt, oldvalue, newvalue);
+        }
     }
 
     @Override
