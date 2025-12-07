@@ -4,22 +4,16 @@ import jakarta.persistence.*;
 import org.goafabric.personservice.extensions.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
-import javax.sql.DataSource;
 import java.util.Date;
-import java.util.UUID;
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 public class AuditTrailListener implements ApplicationContextAware {
@@ -31,19 +25,38 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private enum DbOperation { CREATE, READ, UPDATE, DELETE }
 
-    record AuditTrail(
-            String id,
-            String organizationId,
-            String objectType,
-            String objectId,
-            DbOperation operation,
-            String createdBy,
-            Date createdAt,
-            String modifiedBy,
-            Date   modifiedAt,
-            String oldValue,
-            String newValue
-    ) {}
+    @Entity
+    @Table(name = "audit_trail")
+    @Access(AccessType.FIELD)
+    public static class AuditTrail {
+        @Id
+        @GeneratedValue(strategy = GenerationType.UUID)
+        private String id;
+        private String organizationId;
+        private String objectType;
+        private String objectId;
+        @Enumerated(EnumType.STRING)
+        private DbOperation operation;
+        private String createdBy;
+        private Date createdAt;
+        private String modifiedBy;
+        private Date modifiedAt;
+        private String oldvalue;
+        private String newvalue;
+
+        public AuditTrail(String organizationId, String objectType, String objectId, DbOperation operation, String createdBy, Date createdAt, String modifiedBy, Date modifiedAt, String oldValue, String newValue) {
+            this.organizationId = organizationId;
+            this.objectType = objectType;
+            this.objectId = objectId;
+            this.operation = operation;
+            this.createdBy = createdBy;
+            this.createdAt = createdAt;
+            this.modifiedBy = modifiedBy;
+            this.modifiedAt = modifiedAt;
+            this.oldvalue = oldValue;
+            this.newvalue = newValue;
+        }
+    }
 
     @Override
     @SuppressWarnings("java:S2696")
@@ -60,7 +73,7 @@ public class AuditTrailListener implements ApplicationContextAware {
     public void afterUpdate(Object object) {
         final String id = getId(object);
         insertAudit(DbOperation.UPDATE, id,
-                context.getBean(AuditJpaUpdater.class).findOldObject(object.getClass(), id), object);
+                context.getBean(AuditLogic.class).findOldObject(object.getClass(), id), object);
     }
 
     @PostRemove
@@ -72,7 +85,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         try {
             var auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject);
             log.debug("New audit:\n{}", auditTrail);
-            context.getBean(AuditJpaInserter.class).insertAudit(auditTrail);
+            context.getBean(AuditLogic.class).insertAudit(auditTrail);
         } catch (Exception e) {
             log.error("Error during audit:\n{}", e.getMessage(), e);
         }
@@ -82,7 +95,6 @@ public class AuditTrailListener implements ApplicationContextAware {
             DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) {
         final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
-                UUID.randomUUID().toString(),
                 UserContext.getOrganizationId(),
                 getTableName(newObject != null ? newObject : oldObject),
                 referenceId,
@@ -102,33 +114,19 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     @Component
     @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    static class AuditJpaUpdater {
-        @PersistenceContext private EntityManager entityManager;
+    static class AuditLogic {
+        @PersistenceContext
+        private EntityManager entityManager;
 
-        @Transactional(propagation = Propagation.REQUIRES_NEW) //new transaction helps us to retrieve the old value still inside the db
-        public <T> T findOldObject(Class<T> clazz, String id) {
+        @Transactional(propagation = Propagation.REQUIRES_NEW)
+        public <T> T findOldObject(Class<T> clazz, String id) { //new transaction helps us to retrieve the old value still inside the db
             var T = entityManager.find(clazz, id);
             return JSON_MAPPER.readValue(JSON_MAPPER.writeValueAsBytes(T), clazz);
         }
-    }
 
-    @Component
-    @ConditionalOnExpression("#{!('${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    @RegisterReflectionForBinding(AuditTrail.class)
-    static class AuditJpaInserter {
-        private final DataSource dataSource;
-        private final String     schemaPrefix;
-
-        public AuditJpaInserter(DataSource dataSource, @Value("${multi-tenancy.schema-prefix:_}") String schemaPrefix) {
-            this.dataSource = dataSource;
-            this.schemaPrefix = schemaPrefix;
-        }
-
-        public void insertAudit(AuditTrail auditTrail) { //we cannot use jpa because of the dynamic table name
-            new SimpleJdbcInsert(dataSource)
-                    .withSchemaName(schemaPrefix + UserContext.getTenantId())
-                    .withTableName("audit_trail")
-                    .execute(new BeanPropertySqlParameterSource(auditTrail));
+        @Transactional(propagation = Propagation.REQUIRES_NEW)
+        public void insertAudit(AuditTrail auditTrail) {
+            entityManager.persist(auditTrail);
         }
     }
 
