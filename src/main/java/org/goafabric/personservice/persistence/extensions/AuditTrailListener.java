@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 public class AuditTrailListener implements ApplicationContextAware {
@@ -38,13 +38,13 @@ public class AuditTrailListener implements ApplicationContextAware {
         @Enumerated(EnumType.STRING)
         private DbOperation operation;
         private String createdBy;
-        private Date createdAt;
+        private LocalDateTime createdAt;
         private String modifiedBy;
-        private Date modifiedAt;
+        private LocalDateTime modifiedAt;
         private String oldvalue;
         private String newvalue;
 
-        public AuditTrail(String organizationId, String objectType, String objectId, DbOperation operation, String createdBy, Date createdAt, String modifiedBy, Date modifiedAt, String oldValue, String newValue) {
+        public AuditTrail(String organizationId, String objectType, String objectId, DbOperation operation, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt, String oldValue, String newValue) {
             this.organizationId = organizationId;
             this.objectType = objectType;
             this.objectId = objectId;
@@ -99,16 +99,15 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private AuditTrail createAuditTrail(
             DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) {
-        final Date date = new Date(System.currentTimeMillis());
         return new AuditTrail(
                 UserContext.getOrganizationId(),
                 getTableName(newObject != null ? newObject : oldObject),
                 referenceId,
                 dbOperation,
                 (dbOperation == DbOperation.CREATE ? UserContext.getUserName() : null),
-                (dbOperation == DbOperation.CREATE ? date : null),
+                (dbOperation == DbOperation.CREATE ? LocalDateTime.now() : null),
                 ((dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) ? UserContext.getUserName() : null),
-                ((dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) ? date : null),
+                ((dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) ? LocalDateTime.now() : null),
                 (oldObject == null ? null : getJsonValue(oldObject)),
                 (newObject == null ? null : getJsonValue(newObject))
         );
