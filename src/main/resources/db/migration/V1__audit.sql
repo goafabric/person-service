@@ -10,9 +10,9 @@ create table audit_trail
     object_id varchar(255),
     operation varchar(255),
     created_by varchar(255),
-    created_at date,
+    created_at timestamp,
     modified_by varchar(255),
-    modified_at date,
+    modified_at timestamp,
     oldvalue TEXT,
     newvalue TEXT
 );
