@@ -3,43 +3,44 @@ package org.goafabric.personservice.persistence.extensions
 import jakarta.persistence.*
 import org.goafabric.personservice.extensions.UserContext
 import org.slf4j.LoggerFactory
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.BeansException
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import java.util.*
-import javax.sql.DataSource
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 class AuditTrailListener : ApplicationContextAware {
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val jacksonMapper : JsonMapper = jacksonMapperBuilder().build()
+    private var context: ApplicationContext? = null
 
     enum class DbOperation {
-        CREATE, READ, UPDATE, DELETE
+        CREATE, UPDATE, DELETE
     }
 
+    @Entity
+    @Table(name = "audit_trail")
+    @Access(AccessType.FIELD)
     internal data class AuditTrail(
-        val id: String,
-        val companyId: String,
-        val referenceId: String,
-        val type: String,
+        @Id @GeneratedValue(strategy = GenerationType.UUID)
+        val id: String?,
+        val organizationId: String,
+        val objectType: String,
+        val objectId: String,
+        @Enumerated(EnumType.STRING)
         val operation: DbOperation,
         val createdBy: String?,
         val createdAt: Date?,
         val modifiedBy: String?,
         val modifiedAt: Date?,
-        val oldValue: String?,
-        val newValue: String?
+        val oldvalue: String?,
+        val newvalue: String?
     )
 
     @Throws(BeansException::class)
@@ -55,10 +56,7 @@ class AuditTrailListener : ApplicationContextAware {
     @PostUpdate
     fun afterUpdate(`object`: Any) {
         val id = getId(`object`)
-        insertAudit(
-            DbOperation.UPDATE, id,
-            context!!.getBean(
-                AuditJpaUpdater::class.java
+        insertAudit(DbOperation.UPDATE, id, context!!.getBean(AuditDao::class.java
             ).findOldObject(`object`.javaClass, id), `object`
         )
     }
@@ -72,9 +70,7 @@ class AuditTrailListener : ApplicationContextAware {
         try {
             val auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject)
             log.debug("New audit:\n{}", auditTrail)
-            context!!.getBean(
-                AuditJpaInserter::class.java
-            ).insertAudit(auditTrail, oldObject ?: newObject)
+            context?.getBean(AuditDao::class.java)?.insertAudit(auditTrail)
         } catch (e: Exception) {
             log.error("Error during audit:\n{}", e.message, e)
         }
@@ -85,17 +81,17 @@ class AuditTrailListener : ApplicationContextAware {
     ): AuditTrail {
         val date = Date(System.currentTimeMillis())
         return AuditTrail(
-            UUID.randomUUID().toString(),
-            TenantResolver.getOrgunitId(),
-            getTableName((newObject ?: oldObject)!!),
-            referenceId,
+            id = null,
+            organizationId = TenantResolver.getOrgunitId(),
+            objectType = getTableName((newObject ?: oldObject)!!),
+            objectId = referenceId,
             dbOperation,
-            if (dbOperation == DbOperation.CREATE) UserContext.userName else null,
-            if (dbOperation == DbOperation.CREATE) date else null,
-            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) UserContext.userName else null,
-            if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) date else null,
-            oldObject?.let { getJsonValue(it) },
-            newObject?.let { getJsonValue(it) }
+            createdBy = if (dbOperation == DbOperation.CREATE) UserContext.userName else null,
+            createdAt = if (dbOperation == DbOperation.CREATE) date else null,
+            modifiedBy = if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) UserContext.userName else null,
+            modifiedAt = if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) date else null,
+            oldvalue = oldObject?.let { getJsonValue(it) },
+            newvalue = newObject?.let { getJsonValue(it) }
         )
     }
 
@@ -105,43 +101,29 @@ class AuditTrailListener : ApplicationContextAware {
 
     @Component
     @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    internal class AuditJpaUpdater {
+    internal class AuditDao {
         @PersistenceContext
         private val entityManager: EntityManager? = null
 
         @Transactional(propagation = Propagation.REQUIRES_NEW) @SuppressWarnings("kotlin:S6619") //new transaction helps us to retrieve the old value still inside the db
         fun <T> findOldObject(clazz: Class<T>?, id: String?): T {
-            return entityManager!!.find(clazz, id)
+            val T = entityManager?.find(clazz, id)
+            val jacksonMapper = jacksonMapperBuilder().build()
+            return jacksonMapper.readValue(jacksonMapper.writeValueAsBytes(T), clazz)
+        }
+
+        @Transactional(propagation = Propagation.REQUIRES_NEW)
+        fun insertAudit(auditTrail: AuditTrail) {
+            entityManager?.persist(auditTrail)
         }
     }
 
-    @Component
-    @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    @RegisterReflectionForBinding(
-        AuditTrail::class
-    )
-    internal class AuditJpaInserter(
-        private val dataSource: DataSource, @param:Value(
-            "\${multi-tenancy.schema-prefix:_}"
-        ) private val schemaPrefix: String
-    ) {
-        fun insertAudit(auditTrail: AuditTrail?, `object`: Any?) { //we cannot use jpa because of the dynamic table name
-            SimpleJdbcInsert(dataSource)
-                .withSchemaName(schemaPrefix + UserContext.tenantId)
-                .withTableName("audit_trail")
-                .execute(BeanPropertySqlParameterSource(auditTrail!!))
-        }
+    private fun getId(`object`: Any): String {
+        return context!!.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(`object`)
+            .toString()
     }
 
-    companion object {
-        private var context: ApplicationContext? = null
-        private fun getId(`object`: Any): String {
-            return context!!.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(`object`)
-                .toString()
-        }
-
-        private fun getTableName(`object`: Any): String {
-            return `object`.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
-        }
+    private fun getTableName(`object`: Any): String {
+        return `object`.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
     }
 }
