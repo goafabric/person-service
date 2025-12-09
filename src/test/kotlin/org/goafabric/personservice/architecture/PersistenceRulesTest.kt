@@ -60,6 +60,7 @@ object PersistenceRulesTest {
     internal class IgnoreTestContext : ImportOption {
         override fun includes(location: Location): Boolean {
             return !location.contains("$$") && !location.contains("EnhancerByCGLIB")
+                    && !location.contains("__TestContext") && !location.contains("BeanFactoryRegistrations")
         }
     }
 }

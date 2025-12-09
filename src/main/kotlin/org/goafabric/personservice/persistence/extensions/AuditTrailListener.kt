@@ -17,7 +17,7 @@ import java.util.*
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 class AuditTrailListener : ApplicationContextAware {
     private val log = LoggerFactory.getLogger(this.javaClass)
-    private val jacksonMapper : JsonMapper = jacksonMapperBuilder().build()
+    private val jsonMapper : JsonMapper = jacksonMapperBuilder().build()
     private var context: ApplicationContext? = null
 
     enum class DbOperation {
@@ -96,7 +96,7 @@ class AuditTrailListener : ApplicationContextAware {
     }
 
     private fun getJsonValue(`object`: Any): String {
-        return jacksonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(`object`)
+        return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(`object`)
     }
 
     @Component
@@ -107,9 +107,9 @@ class AuditTrailListener : ApplicationContextAware {
 
         @Transactional(propagation = Propagation.REQUIRES_NEW) @SuppressWarnings("kotlin:S6619") //new transaction helps us to retrieve the old value still inside the db
         fun <T> findOldObject(clazz: Class<T>?, id: String?): T {
-            val T = entityManager?.find(clazz, id)
-            val jacksonMapper = jacksonMapperBuilder().build()
-            return jacksonMapper.readValue(jacksonMapper.writeValueAsBytes(T), clazz)
+            val e = entityManager?.find(clazz, id)
+            val jsonMapper = jacksonMapperBuilder().build()
+            return jsonMapper.readValue(jsonMapper.writeValueAsBytes(e), clazz)
         }
 
         @Transactional(propagation = Propagation.REQUIRES_NEW)
