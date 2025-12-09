@@ -23,7 +23,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
 
-    private enum DbOperation { CREATE, UPDATE, DELETE }
+    enum DbOperation { CREATE, UPDATE, DELETE }
 
     @Entity
     @Table(name = "audit_trail")
@@ -44,6 +44,7 @@ public class AuditTrailListener implements ApplicationContextAware {
         private String oldvalue;
         private String newvalue;
 
+        AuditTrail() {}
         public AuditTrail(String organizationId, String objectType, String objectId, DbOperation operation, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt, String oldValue, String newValue) {
             this.organizationId = organizationId;
             this.objectType = objectType;
@@ -57,11 +58,10 @@ public class AuditTrailListener implements ApplicationContextAware {
             this.newvalue = newValue;
         }
 
-        @Override
-        public String toString() {
-            return "AuditTrail{id='%s', organizationId='%s', objectType='%s', objectId='%s', operation=%s, createdBy='%s', createdAt=%s, modifiedBy='%s', modifiedAt=%s, oldvalue='%s', newvalue='%s'}"
-                    .formatted(id, organizationId, objectType, objectId, operation, createdBy, createdAt, modifiedBy, modifiedAt, oldvalue, newvalue);
-        }
+        public String getOldvalue() { return oldvalue; }
+        public String getNewvalue() { return newvalue; }
+
+        @Override public String toString() { return "AuditTrail{id='%s', organizationId='%s', objectType='%s', objectId='%s', operation=%s, createdBy='%s', createdAt=%s, modifiedBy='%s', modifiedAt=%s, oldvalue='%s', newvalue='%s'}".formatted(id, organizationId, objectType, objectId, operation, createdBy, createdAt, modifiedBy, modifiedAt, oldvalue, newvalue); }
     }
 
     @Override
