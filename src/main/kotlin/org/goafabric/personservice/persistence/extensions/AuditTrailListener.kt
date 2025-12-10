@@ -49,28 +49,28 @@ class AuditTrailListener : ApplicationContextAware {
     }
 
     @PostPersist
-    fun afterCreate(`object`: Any) {
-        insertAudit(DbOperation.CREATE, getId(`object`), null, `object`)
+    fun afterCreate(entity: Any) {
+        insertAudit(DbOperation.CREATE, getId(entity), null, entity)
     }
 
     @PostUpdate
-    fun afterUpdate(`object`: Any) {
-        val id = getId(`object`)
+    fun afterUpdate(entity: Any) {
+        val id = getId(entity)
         insertAudit(DbOperation.UPDATE, id, context.getBean(AuditDao::class.java
-            ).findOldObject(`object`.javaClass, id), `object`
+            ).findOldObject(entity.javaClass, id), entity
         )
     }
 
     @PostRemove
-    fun afterDelete(`object`: Any) {
-        insertAudit(DbOperation.DELETE, getId(`object`), `object`, null)
+    fun afterDelete(entity: Any) {
+        insertAudit(DbOperation.DELETE, getId(entity), entity, null)
     }
 
     private fun insertAudit(operation: DbOperation, referenceId: String, oldObject: Any?, newObject: Any?) {
         try {
             val auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject)
             log.debug("New audit:\n{}", auditTrail)
-            context.getBean(AuditDao::class.java)?.insertAudit(auditTrail)
+            context.getBean(AuditDao::class.java).insertAudit(auditTrail)
         } catch (e: Exception) {
             log.error("Error during audit:\n{}", e.message, e)
         }
@@ -95,8 +95,8 @@ class AuditTrailListener : ApplicationContextAware {
         )
     }
 
-    private fun getJsonValue(`object`: Any): String {
-        return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(`object`)
+    private fun getJsonValue(entity: Any): String {
+        return jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entity)
     }
 
     @Component
@@ -117,13 +117,13 @@ class AuditTrailListener : ApplicationContextAware {
         }
     }
 
-    private fun getId(`object`: Any): String {
-        return context.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(`object`)
+    private fun getId(entity: Any): String {
+        return context.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(entity)
             .toString()
     }
 
-    private fun getTableName(`object`: Any): String {
-        return `object`.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
+    private fun getTableName(entity: Any): String {
+        return entity.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
     }
 
     
