@@ -1,9 +1,12 @@
 package org.goafabric.personservice.logic;
 
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
 import org.goafabric.personservice.persistence.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -49,9 +52,14 @@ public class PersonLogic {
                 personMapper.map(person)));
     }
 
+    @Autowired
+    private CircuitBreakerRegistry circuitBreakerRegistry;
+
     public Person sayMyName(String name) {
-        return new Person(null, null,
-                calleeServiceAdapter.sayMyName(name).message(), "", null);
+        return CircuitBreaker.decorateSupplier(
+                circuitBreakerRegistry.circuitBreaker("calleeservice"),
+                () -> new Person(null, null, calleeServiceAdapter.sayMyName(name).message(), "", null)
+        ).get();
     }
 
 }
