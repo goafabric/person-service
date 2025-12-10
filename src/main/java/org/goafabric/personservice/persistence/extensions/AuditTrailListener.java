@@ -27,7 +27,6 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     @Entity
     @Table(name = "audit_trail")
-    @Access(AccessType.FIELD)
     public static class AuditTrail {
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,8 +40,8 @@ public class AuditTrailListener implements ApplicationContextAware {
         private LocalDateTime createdAt;
         private String modifiedBy;
         private LocalDateTime modifiedAt;
-        private String oldvalue;
-        private String newvalue;
+        private String oldValue;
+        private String newValue;
 
         AuditTrail() {}
         public AuditTrail(String organizationId, String objectType, String objectId, DbOperation operation, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt, String oldValue, String newValue) {
@@ -54,14 +53,14 @@ public class AuditTrailListener implements ApplicationContextAware {
             this.createdAt = createdAt;
             this.modifiedBy = modifiedBy;
             this.modifiedAt = modifiedAt;
-            this.oldvalue = oldValue;
-            this.newvalue = newValue;
+            this.oldValue = oldValue;
+            this.newValue = newValue;
         }
 
-        public String getOldvalue() { return oldvalue; }
-        public String getNewvalue() { return newvalue; }
+        public String getOldValue() { return oldValue; }
+        public String getNewValue() { return newValue; }
 
-        @Override public String toString() { return "AuditTrail{id='%s', organizationId='%s', objectType='%s', objectId='%s', operation=%s, createdBy='%s', createdAt=%s, modifiedBy='%s', modifiedAt=%s, oldvalue='%s', newvalue='%s'}".formatted(id, organizationId, objectType, objectId, operation, createdBy, createdAt, modifiedBy, modifiedAt, oldvalue, newvalue); }
+        @Override public String toString() { return "AuditTrail{id='%s', organizationId='%s', objectType='%s', objectId='%s', operation=%s, createdBy='%s', createdAt=%s, modifiedBy='%s', modifiedAt=%s, oldvalue='%s', newvalue='%s'}".formatted(id, organizationId, objectType, objectId, operation, createdBy, createdAt, modifiedBy, modifiedAt, oldValue, newValue); }
     }
 
     @Override

@@ -13,8 +13,8 @@ create table audit_trail
     created_at timestamp,
     modified_by varchar(255),
     modified_at timestamp,
-    oldvalue TEXT,
-    newvalue TEXT
+    old_value TEXT,
+    new_value TEXT
 );
 
 create index idx_audit_organization_id on audit_trail(organization_id);

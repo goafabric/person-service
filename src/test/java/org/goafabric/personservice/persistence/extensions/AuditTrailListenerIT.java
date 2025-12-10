@@ -31,23 +31,23 @@ class AuditTrailListenerIT {
         var person = save();
 
         var createPerson = selectFrom("CREATE", person.id());
-        assertThat(createPerson.getOldvalue()).isNull();
-        assertThat(createPerson.getNewvalue()).isNotNull();
-        assertThat(Objects.requireNonNull(createPerson.getNewvalue()))
+        assertThat(createPerson.getOldValue()).isNull();
+        assertThat(createPerson.getNewValue()).isNotNull();
+        assertThat(Objects.requireNonNull(createPerson.getNewValue()))
                 .isNotNull().contains("Homer", "Simpson");
 
         var updatePerson = selectFrom("UPDATE", person.id());
-        assertThat(updatePerson.getOldvalue()).isNotNull();
-        assertThat(updatePerson.getOldvalue()).isNotNull();
-        assertThat(Objects.requireNonNull(updatePerson.getOldvalue()))
+        assertThat(updatePerson.getOldValue()).isNotNull();
+        assertThat(updatePerson.getOldValue()).isNotNull();
+        assertThat(Objects.requireNonNull(updatePerson.getOldValue()))
                 .isNotNull().contains("Homer", "Simpson");
-        assertThat(Objects.requireNonNull(updatePerson.getNewvalue()))
+        assertThat(Objects.requireNonNull(updatePerson.getNewValue()))
                 .isNotNull().contains("updatedFirstName", "updatedLastName");
 
         var deletePerson = selectFrom("DELETE", person.id());
-        assertThat(deletePerson.getOldvalue()).isNotNull();
-        assertThat(deletePerson.getNewvalue()).isNull();
-        assertThat(Objects.requireNonNull(deletePerson.getOldvalue()))
+        assertThat(deletePerson.getOldValue()).isNotNull();
+        assertThat(deletePerson.getNewValue()).isNull();
+        assertThat(Objects.requireNonNull(deletePerson.getOldValue()))
                 .isNotNull().contains("updatedFirstName", "updatedLastName");
     }
 
@@ -56,9 +56,9 @@ class AuditTrailListenerIT {
         var address = save().address().getFirst();
 
         var createAddress = selectFrom("CREATE", address.id());
-        assertThat(createAddress.getOldvalue()).isNull();
-        assertThat(createAddress.getNewvalue()).isNotNull();
-        assertThat(Objects.requireNonNull(createAddress.getNewvalue()))
+        assertThat(createAddress.getOldValue()).isNull();
+        assertThat(createAddress.getNewValue()).isNotNull();
+        assertThat(Objects.requireNonNull(createAddress.getNewValue()))
                 .isNotNull().contains("Terrace");
 
 
@@ -70,9 +70,9 @@ class AuditTrailListenerIT {
          */
 
         var deleteAddress = selectFrom("DELETE", address.id());
-        assertThat(deleteAddress.getOldvalue()).isNotNull();
-        assertThat(deleteAddress.getNewvalue()).isNull();
-        assertThat(Objects.requireNonNull(deleteAddress.getOldvalue()))
+        assertThat(deleteAddress.getOldValue()).isNotNull();
+        assertThat(deleteAddress.getNewValue()).isNull();
+        assertThat(Objects.requireNonNull(deleteAddress.getOldValue()))
                 .isNotNull().contains("Terrace");
 
     }
