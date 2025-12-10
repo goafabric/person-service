@@ -18,7 +18,7 @@ import java.util.*
 class AuditTrailListener : ApplicationContextAware {
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val jsonMapper : JsonMapper = jacksonMapperBuilder().build()
-    private var context: ApplicationContext? = null
+    private lateinit var context: ApplicationContext
 
     enum class DbOperation {
         CREATE, UPDATE, DELETE
@@ -56,7 +56,7 @@ class AuditTrailListener : ApplicationContextAware {
     @PostUpdate
     fun afterUpdate(`object`: Any) {
         val id = getId(`object`)
-        insertAudit(DbOperation.UPDATE, id, context!!.getBean(AuditDao::class.java
+        insertAudit(DbOperation.UPDATE, id, context.getBean(AuditDao::class.java
             ).findOldObject(`object`.javaClass, id), `object`
         )
     }
@@ -70,7 +70,7 @@ class AuditTrailListener : ApplicationContextAware {
         try {
             val auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject)
             log.debug("New audit:\n{}", auditTrail)
-            context?.getBean(AuditDao::class.java)?.insertAudit(auditTrail)
+            context.getBean(AuditDao::class.java)?.insertAudit(auditTrail)
         } catch (e: Exception) {
             log.error("Error during audit:\n{}", e.message, e)
         }
@@ -101,14 +101,13 @@ class AuditTrailListener : ApplicationContextAware {
 
     @Component
     @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    internal class AuditDao {
+    internal class AuditDao(val jsonMapper: JsonMapper) {
         @PersistenceContext
         private val entityManager: EntityManager? = null
 
         @Transactional(propagation = Propagation.REQUIRES_NEW) @SuppressWarnings("kotlin:S6619") //new transaction helps us to retrieve the old value still inside the db
         fun <T> findOldObject(clazz: Class<T>?, id: String?): T {
             val e = entityManager?.find(clazz, id)
-            val jsonMapper = jacksonMapperBuilder().build()
             return jsonMapper.readValue(jsonMapper.writeValueAsBytes(e), clazz)
         }
 
@@ -119,11 +118,13 @@ class AuditTrailListener : ApplicationContextAware {
     }
 
     private fun getId(`object`: Any): String {
-        return context!!.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(`object`)
+        return context.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(`object`)
             .toString()
     }
 
     private fun getTableName(`object`: Any): String {
         return `object`.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
     }
+
+    
 }
