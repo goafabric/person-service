@@ -27,13 +27,13 @@ internal class AuditTrailListenerIT(
         assertThat(createPerson.oldValue).isNull()
         assertThat(createPerson.newValue).isNotNull()
         assertThat(Objects.requireNonNull(createPerson.newValue))
-            .isNotNull().contains("Homer", "Simpson")
+            .isNotNull().contains("Marge", "Simpson")
 
         val updatePerson = selectFrom("UPDATE", person.id)
         assertThat(updatePerson.oldValue).isNotNull()
         assertThat(updatePerson.oldValue).isNotNull()
         assertThat(Objects.requireNonNull(updatePerson.oldValue))
-            .isNotNull().contains("Homer", "Simpson")
+            .isNotNull().contains("Marge", "Simpson")
         assertThat(Objects.requireNonNull(updatePerson.newValue))
             .isNotNull().contains("updatedFirstName", "updatedLastName")
 
@@ -83,7 +83,7 @@ internal class AuditTrailListenerIT(
             Person(
                 null,
                 null,
-                "Homer",
+                "Marge",
                 "Simpson",
                 List.of<Address?>(
                     createAddress("Evergreen Terrace"),
