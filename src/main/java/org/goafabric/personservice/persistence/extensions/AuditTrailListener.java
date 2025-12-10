@@ -87,9 +87,9 @@ public class AuditTrailListener implements ApplicationContextAware {
         insertAudit(DbOperation.DELETE, getId(object), object, null);
     }
 
-    private void insertAudit(final DbOperation operation, String referenceId, final Object oldObject, final Object newObject) {
+    private void insertAudit(final DbOperation operation, String objectId, final Object oldObject, final Object newObject) {
         try {
-            var auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject);
+            var auditTrail = createAuditTrail(operation, objectId, oldObject, newObject);
             log.debug("New audit:\n{}", auditTrail);
             context.getBean(AuditDao.class).insertAudit(auditTrail);
         } catch (Exception e) {
@@ -98,11 +98,11 @@ public class AuditTrailListener implements ApplicationContextAware {
     }
 
     private AuditTrail createAuditTrail(
-            DbOperation dbOperation, String referenceId, final Object oldObject, final Object newObject) {
+            DbOperation dbOperation, String objectId, final Object oldObject, final Object newObject) {
         return new AuditTrail(
                 UserContext.getOrganizationId(),
                 getTableName(newObject != null ? newObject : oldObject),
-                referenceId,
+                objectId,
                 dbOperation,
                 (dbOperation == DbOperation.CREATE ? UserContext.getUserName() : null),
                 (dbOperation == DbOperation.CREATE ? LocalDateTime.now() : null),

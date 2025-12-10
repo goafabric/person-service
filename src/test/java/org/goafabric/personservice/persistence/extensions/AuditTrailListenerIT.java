@@ -77,19 +77,6 @@ class AuditTrailListenerIT {
 
     }
 
-
-    /*
-    @NotNull
-    private Map<String, @Nullable Object> selectFrom(String operation, String id) {
-        var tableName = schemaPrefix + UserContext.getTenantId() + ".audit_trail";
-        var map = jdbcTemplate.queryForMap(
-                "select * from %s where object_id = '%s' and operation = '%s'"
-                        .formatted(tableName, id, operation));
-        return map;
-    }
-    
-     */
-
     private AuditTrailListener.AuditTrail selectFrom(String operation, String id) {
         var query = entityManager.createQuery(
                 "SELECT a FROM AuditTrailListener$AuditTrail a WHERE a.objectId = :objectId AND a.operation = :operation", AuditTrailListener.AuditTrail.class);
@@ -97,6 +84,7 @@ class AuditTrailListenerIT {
         query.setParameter("operation", AuditTrailListener.DbOperation.valueOf(operation));
         return query.getSingleResult();
     }
+
     Person save() {
         final Person person = personController.save(
                 new Person(null,
