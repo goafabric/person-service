@@ -34,13 +34,13 @@ class AuditTrailListenerIT {
         assertThat(createPerson.getOldValue()).isNull();
         assertThat(createPerson.getNewValue()).isNotNull();
         assertThat(Objects.requireNonNull(createPerson.getNewValue()))
-                .isNotNull().contains("Homer", "Simpson");
+                .isNotNull().contains("Marge", "Simpson");
 
         var updatePerson = selectFrom("UPDATE", person.id());
         assertThat(updatePerson.getOldValue()).isNotNull();
         assertThat(updatePerson.getOldValue()).isNotNull();
         assertThat(Objects.requireNonNull(updatePerson.getOldValue()))
-                .isNotNull().contains("Homer", "Simpson");
+                .isNotNull().contains("Marge", "Simpson");
         assertThat(Objects.requireNonNull(updatePerson.getNewValue()))
                 .isNotNull().contains("updatedFirstName", "updatedLastName");
 
@@ -89,7 +89,7 @@ class AuditTrailListenerIT {
         final Person person = personController.save(
                 new Person(null,
                         null,
-                        "Homer",
+                        "Marge",
                         "Simpson",
                         List.of(
                                 createAddress("Evergreen Terrace"),
