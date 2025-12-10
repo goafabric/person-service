@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import org.goafabric.personservice.extensions.UserContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeansException
+import org.springframework.beans.factory.getBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.jacksonMapperBuilder
 import java.util.*
+import kotlin.reflect.KClass
 
 // Simple Audittrail that fulfills the requirements of logging content changes + user + aot support, could be db independant
 class AuditTrailListener : ApplicationContextAware {
@@ -20,9 +22,7 @@ class AuditTrailListener : ApplicationContextAware {
     private val jsonMapper : JsonMapper = jacksonMapperBuilder().build()
     private lateinit var context: ApplicationContext
 
-    enum class DbOperation {
-        CREATE, UPDATE, DELETE
-    }
+    enum class DbOperation {  CREATE, UPDATE, DELETE }
 
     @Entity
     @Table(name = "audit_trail")
@@ -56,9 +56,8 @@ class AuditTrailListener : ApplicationContextAware {
     @PostUpdate
     fun afterUpdate(entity: Any) {
         val id = getId(entity)
-        insertAudit(DbOperation.UPDATE, id, context.getBean(AuditDao::class.java
-            ).findOldObject(entity.javaClass, id), entity
-        )
+        val oldEntity = getBean(AuditDao::class).findOldObject(entity.javaClass, id)
+        insertAudit(DbOperation.UPDATE, id, oldEntity, entity)
     }
 
     @PostRemove
@@ -70,7 +69,7 @@ class AuditTrailListener : ApplicationContextAware {
         try {
             val auditTrail = createAuditTrail(operation, referenceId, oldObject, newObject)
             log.debug("New audit:\n{}", auditTrail)
-            context.getBean(AuditDao::class.java).insertAudit(auditTrail)
+            getBean(AuditDao::class).insertAudit(auditTrail)
         } catch (e: Exception) {
             log.error("Error during audit:\n{}", e.message, e)
         }
@@ -101,30 +100,24 @@ class AuditTrailListener : ApplicationContextAware {
 
     @Component
     @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
-    internal class AuditDao(val jsonMapper: JsonMapper) {
-        @PersistenceContext
-        private val entityManager: EntityManager? = null
-
+    internal class AuditDao(@PersistenceContext val entityManager: EntityManager, val jsonMapper: JsonMapper) {
         @Transactional(propagation = Propagation.REQUIRES_NEW) @SuppressWarnings("kotlin:S6619") //new transaction helps us to retrieve the old value still inside the db
         fun <T> findOldObject(clazz: Class<T>?, id: String?): T {
-            val e = entityManager?.find(clazz, id)
-            return jsonMapper.readValue(jsonMapper.writeValueAsBytes(e), clazz)
+            val e = entityManager.find(clazz, id)
+            return jsonMapper.readValue(jsonMapper.writeValueAsBytes(e), clazz) //create deep copy to avoid lazy problem
         }
 
         @Transactional(propagation = Propagation.REQUIRES_NEW)
         fun insertAudit(auditTrail: AuditTrail) {
-            entityManager?.persist(auditTrail)
+            entityManager.persist(auditTrail)
         }
     }
 
-    private fun getId(entity: Any): String {
-        return context.getBean(EntityManagerFactory::class.java).persistenceUnitUtil.getIdentifier(entity)
-            .toString()
-    }
+    private fun getId(entity: Any): String =
+        getBean(EntityManagerFactory::class).persistenceUnitUtil.getIdentifier(entity).toString()
 
-    private fun getTableName(entity: Any): String {
-        return entity.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
-    }
+    private fun getTableName(entity: Any): String =
+        entity.javaClass.getSimpleName().replace("Eo".toRegex(), "").lowercase(Locale.getDefault())
 
-    
+    fun <T : Any> getBean(kClass: KClass<T>): T = context.getBean(kClass.java)
 }
