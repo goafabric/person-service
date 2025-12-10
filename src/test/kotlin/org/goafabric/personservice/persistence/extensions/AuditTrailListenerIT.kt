@@ -15,15 +15,10 @@ import java.util.*
 import java.util.List
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class AuditTrailListenerIT {
-    @Autowired
-    private val personController: PersonController? = null
-
-    @Autowired
-    private val personRepository: PersonRepository? = null
-
-    @PersistenceContext
-    private val entityManager: EntityManager? = null
+internal class AuditTrailListenerIT(
+    @Autowired val personController: PersonController,
+    @Autowired val personRepository: PersonRepository,
+    @Autowired val entityManager: EntityManager) {
 
     @Test
     fun creatUpdateDeletePerson() {

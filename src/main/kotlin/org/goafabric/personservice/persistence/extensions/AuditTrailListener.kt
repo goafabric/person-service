@@ -26,7 +26,6 @@ class AuditTrailListener : ApplicationContextAware {
 
     @Entity
     @Table(name = "audit_trail")
-    @Access(AccessType.FIELD)
     internal data class AuditTrail(
         @Id @GeneratedValue(strategy = GenerationType.UUID)
         val id: String?,
