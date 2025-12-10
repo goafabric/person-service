@@ -4,7 +4,6 @@ import jakarta.persistence.*
 import org.goafabric.personservice.extensions.UserContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeansException
-import org.springframework.beans.factory.getBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
@@ -38,8 +37,8 @@ class AuditTrailListener : ApplicationContextAware {
         val createdAt: Date?,
         val modifiedBy: String?,
         val modifiedAt: Date?,
-        val oldvalue: String?,
-        val newvalue: String?
+        val oldValue: String?,
+        val newValue: String?
     )
 
     @Throws(BeansException::class)
@@ -88,8 +87,8 @@ class AuditTrailListener : ApplicationContextAware {
             createdAt = if (dbOperation == DbOperation.CREATE) date else null,
             modifiedBy = if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) UserContext.userName else null,
             modifiedAt = if (dbOperation == DbOperation.UPDATE || dbOperation == DbOperation.DELETE) date else null,
-            oldvalue = oldObject?.let { getJsonValue(it) },
-            newvalue = newObject?.let { getJsonValue(it) }
+            oldValue = oldObject?.let { getJsonValue(it) },
+            newValue = newObject?.let { getJsonValue(it) }
         )
     }
 

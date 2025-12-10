@@ -1,7 +1,6 @@
 package org.goafabric.personservice.persistence.extensions
 
 import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.controller.PersonController
 import org.goafabric.personservice.controller.dto.Address
@@ -25,23 +24,23 @@ internal class AuditTrailListenerIT(
         val person = save()
 
         val createPerson = selectFrom("CREATE", person.id)
-        assertThat(createPerson.oldvalue).isNull()
-        assertThat(createPerson.newvalue).isNotNull()
-        assertThat(Objects.requireNonNull(createPerson.newvalue))
+        assertThat(createPerson.oldValue).isNull()
+        assertThat(createPerson.newValue).isNotNull()
+        assertThat(Objects.requireNonNull(createPerson.newValue))
             .isNotNull().contains("Homer", "Simpson")
 
         val updatePerson = selectFrom("UPDATE", person.id)
-        assertThat(updatePerson.oldvalue).isNotNull()
-        assertThat(updatePerson.oldvalue).isNotNull()
-        assertThat(Objects.requireNonNull(updatePerson.oldvalue))
+        assertThat(updatePerson.oldValue).isNotNull()
+        assertThat(updatePerson.oldValue).isNotNull()
+        assertThat(Objects.requireNonNull(updatePerson.oldValue))
             .isNotNull().contains("Homer", "Simpson")
-        assertThat(Objects.requireNonNull(updatePerson.newvalue))
+        assertThat(Objects.requireNonNull(updatePerson.newValue))
             .isNotNull().contains("updatedFirstName", "updatedLastName")
 
         val deletePerson = selectFrom("DELETE", person.id)
-        assertThat(deletePerson.oldvalue).isNotNull()
-        assertThat(deletePerson.newvalue).isNull()
-        assertThat(Objects.requireNonNull(deletePerson.oldvalue))
+        assertThat(deletePerson.oldValue).isNotNull()
+        assertThat(deletePerson.newValue).isNull()
+        assertThat(Objects.requireNonNull(deletePerson.oldValue))
             .isNotNull().contains("updatedFirstName", "updatedLastName")
     }
 
@@ -50,9 +49,9 @@ internal class AuditTrailListenerIT(
         val address = save().address.first()
 
         val createAddress = selectFrom("CREATE", address?.id)
-        assertThat(createAddress.oldvalue).isNull()
-        assertThat(createAddress.newvalue).isNotNull()
-        assertThat(Objects.requireNonNull(createAddress.newvalue))
+        assertThat(createAddress.oldValue).isNull()
+        assertThat(createAddress.newValue).isNotNull()
+        assertThat(Objects.requireNonNull(createAddress.newValue))
             .isNotNull().contains("Terrace")
 
 
@@ -63,9 +62,9 @@ internal class AuditTrailListenerIT(
 
          */
         val deleteAddress = selectFrom("DELETE", address?.id)
-        assertThat(deleteAddress.oldvalue).isNotNull()
-        assertThat(deleteAddress.newvalue).isNull()
-        assertThat(Objects.requireNonNull(deleteAddress.oldvalue))
+        assertThat(deleteAddress.oldValue).isNotNull()
+        assertThat(deleteAddress.newValue).isNull()
+        assertThat(Objects.requireNonNull(deleteAddress.oldValue))
             .isNotNull().contains("Terrace")
     }
 

@@ -10,11 +10,11 @@ create table audit_trail
     object_id varchar(255),
     operation varchar(255),
     created_by varchar(255),
-    created_at date,
+    created_at timestamp,
     modified_by varchar(255),
-    modified_at date,
-    oldvalue TEXT,
-    newvalue TEXT
+    modified_at timestamp,
+    old_value TEXT,
+    new_value TEXT
 );
 
 create index idx_audit_organization_id on audit_trail(organization_id);
