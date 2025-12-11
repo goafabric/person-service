@@ -3,50 +3,35 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
-import org.goafabric.personservice.persistence.PersonRepository;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-@Transactional
 public class PersonLogic {
-    private final PersonMapper personMapper;
 
-    private final PersonRepository personRepository;
 
     private final CalleeServiceAdapter calleeServiceAdapter;
 
-    public PersonLogic(PersonMapper personMapper, PersonRepository personRepository, CalleeServiceAdapter calleeServiceAdapter) {
-        this.personMapper = personMapper;
-        this.personRepository = personRepository;
+    public PersonLogic(CalleeServiceAdapter calleeServiceAdapter) {
+
         this.calleeServiceAdapter = calleeServiceAdapter;
     }
 
     public Person getById(String id) {
-        return personMapper.map(
-                personRepository.findById(id).orElseThrow());
+        return null;
     }
 
     public List<Person> find(PersonSearch personSearch, Integer page, Integer size) {
-        return personMapper.map(
-                personRepository.findAll(
-                        Example.of(personMapper.map(personSearch)),
-                        PageRequest.of(page,size)));
-
+      return null;
     }
 
     public List<Person> findByStreet(String street, Integer page, Integer size) {
-        return personMapper.map(
-                personRepository.findByAddressStreetContains(street, PageRequest.of(page, size)));
+       return null;
     }
 
     public Person save(Person person) {
-        return personMapper.map(personRepository.saveAndFlush(
-                personMapper.map(person)));
+       return null;
     }
 
     public Person sayMyName(String name) {

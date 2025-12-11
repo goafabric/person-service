@@ -45,35 +45,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
-	//monitoring
-    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("io.micrometer:micrometer-registry-prometheus")
-
-    implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
-
-	//openapi
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
     implementation("org.springframework.boot:spring-boot-starter-restclient")
     implementation("io.github.resilience4j:resilience4j-spring-boot3")
 	implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
-	//persistence
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
-	implementation("com.h2database:h2")
-	implementation("org.postgresql:postgresql")
-    implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.flywaydb:flyway-database-postgresql")
-
-	//mongodb + elastic
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
-
-	//code generation
-	implementation("org.mapstruct:mapstruct")
-	annotationProcessor("org.mapstruct:mapstruct-processor")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

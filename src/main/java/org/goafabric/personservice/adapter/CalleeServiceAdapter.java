@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
 @CircuitBreaker(name = "calleeservice")
+//@MyCircuitBreaker(name = "calleeservice")
 public interface CalleeServiceAdapter {
 
     @GetExchange("/callees/sayMyName")
