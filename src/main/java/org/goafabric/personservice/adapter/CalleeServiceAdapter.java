@@ -1,11 +1,10 @@
 package org.goafabric.personservice.adapter;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-@CircuitBreaker(name = "calleeservice")
+//@CircuitBreaker(name = "calleeservice")
 //@MyCircuitBreaker(name = "calleeservice")
 public interface CalleeServiceAdapter {
 
