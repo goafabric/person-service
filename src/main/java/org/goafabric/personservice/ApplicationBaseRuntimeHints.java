@@ -1,5 +1,6 @@
 package org.goafabric.personservice;
 
+import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
@@ -66,5 +67,8 @@ public class ApplicationBaseRuntimeHints implements RuntimeHintsRegistrar {
         hints.resources().registerPattern("db/migration/h2/*.sql");
         hints.resources().registerPattern("db/migration/common/*.sql");
         hints.resources().registerPattern("db/migration/postgresql/*.sql");
+
+        hints.proxies().registerJdkProxy(CalleeServiceAdapter.class);
+
     }
 }

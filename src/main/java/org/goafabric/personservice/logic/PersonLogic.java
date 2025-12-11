@@ -1,6 +1,5 @@
 package org.goafabric.personservice.logic;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@CircuitBreaker(name = "calleeservice")
+//@CircuitBreaker(name = "calleeservice")
 public class PersonLogic {
 
 
