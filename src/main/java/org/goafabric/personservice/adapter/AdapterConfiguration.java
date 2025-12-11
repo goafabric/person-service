@@ -13,8 +13,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.io.IOException;
 
 @Configuration
 @RegisterReflection(classes = org.springframework.web.client.ResourceAccessException.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
@@ -44,7 +43,7 @@ public class AdapterConfiguration {
     private CircuitBreakerRegistry circuitBreakerRegistry;
 
     public <A> A createResilientAdapter(Class<A> adapterType, RestClient.Builder builder, String url, Long timeout) {
-        var cb = circuitBreakerRegistry.circuitBreaker("calleeservice");
+        var cb = circuitBreakerRegistry.circuitBreaker(adapterType.getSimpleName());
 
         var requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(timeout.intValue());
@@ -58,7 +57,7 @@ public class AdapterConfiguration {
                         {
                             try {
                                 return cb.executeCallable(() -> execution.execute(request, body));
-                            } catch (SocketException | SocketTimeoutException e) {
+                            } catch (IOException e) {
                                 throw e;
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
