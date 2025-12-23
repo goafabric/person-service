@@ -8,6 +8,8 @@ import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,6 +17,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
 
+@RegisterReflection(classes = {KafkaListener.EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
+        , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 public class KafkaListener implements ApplicationContextAware {
 
     private ApplicationContext context;

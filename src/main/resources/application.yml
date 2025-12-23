@@ -58,6 +58,8 @@ adapter:
     user.name: "admin"
     user.password: "admin"
 
+#spring.kafka.bootstrap-servers: "localhost:9092"
+
 #resilience4j
 resilience4j.circuitbreaker:
   configs:
