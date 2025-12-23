@@ -67,6 +67,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
+	implementation("org.springframework.boot:spring-boot-starter-kafka")
+
 	//mongodb + elastic
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
