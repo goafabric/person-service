@@ -14,28 +14,28 @@ class AdapterConfiguration {
     @Bean
     fun calleeServiceAdapter(
         builder: RestClient.Builder,
-        @Value("\${adapter.calleeservice.url}") url: String?,
+        @Value("\${adapter.calleeservice.url}") url: String,
         @Value("\${adapter.timeout}") timeout: Long
     ): CalleeServiceAdapter {
         return createAdapter(CalleeServiceAdapter::class.java, builder, url, timeout)
     }
 
-    fun <A> createAdapter(
-        adapterType: Class<A>?,
+    fun <A: Any> createAdapter(
+        adapterType: Class<A>,
         builder: RestClient.Builder,
-        url: String?,
+        url: String,
         timeout: Long
     ): A {
         val requestFactory = SimpleClientHttpRequestFactory()
         requestFactory.setConnectTimeout(timeout.toInt())
         requestFactory.setReadTimeout(timeout.toInt())
-        builder.baseUrl(url!!)
+        builder.baseUrl(url)
             .requestInterceptor { request, body, execution ->
                 UserContext.adapterHeaderMap.forEach { (key, value) -> request.headers.add(key, value) }
                 execution.execute(request, body)
             }
             .requestFactory(requestFactory)
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(builder.build())).build()
-            .createClient(adapterType!! as Class<A & Any>)
+            .createClient(adapterType)
     }
 }
