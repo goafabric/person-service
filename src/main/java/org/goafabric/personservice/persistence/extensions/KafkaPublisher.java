@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +64,11 @@ public class KafkaPublisher {
     }
 
 
-    //@KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
-    //public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
+    @Component
+    static class MyListener {
+        private final Logger log = LoggerFactory.getLogger(this.getClass());
+        @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
+        public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
+    }
 
 }
