@@ -10,24 +10,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @RegisterReflection(classes = {KafkaListener.EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
         , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
-public class KafkaListener implements ApplicationContextAware {
+@Component
+public class KafkaListener {
 
-    private ApplicationContext context;
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     record EventData(String type, String operation, Object payload, Map<String, String> tenantInfos) {}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private final KafkaTemplate<String, EventData> kafkaTemplate;
+
+    private final String kafkaServers;
+
+    public KafkaListener(KafkaTemplate<String, EventData> kafkaTemplate,  @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaServers = kafkaServers;
     }
 
     @PostPersist
@@ -46,7 +50,7 @@ public class KafkaListener implements ApplicationContextAware {
     }
 
     private void publish(String operation, Object object) {
-        if (context.getEnvironment().getProperty("spring.kafka.bootstrap-servers") == null) { return; }
+       if (kafkaServers.isEmpty()) { return; }
 
         switch (object) {
             case PersonEo person ->
@@ -59,9 +63,8 @@ public class KafkaListener implements ApplicationContextAware {
 
     private void publish(String type, String key, String operation, Object payload) {
         log.info("publishing event of type {}", type);
-        kafkaTemplate().send(type, key,
+        kafkaTemplate.send(type, key,
                 new EventData(type, operation, payload, UserContext.getAdapterHeaderMap()));
     }
 
-    private KafkaTemplate<String, Object> kafkaTemplate() { return context.getBean(KafkaTemplate.class); }
 }
