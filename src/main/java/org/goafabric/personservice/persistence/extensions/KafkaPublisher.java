@@ -3,7 +3,7 @@ package org.goafabric.personservice.persistence.extensions;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
-import org.goafabric.personservice.extensions.EventData;
+import org.goafabric.personservice.controller.dto.EventData;
 import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
@@ -68,7 +68,7 @@ public class KafkaPublisher {
     static class MyListener {
         private final Logger log = LoggerFactory.getLogger(this.getClass());
         @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
-        public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
+        public void listen(EventData eventData) { log.info("loopback event {}", eventData.toString()); }
     }
 
 }

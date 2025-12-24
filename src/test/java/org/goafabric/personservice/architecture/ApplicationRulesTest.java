@@ -8,6 +8,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.goafabric.personservice.Application;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
@@ -59,8 +60,11 @@ public class ApplicationRulesTest {
     static final ArchRule aspectsNeedRuntimeHint =
             classes()
                     .that()
-                    .areAnnotatedWith("org.aspectj.lang.annotation.Aspect").should()
+                    .areAnnotatedWith("org.aspectj.lang.annotation.Aspect")
+                    .should()
                     .beAnnotatedWith(ImportRuntimeHints.class)
+                    .orShould()
+                    .beAnnotatedWith(RegisterReflection.class)
                     .allowEmptyShould(true)
                     .because("Aspects need a Reflection RuntimeHint with MemberCategory.INVOKE_DECLARED_METHODS");
 
@@ -99,7 +103,10 @@ public class ApplicationRulesTest {
                     "net.ttddyy..",
 
                     "org.javers..",
-                    "tools.jackson.databind.jsontype.."
+                    "tools.jackson.databind.jsontype..",
+
+                    "org.aspectj..",
+                    "io.opentelemetry.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 

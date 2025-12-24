@@ -1,4 +1,4 @@
-package org.goafabric.personservice.extensions;
+package org.goafabric.personservice.controller.dto;
 
 import java.util.Map;
 
