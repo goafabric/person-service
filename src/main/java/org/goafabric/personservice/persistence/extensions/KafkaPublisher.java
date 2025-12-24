@@ -11,15 +11,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@RegisterReflection(classes = {KafkaListener.EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
+@RegisterReflection(classes = {KafkaPublisher.EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
         , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 @Component
-public class KafkaListener {
+public class KafkaPublisher {
 
     record EventData(String type, String operation, Object payload, Map<String, String> tenantInfos) {}
 
@@ -29,7 +30,7 @@ public class KafkaListener {
 
     private final String kafkaServers;
 
-    public KafkaListener(KafkaTemplate<String, EventData> kafkaTemplate,  @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
+    public KafkaPublisher(KafkaTemplate<String, EventData> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaServers = kafkaServers;
     }
@@ -66,5 +67,8 @@ public class KafkaListener {
         kafkaTemplate.send(type, key,
                 new EventData(type, operation, payload, UserContext.getAdapterHeaderMap()));
     }
+
+    @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
+    public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
 
 }

@@ -2,7 +2,7 @@ package org.goafabric.personservice.persistence.entity;
 
 import jakarta.persistence.*;
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener;
-import org.goafabric.personservice.persistence.extensions.KafkaListener;
+import org.goafabric.personservice.persistence.extensions.KafkaPublisher;
 import org.hibernate.annotations.TenantId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "person")
-@EntityListeners({AuditTrailListener.class, KafkaListener.class})
+@EntityListeners({AuditTrailListener.class, KafkaPublisher.class})
 @Document("#{@httpInterceptor.getTenantPrefix()}person") //@org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
 public class PersonEo {
     @Id
