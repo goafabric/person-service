@@ -1,4 +1,4 @@
-package org.goafabric.personservice.persistence.extensions;
+package org.goafabric.personservice.persistence;
 
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;

@@ -22,7 +22,7 @@ import java.util.Map;
 @Component
 public class KafkaPublisher {
 
-    record EventData(String type, String operation, Object payload, Map<String, String> tenantInfos) {}
+    public record EventData(String type, String operation, Object payload, Map<String, String> tenantInfos) {}
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
