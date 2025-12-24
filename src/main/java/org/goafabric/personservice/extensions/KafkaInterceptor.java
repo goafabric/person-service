@@ -1,4 +1,3 @@
-/*
 package org.goafabric.personservice.extensions;
 
 import io.opentelemetry.api.trace.Span;
@@ -6,7 +5,6 @@ import io.opentelemetry.context.Context;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.goafabric.personservice.persistence.extensions.KafkaPublisher;
 import org.slf4j.MDC;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
@@ -15,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-@RegisterReflection(classes = KafkaListenerInterceptor.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
-public class KafkaListenerInterceptor {
+@RegisterReflection(classes = KafkaInterceptor.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
+public class KafkaInterceptor {
 
     @Around("@annotation(kafkaListener) && args(..,eventData)")
-    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, KafkaListener kafkaListener, KafkaPublisher.EventData eventData) throws Throwable {
+    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, KafkaListener kafkaListener, EventData eventData) throws Throwable {
         UserContext.setContext(eventData.tenantInfos().get("X-TenantId"), eventData.tenantInfos().get("X-OrganizationId"),
                 eventData.tenantInfos().get("X-Auth-Request-Preferred-Username"), eventData.tenantInfos().get("X-UserInfo"));
 
@@ -41,5 +39,3 @@ public class KafkaListenerInterceptor {
     }
 
 }
-
-*/

@@ -3,6 +3,7 @@ package org.goafabric.personservice.persistence.extensions;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
+import org.goafabric.personservice.extensions.EventData;
 import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
@@ -11,23 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
-@RegisterReflection(classes = {KafkaPublisher.EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
+@RegisterReflection(classes = {EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
         , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 @Component
 public class KafkaPublisher {
 
-    public record EventData(String type, String operation, Object payload, Map<String, String> tenantInfos) {}
-
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
     private final KafkaTemplate<String, EventData> kafkaTemplate;
-
     private final String kafkaServers;
 
     public KafkaPublisher(KafkaTemplate<String, EventData> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
@@ -68,7 +62,8 @@ public class KafkaPublisher {
                 new EventData(type, operation, payload, UserContext.getAdapterHeaderMap()));
     }
 
-    @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
-    public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
+
+    //@KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
+    //public void listen(EventData eventData) { log.info("loopback event " + eventData.toString()); }
 
 }
