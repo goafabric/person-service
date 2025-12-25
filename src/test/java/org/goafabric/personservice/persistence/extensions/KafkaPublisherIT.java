@@ -4,11 +4,11 @@ package org.goafabric.personservice.persistence.extensions;
 import org.goafabric.personservice.controller.PersonController;
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext
 public class KafkaPublisherIT {
     @Autowired
     private PersonController personController;
@@ -26,7 +26,6 @@ public class KafkaPublisherIT {
     private PersonConsumer myListener;
 
     @Test
-    @Disabled("disabled")
     void save() throws InterruptedException {
         final Person person = personController.save(
                 new Person(null,
@@ -54,5 +53,4 @@ public class KafkaPublisherIT {
                 street, "Springfield");
     }
 }
-
- */
+*/
