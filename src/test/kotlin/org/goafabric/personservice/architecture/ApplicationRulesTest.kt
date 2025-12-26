@@ -9,6 +9,7 @@ import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import org.goafabric.personservice.Application
 import org.springframework.aot.hint.RuntimeHintsRegistrar
+import org.springframework.aot.hint.annotation.RegisterReflection
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
@@ -47,8 +48,11 @@ object ApplicationRulesTest {
     @ArchTest
     val aspectsNeedRuntimeHint: ArchRule = ArchRuleDefinition.classes()
         .that()
-        .areAnnotatedWith("org.aspectj.lang.annotation.Aspect").should()
+        .areAnnotatedWith("org.aspectj.lang.annotation.Aspect")
+        .should()
         .beAnnotatedWith(ImportRuntimeHints::class.java)
+        .orShould()
+        .beAnnotatedWith(RegisterReflection::class.java)
         .allowEmptyShould(true)
         .because("Aspects need a Reflection RuntimeHint with MemberCategory.INVOKE_DECLARED_METHODS")
 
@@ -89,6 +93,9 @@ object ApplicationRulesTest {
 
             "org.javers..",
             "com.nimbusds.jwt..",
+
+            "org.aspectj..",
+            "io.opentelemetry..",
 
             "kotlin..",
             "kotlinx..",
