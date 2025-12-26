@@ -27,7 +27,7 @@ class AuditTrailListenerIT {
     private EntityManager entityManager;
 
     @Test
-    public void creatUpdateDeletePerson() {
+    void creatUpdateDeletePerson() {
         var person = save();
 
         var createPerson = selectFrom("CREATE", person.id());
@@ -52,7 +52,7 @@ class AuditTrailListenerIT {
     }
 
     @Test
-    public void creatUpdateDeleteAddress() {
+    void creatUpdateDeleteAddress() {
         var address = save().address().getFirst();
 
         var createAddress = selectFrom("CREATE", address.id());

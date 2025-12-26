@@ -18,12 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
-public class KafkaPublisherIT {
+class KafkaPublisherIT {
     @Autowired
     private PersonController personController;
 
     @Autowired
-    private PersonConsumer myListener;
+    private PersonConsumer personConsumer;
 
     @Test
     void save() throws InterruptedException {
@@ -45,7 +45,7 @@ public class KafkaPublisherIT {
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
-        assertThat(myListener.getLatch().await(10, TimeUnit.SECONDS));
+        assertThat(personConsumer.getLatch().await(10, TimeUnit.SECONDS)).isTrue();
     }
 
     private Address createAddress(String street) {
