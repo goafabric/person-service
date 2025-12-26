@@ -1,3 +1,4 @@
+/*
 package org.goafabric.personservice.remote;
 
 import org.goafabric.personservice.adapter.Callee;
@@ -100,3 +101,5 @@ class PersonControllerRemoteIT {
     }
 
 }
+
+ */

@@ -1,4 +1,4 @@
-/*
+
 package org.goafabric.personservice.persistence.extensions;
 
 import org.goafabric.personservice.controller.PersonController;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
 public class KafkaPublisherIT {
@@ -53,4 +53,3 @@ public class KafkaPublisherIT {
                 street, "Springfield");
     }
 }
-*/
