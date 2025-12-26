@@ -62,18 +62,4 @@ public class KafkaPublisher {
                 new EventData(type, operation, payload, UserContext.getAdapterHeaderMap()));
     }
 
-
-    /*
-    @Component
-    static class MyListener {
-        private final Logger log = LoggerFactory.getLogger(this.getClass());
-        private final CountDownLatch latch = new CountDownLatch(1);
-
-        @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
-        public void listen(EventData eventData) {
-            log.info("loopback event {}", eventData.toString());
-        }
-
-    }
-     */
 }
