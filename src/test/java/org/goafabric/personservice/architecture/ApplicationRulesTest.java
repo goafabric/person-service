@@ -106,7 +106,11 @@ public class ApplicationRulesTest {
                     "tools.jackson.databind.jsontype..",
 
                     "org.aspectj..",
-                    "io.opentelemetry.."
+                    "io.opentelemetry..",
+
+                    "kotlin..",
+                    "kotlinx..",
+                    "org.jetbrains.annotations.."
             )
             .because("Only core and allowed libraries should be used to avoid unnecessary third-party dependencies");
 
