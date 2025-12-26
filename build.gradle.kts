@@ -77,6 +77,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
+	implementation("org.springframework.boot:spring-boot-starter-kafka")
+
 	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
@@ -91,6 +93,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
+	implementation("org.springframework.boot:spring-boot-starter-kafka-test")
+
 }
 
 tasks.withType<Test> {

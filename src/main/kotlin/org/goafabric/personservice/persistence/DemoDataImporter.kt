@@ -1,9 +1,9 @@
-package org.goafabric.personservice.persistence.extensions
+package org.goafabric.personservice.persistence
 
-import org.goafabric.personservice.extensions.UserContext
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.controller.dto.PersonSearch
+import org.goafabric.personservice.extensions.UserContext
 import org.goafabric.personservice.logic.PersonLogic
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +12,7 @@ import org.springframework.boot.ExitCodeGenerator
 import org.springframework.boot.SpringApplication
 import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Arrays
 import java.util.function.Consumer
 import java.util.stream.IntStream
 
@@ -45,7 +45,7 @@ class DemoDataImporter(
         Arrays.asList(*tenants.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).forEach(
             Consumer { tenant: String? ->
                 UserContext.tenantId = tenant!!;
-                if (applicationContext.getBean(PersonLogic::class.java).find(PersonSearch(),0, 1).isEmpty()) {
+                if (applicationContext.getBean(PersonLogic::class.java).find(PersonSearch(), 0, 1).isEmpty()) {
                     insertData()
                 }
             })
