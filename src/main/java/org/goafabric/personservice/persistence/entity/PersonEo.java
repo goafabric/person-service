@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 @EntityListeners({AuditTrailListener.class, KafkaPublisher.class})
-@Document("#{@httpInterceptor.getTenantPrefix()}person") @org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
+@Document("#{@httpInterceptor.getTenantPrefix()}person") //@org.springframework.data.elasticsearch.annotations.Document(indexName = "#{@httpInterceptor.getTenantPrefix()}person")
 public class PersonEo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
