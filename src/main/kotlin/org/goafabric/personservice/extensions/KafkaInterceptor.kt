@@ -33,15 +33,13 @@ class KafkaInterceptor {
         return result
     }
 
-    companion object {
-        private fun configureLogsAndTracing() {
-            Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
-            MDC.put("tenantId", tenantId)
-        }
+    private fun configureLogsAndTracing() {
+        Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
+        MDC.put("tenantId", tenantId)
+    }
 
-        private fun afterCompletion() {
-            removeContext()
-            MDC.remove("tenantId")
-        }
+    private fun afterCompletion() {
+        removeContext()
+        MDC.remove("tenantId")
     }
 }

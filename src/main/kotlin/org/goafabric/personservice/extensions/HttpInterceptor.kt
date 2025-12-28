@@ -1,8 +1,12 @@
 package org.goafabric.personservice.extensions
 
 import io.micrometer.common.KeyValue
+import io.opentelemetry.api.trace.Span
+import io.opentelemetry.context.Context
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.goafabric.personservice.extensions.UserContext.removeContext
+import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -39,7 +43,7 @@ class HttpInterceptor : HandlerInterceptor {
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         UserContext.setContext(request)
-        configureLogsAndTracing(request)
+        configureLogsAndTracing()
 
         if (handler is HandlerMethod) {
             log.info(" {} method called for user {} ", handler.shortLogMessage, UserContext.userName)
@@ -48,18 +52,17 @@ class HttpInterceptor : HandlerInterceptor {
     }
 
     override fun afterCompletion(request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: Exception?) {
-        UserContext.removeContext()
+       afterCompletion()
+    }
+
+    private fun configureLogsAndTracing() {
+        Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
+        MDC.put("tenantId", tenantId)
+    }
+
+    private fun afterCompletion() {
+        removeContext()
         MDC.remove("tenantId")
     }
 
-    private fun configureLogsAndTracing(request: HttpServletRequest) {
-        MDC.put("tenantId", UserContext.tenantId)
-        ServerHttpObservationFilter.findObservationContext(request)
-            .ifPresent { context: ServerRequestObservationContext ->
-                context.addHighCardinalityKeyValue(
-                    KeyValue.of("tenant.id", UserContext.tenantId)
-                )
-            }
-    }
-    
 }

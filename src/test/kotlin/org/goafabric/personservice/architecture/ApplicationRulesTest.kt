@@ -93,6 +93,7 @@ object ApplicationRulesTest {
 
             "org.javers..",
             "com.nimbusds.jwt..",
+            "tools.jackson.databind.jsontype..",
 
             "org.aspectj..",
             "io.opentelemetry..",
