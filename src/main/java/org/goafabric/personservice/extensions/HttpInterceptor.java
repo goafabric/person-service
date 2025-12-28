@@ -1,6 +1,7 @@
 package org.goafabric.personservice.extensions;
 
-import io.micrometer.common.KeyValue;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.context.Context;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.ServerHttpObservationFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -41,7 +41,7 @@ public class HttpInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         UserContext.setContext(request);
-        configureLogsAndTracing(request);
+        configureLogsAndTracing();
 
         if (handler instanceof HandlerMethod handlerMethod) {
             log.info(" {} method called for user {} ", handlerMethod.getShortLogMessage(), UserContext.getUserName());
@@ -51,14 +51,17 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        UserContext.removeContext();
-        MDC.remove("tenantId");
+        afterCompletion();
     }
 
-    private static void configureLogsAndTracing(HttpServletRequest request) {
+    private static void configureLogsAndTracing() {
+        Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.getTenantId());
         MDC.put("tenantId", UserContext.getTenantId());
-        ServerHttpObservationFilter.findObservationContext(request).ifPresent(
-                context -> context.addHighCardinalityKeyValue(KeyValue.of("tenant.id", UserContext.getTenantId())));
+    }
+
+    private static void afterCompletion() {
+        UserContext.removeContext();
+        MDC.remove("tenantId");
     }
 
     @RegisterReflectionForBinding(HttpInterceptor.class)
