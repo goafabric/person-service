@@ -48,7 +48,7 @@ spring.autoconfigure.exclude: ${.jpa.autoconfiguration},${mongodb.autoconfigurat
 spring.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authSource=admin"
 jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration"
 mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
-elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
+elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.DataElasticsearchAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.DataElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
 
 #adapter
 adapter:
