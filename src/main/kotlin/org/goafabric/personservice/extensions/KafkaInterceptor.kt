@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component
 @Component
 @RegisterReflection(classes = [KafkaInterceptor::class], memberCategories = [MemberCategory.INVOKE_DECLARED_METHODS])
 class KafkaInterceptor {
-    @Around("@annotation(kafkaListener) && args(..,eventData)")
+    @Around("@annotation(org.springframework.kafka.annotation.KafkaListener) && args(..,eventData)")
     @Throws(Throwable::class)
-    fun resolveTenantInfo(joinPoint: ProceedingJoinPoint, kafkaListener: KafkaListener, eventData: EventData): Any {
+    fun resolveTenantInfo(joinPoint: ProceedingJoinPoint, eventData: EventData): Any {
         UserContext.setContext(
             eventData.tenantInfos.get("X-TenantId"), eventData.tenantInfos.get("X-OrganizationId"),
             eventData.tenantInfos.get("X-Auth-Request-Preferred-Username"), eventData.tenantInfos.get("X-UserInfo")
