@@ -6,8 +6,6 @@ import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.goafabric.personservice.controller.dto.EventData
-import org.goafabric.personservice.extensions.UserContext.removeContext
-import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.slf4j.MDC
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.annotation.RegisterReflection
@@ -34,12 +32,12 @@ class KafkaInterceptor {
     }
 
     private fun configureLogsAndTracing() {
-        Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
-        MDC.put("tenantId", tenantId)
+        Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.tenantId)
+        MDC.put("tenantId", UserContext.tenantId)
     }
 
     private fun afterCompletion() {
-        removeContext()
+        UserContext.removeContext()
         MDC.remove("tenantId")
     }
 }

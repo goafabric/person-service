@@ -1,20 +1,15 @@
 package org.goafabric.personservice.extensions
 
-import io.micrometer.common.KeyValue
 import io.opentelemetry.api.trace.Span
 import io.opentelemetry.context.Context
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.goafabric.personservice.extensions.UserContext.removeContext
-import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.server.observation.ServerRequestObservationContext
 import org.springframework.stereotype.Component
-import org.springframework.web.filter.ServerHttpObservationFilter
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -56,12 +51,12 @@ class HttpInterceptor : HandlerInterceptor {
     }
 
     private fun configureLogsAndTracing() {
-        Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
-        MDC.put("tenantId", tenantId)
+        Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.tenantId)
+        MDC.put("tenantId", UserContext.tenantId)
     }
 
     private fun afterCompletion() {
-        removeContext()
+        UserContext.removeContext()
         MDC.remove("tenantId")
     }
 
