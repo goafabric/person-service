@@ -7,10 +7,13 @@ import org.goafabric.personservice.controller.dto.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,8 +27,15 @@ class KafkaPublisherIT {
     @Autowired
     private PersonConsumer personConsumer;
 
+    @Autowired
+    private KafkaListenerEndpointRegistry registry;
+    
     @Test
-    void save() {
+    void save() throws InterruptedException {
+        registry.getListenerContainers().forEach(container -> {
+            ContainerTestUtils.waitForAssignment(container, 1);
+        });
+
         final Person person = personController.save(
                 new Person(null,
                         null,
@@ -44,7 +54,7 @@ class KafkaPublisherIT {
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
-        //assertThat(personConsumer.getLatch().await(10, TimeUnit.SECONDS)).isTrue();
+        assertThat(personConsumer.getLatch().await(10, TimeUnit.SECONDS)).isTrue();
     }
 
     private Address createAddress(String street) {
