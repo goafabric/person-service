@@ -25,7 +25,7 @@ class KafkaPublisherIT {
     private PersonConsumer personConsumer;
 
     @Test
-    void save() throws InterruptedException {
+    void save() {
         final Person person = personController.save(
                 new Person(null,
                         null,

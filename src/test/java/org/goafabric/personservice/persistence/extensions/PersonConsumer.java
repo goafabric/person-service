@@ -15,7 +15,7 @@ public class PersonConsumer {
 
     @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
     public void listen(EventData eventData) {
-        log.info("loopback event {}", eventData.toString());
+        log.info("loopback event {}", eventData);
         latch.countDown();
     }
 
