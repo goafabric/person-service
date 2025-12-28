@@ -9,7 +9,6 @@ import org.goafabric.personservice.controller.dto.EventData;
 import org.slf4j.MDC;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -17,8 +16,8 @@ import org.springframework.stereotype.Component;
 @RegisterReflection(classes = KafkaInterceptor.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
 public class KafkaInterceptor {
 
-    @Around("@annotation(kafkaListener) && args(..,eventData)")
-    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, KafkaListener kafkaListener, EventData eventData) throws Throwable {
+    @Around("@annotation(org.springframework.kafka.annotation.KafkaListener) && args(..,eventData)")
+    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, EventData eventData) throws Throwable {
         UserContext.setContext(eventData.tenantInfos().get("X-TenantId"), eventData.tenantInfos().get("X-OrganizationId"),
                 eventData.tenantInfos().get("X-Auth-Request-Preferred-Username"), eventData.tenantInfos().get("X-UserInfo"));
 
