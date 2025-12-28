@@ -13,7 +13,7 @@ public class PersonConsumer {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final CountDownLatch latch = new CountDownLatch(1);
 
-    @KafkaListener(topics = {"person"}, groupId = "person", autoStartup = "#{ '${spring.kafka.bootstrap-servers:}'.length() > 0 }")
+    @KafkaListener(topics = {"person"}, groupId = "person")
     public void listen(EventData eventData) {
         log.info("loopback event {}", eventData);
         latch.countDown();
