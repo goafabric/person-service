@@ -59,10 +59,10 @@ spring:
   kafka:
     #bootstrap-servers: "localhost:9092"
     producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
     consumer:
       properties.spring.json.trusted.packages: "*"
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
 
 #resilience4j
 resilience4j.circuitbreaker:
