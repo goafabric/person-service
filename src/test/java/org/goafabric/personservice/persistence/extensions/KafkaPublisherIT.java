@@ -54,7 +54,7 @@ class KafkaPublisherIT {
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
-        assertThat(personConsumer.getLatch().await(10, TimeUnit.SECONDS)).isTrue();
+        assertThat(personConsumer.getLatch().await(2, TimeUnit.SECONDS)).isTrue();
     }
 
     private Address createAddress(String street) {
