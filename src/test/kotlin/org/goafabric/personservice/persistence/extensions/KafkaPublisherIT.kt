@@ -12,6 +12,7 @@ import org.springframework.kafka.config.KafkaListenerEndpointRegistry
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.kafka.test.utils.ContainerTestUtils
 import org.springframework.test.annotation.DirtiesContext
+import java.util.concurrent.TimeUnit
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1)
@@ -24,10 +25,9 @@ class KafkaPublisherIT(
     @Test
     @Throws(InterruptedException::class)
     fun save() {
-        registry.listenerContainers
-            .forEach(java.util.function.Consumer { container: org.springframework.kafka.listener.MessageListenerContainer ->
-                ContainerTestUtils.waitForAssignment(container, 1)
-            })
+        registry.listenerContainers.forEach { container ->
+            ContainerTestUtils.waitForAssignment(container, 1)
+        }
 
         val person = personController.save(
             Person(
@@ -42,7 +42,7 @@ class KafkaPublisherIT(
             )
         )
 
-        Assertions.assertThat<Person?>(person).isNotNull()
+        assertThat(person).isNotNull()
 
 
         //update
@@ -57,7 +57,7 @@ class KafkaPublisherIT(
         )
         assertThat(personUpdated.id).isEqualTo(person.id)
 
-        //assertThat(personConsumer.latch.await(10, TimeUnit.SECONDS)).isTrue
+        assertThat(personConsumer.latch.await(2, TimeUnit.SECONDS)).isTrue
     }
 
     private fun createAddress(street: String): Address {

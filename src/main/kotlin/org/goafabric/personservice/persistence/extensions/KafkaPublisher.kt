@@ -50,8 +50,8 @@ class KafkaPublisher(
         }
 
         when (entity) {
-            is Person  -> publish("person", entity.id!!, operation, entity)
-            is Address -> publish("address", entity.id!!, operation, entity)
+            is PersonEo  -> publish("person", entity.id!!, operation, entity)
+            is AddressEo -> publish("address", entity.id!!, operation, entity)
             else -> throw IllegalStateException("Type " + entity::class)
         }
     }

@@ -2,6 +2,7 @@ package org.goafabric.personservice.persistence.entity
 
 import jakarta.persistence.*
 import org.goafabric.personservice.persistence.extensions.AuditTrailListener
+import org.goafabric.personservice.persistence.extensions.KafkaPublisher
 import org.hibernate.annotations.TenantId
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Entity
 @Table(name = "person")
 @Document("#{@httpInterceptor.getPrefix()}person")
-@EntityListeners(AuditTrailListener::class)
+@EntityListeners(AuditTrailListener::class, KafkaPublisher::class)
 class PersonEo (
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
