@@ -101,6 +101,7 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 	exclude("**/*NRIT*")
 	finalizedBy("jacocoTestReport")
+	testLogging.events("started", "passed", "skipped", "failed")
 }
 tasks.jacocoTestReport { reports {csv.required.set(true); xml.required.set(true) } }
 

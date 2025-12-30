@@ -8,21 +8,28 @@ import org.goafabric.personservice.controller.dto.Person
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry
 import org.springframework.kafka.test.context.EmbeddedKafka
+import org.springframework.kafka.test.utils.ContainerTestUtils
 import org.springframework.test.annotation.DirtiesContext
-import java.util.concurrent.TimeUnit
 
-@SpringBootTest //(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
 class KafkaPublisherIT(
     @Autowired private val personController: PersonController,
-    @Autowired private val personConsumer: PersonConsumer) {
+    @Autowired private val personConsumer: PersonConsumer,
+    @Autowired private val registry: KafkaListenerEndpointRegistry) {
 
     @Test
     @Throws(InterruptedException::class)
     fun save() {
-        val person = personController!!.save(
+        registry.listenerContainers
+            .forEach(java.util.function.Consumer { container: org.springframework.kafka.listener.MessageListenerContainer ->
+                ContainerTestUtils.waitForAssignment(container, 1)
+            })
+
+        val person = personController.save(
             Person(
                 null,
                 null,
