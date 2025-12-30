@@ -9,7 +9,6 @@ import org.goafabric.personservice.controller.dto.EventData
 import org.slf4j.MDC
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.annotation.RegisterReflection
-import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
 @Aspect
@@ -20,8 +19,8 @@ class KafkaInterceptor {
     @Throws(Throwable::class)
     fun resolveTenantInfo(joinPoint: ProceedingJoinPoint, eventData: EventData): Any {
         UserContext.setContext(
-            eventData.tenantInfos.get("X-TenantId"), eventData.tenantInfos.get("X-OrganizationId"),
-            eventData.tenantInfos.get("X-Auth-Request-Preferred-Username"), eventData.tenantInfos.get("X-UserInfo")
+            eventData.tenantInfos["X-TenantId"], eventData.tenantInfos["X-OrganizationId"],
+            eventData.tenantInfos["X-Auth-Request-Preferred-Username"], eventData.tenantInfos["X-UserInfo"]
         )
 
         configureLogsAndTracing()

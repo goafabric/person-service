@@ -3,9 +3,7 @@ package org.goafabric.personservice.persistence.extensions
 import jakarta.persistence.PostPersist
 import jakarta.persistence.PostRemove
 import jakarta.persistence.PostUpdate
-import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.EventData
-import org.goafabric.personservice.controller.dto.Person
 import org.goafabric.personservice.extensions.UserContext.adapterHeaderMap
 import org.goafabric.personservice.persistence.entity.AddressEo
 import org.goafabric.personservice.persistence.entity.PersonEo
@@ -52,7 +50,7 @@ class KafkaPublisher(
         when (entity) {
             is PersonEo  -> publish("person", entity.id!!, operation, entity)
             is AddressEo -> publish("address", entity.id!!, operation, entity)
-            else -> throw IllegalStateException("Type " + entity::class)
+            else -> error("Type " + entity::class)
         }
     }
 

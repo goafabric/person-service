@@ -91,10 +91,9 @@ dependencies {
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springframework.boot:spring-boot-starter-kafka-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
-	implementation("org.springframework.boot:spring-boot-starter-kafka-test")
-
 }
 
 tasks.withType<Test> {
