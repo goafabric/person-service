@@ -32,9 +32,11 @@ class KafkaPublisherIT {
     
     @Test
     void save() throws InterruptedException {
+
         registry.getListenerContainers().forEach(container -> {
             ContainerTestUtils.waitForAssignment(container, 1);
         });
+
 
         final Person person = personController.save(
                 new Person(null,

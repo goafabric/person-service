@@ -4,7 +4,6 @@ import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import org.goafabric.personservice.controller.dto.EventData;
-import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
@@ -21,10 +20,10 @@ import org.springframework.stereotype.Component;
 public class KafkaPublisher {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final KafkaTemplate<String, EventData> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final String kafkaServers;
 
-    public KafkaPublisher(KafkaTemplate<String, EventData> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
+    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaServers = kafkaServers;
     }
@@ -51,15 +50,15 @@ public class KafkaPublisher {
             case PersonEo person ->
                     publish("person", person.getId(), operation, object);
             case AddressEo address ->
-                    publish("address", address.getId(), operation, object);
+                    publish("person", address.getId(), operation, object);
             default -> throw new IllegalStateException("Type " + object.getClass());
         }
     }
 
     private void publish(String type, String key, String operation, Object payload) {
         log.info("publishing event of type {}", type);
-        kafkaTemplate.send(type, key,
-                new EventData(type, operation, payload, UserContext.getAdapterHeaderMap()));
+        kafkaTemplate.send(type, key, payload);
+
     }
 
 }
