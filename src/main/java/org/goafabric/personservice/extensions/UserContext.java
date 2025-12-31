@@ -23,7 +23,7 @@ public class UserContext {
                 request.getHeader("X-Auth-Request-Preferred-Username"), request.getHeader("X-UserInfo"));
     }
 
-    static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
+    public static void setContext(String tenantId, String organizationId, String userName, String userInfo) {
         CONTEXT.set(new UserContextRecord(
                 getValue(tenantId, "0"),
                 getValue(organizationId, "0"),

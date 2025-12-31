@@ -52,7 +52,8 @@ class KafkaPublisherIT {
 
 
         //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated",
+                person.address()));
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 

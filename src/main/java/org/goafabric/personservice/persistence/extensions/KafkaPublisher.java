@@ -3,7 +3,9 @@ package org.goafabric.personservice.persistence.extensions;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.goafabric.personservice.controller.dto.EventData;
+import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
@@ -55,10 +57,15 @@ public class KafkaPublisher {
         }
     }
 
-    private void publish(String type, String key, String operation, Object payload) {
-        log.info("publishing event of type {}", type);
-        kafkaTemplate.send(type, key, payload);
+    private void publish(String topic, String key, String operation, Object payload) {
+        log.info("publishing event of type {}", topic);
+        // kafkaTemplate.send(type, key, payload);
 
+        var record = new ProducerRecord<>(topic, key, payload);
+        record.headers().add("operation", operation.getBytes());
+        //record.headers().add("usercontext", new ObjectMapper().writeValueAsBytes(UserContext.getAdapterHeaderMap()));
+        UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes()));
+        kafkaTemplate.send(record);
     }
 
 }
