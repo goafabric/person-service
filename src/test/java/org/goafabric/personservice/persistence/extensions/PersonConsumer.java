@@ -20,7 +20,10 @@ public class PersonConsumer {
     private final CountDownLatch latch = new CountDownLatch(1);
 
     @KafkaHandler
-    public void consumePerson(PersonEo person, @Header("operation") String operation, @Headers Map<String, Object> headers) {
+    public void consumePerson(PersonEo person, @Header("operation") String operation, @Headers Map<String, Object> tenantInfos) {
+        //UserContext.setContext(new String((byte[]) tenantInfos.get("X-TenantId")), new String((byte[])tenantInfos.get("X-OrganizationId")),
+          //      new String((byte[]) tenantInfos.get("X-Auth-Request-Preferred-Username")), "");
+
         log.info("loopback event for person {} {}", person, operation);
         latch.countDown();
     }
