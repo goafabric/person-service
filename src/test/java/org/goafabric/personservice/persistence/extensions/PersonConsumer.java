@@ -1,5 +1,6 @@
 package org.goafabric.personservice.persistence.extensions;
 
+import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
@@ -21,9 +22,8 @@ public class PersonConsumer {
 
     @KafkaHandler
     public void consumePerson(PersonEo person, @Header("operation") String operation, @Headers Map<String, Object> tenantInfos) {
-        //UserContext.setContext(new String((byte[]) tenantInfos.get("X-TenantId")), new String((byte[])tenantInfos.get("X-OrganizationId")),
-          //      new String((byte[]) tenantInfos.get("X-Auth-Request-Preferred-Username")), "");
-
+        UserContext.setContext(new String((byte[]) tenantInfos.get("X-TenantId")), new String((byte[])tenantInfos.get("X-OrganizationId")),
+                new String((byte[]) tenantInfos.get("X-Auth-Request-Preferred-Username")), null);
         log.info("loopback event for person {} {}", person, operation);
         latch.countDown();
     }
