@@ -4,20 +4,25 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.goafabric.personservice.controller.dto.EventData;
+import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.MDC;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.annotation.RegisterReflection;
+import org.springframework.messaging.handler.annotation.Headers;
+import org.springframework.stereotype.Component;
 
-//@Aspect
-//@Component
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+@Aspect
+@Component
 @RegisterReflection(classes = KafkaInterceptor.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
 public class KafkaInterceptor {
 
-    @Around("@annotation(org.springframework.kafka.annotation.KafkaListener) && args(..,eventData)")
-    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, EventData eventData) throws Throwable {
-        UserContext.setContext(eventData.tenantInfos().get("X-TenantId"), eventData.tenantInfos().get("X-OrganizationId"),
-                eventData.tenantInfos().get("X-Auth-Request-Preferred-Username"), eventData.tenantInfos().get("X-UserInfo"));
+    @Around("@annotation(org.springframework.kafka.annotation.KafkaHandler) && args(..,headers)")
+    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, @Headers Map<String, Object> headers) throws Throwable {
+        UserContext.setContext(new String((byte[]) headers.get("X-TenantId"), StandardCharsets.UTF_8), new String((byte[])headers.get("X-OrganizationId"), StandardCharsets.UTF_8),
+                new String((byte[]) headers.get("X-Auth-Request-Preferred-Username"), StandardCharsets.UTF_8), null);
 
         configureLogsAndTracing();
         Object result = joinPoint.proceed();

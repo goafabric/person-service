@@ -4,7 +4,6 @@ import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.goafabric.personservice.controller.dto.EventData;
 import org.goafabric.personservice.extensions.UserContext;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
@@ -16,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-@RegisterReflection(classes = {EventData.class, PersonEo.class, AddressEo.class} //every type we publish needs to be registered
+import java.nio.charset.StandardCharsets;
+
+@RegisterReflection(classes = {PersonEo.class, AddressEo.class} //every type we publish needs to be registered
         , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 @Component
 public class KafkaPublisher {
@@ -64,7 +65,7 @@ public class KafkaPublisher {
         var record = new ProducerRecord<>(topic, key, payload);
         record.headers().add("operation", operation.getBytes());
         //record.headers().add("usercontext", new ObjectMapper().writeValueAsBytes(UserContext.getAdapterHeaderMap()));
-        UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes()));
+        UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
         kafkaTemplate.send(record);
     }
 

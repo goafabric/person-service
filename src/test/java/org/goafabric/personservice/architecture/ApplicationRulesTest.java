@@ -113,6 +113,7 @@ public class ApplicationRulesTest {
 
                     "org.aspectj..",
                     "io.opentelemetry..",
+                    "org.apache.kafka..",
 
                     "kotlin..",
                     "kotlinx..",
