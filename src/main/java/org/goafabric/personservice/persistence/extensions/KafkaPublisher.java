@@ -10,16 +10,12 @@ import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aot.hint.MemberCategory;
-import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 
-@RegisterReflection(classes = {PersonEo.class, AddressEo.class} //every type we publish needs to be registered
-        , memberCategories = { MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS})
 @Component
 public class KafkaPublisher {
 
@@ -61,6 +57,7 @@ public class KafkaPublisher {
         }
     }
 
+    //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
     private void publish(String topic, String key, String operation, Object payload) {
         log.info("publishing event of type {}", topic);
         var record = new ProducerRecord<>(topic, key, payload);

@@ -1,4 +1,5 @@
-package org.goafabric.personservice.persistence.extensions;
+/*
+package org.goafabric.personservice.controller;
 
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
@@ -11,12 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CountDownLatch;
 
-
-//Without EventData we can now simply consume the Objects itself => No more SafeJsonSerializer + Reflection Registration of Entities required
-//Headers are handled by KafkaInterceptor
 @Component
-@KafkaListener(topics = {"person"}, groupId = "person")
-public class PersonConsumer {
+@KafkaListener(topics = {"person"}, groupId = "person-2")
+public class PersonConsumerProd {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final CountDownLatch latch = new CountDownLatch(1);
 
@@ -36,3 +34,4 @@ public class PersonConsumer {
         return latch;
     }
 }
+*/
