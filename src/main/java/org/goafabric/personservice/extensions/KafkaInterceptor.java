@@ -24,12 +24,19 @@ public class KafkaInterceptor {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory (
             ConsumerFactory<String, Object> consumerFactory,
+            RecordInterceptor<String, Object> recordInterceptor,
             DefaultErrorHandler deadLetterErrorHandler
     ) {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
         factory.setConsumerFactory(consumerFactory);
+        factory.setRecordInterceptor(recordInterceptor);
         factory.setCommonErrorHandler(deadLetterErrorHandler);
-        factory.setRecordInterceptor(new RecordInterceptor<>() {
+        return factory;
+    }
+
+    @Bean
+    public RecordInterceptor<String, Object> recordInterceptor() {
+        return new RecordInterceptor<>() {
             @Override
             public ConsumerRecord<String, Object> intercept(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
                 UserContext.setContext(getValue(record.headers(), "X-TenantId"), getValue(record.headers(), "X-OrganizationId"),
@@ -42,22 +49,7 @@ public class KafkaInterceptor {
             public void afterRecord(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
                 afterCompletion();
             }
-        });
-        return factory;
-    }
-
-    private void configureLogsAndTracing() {
-        Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.getTenantId());
-        MDC.put("tenantId", UserContext.getTenantId());
-    }
-
-    private void afterCompletion() {
-        UserContext.removeContext();
-        MDC.remove("tenantId");
-    }
-
-    private String getValue(Headers headers, String key) {
-        return new String(headers.lastHeader(key).value(), StandardCharsets.UTF_8);
+        };
     }
 
     @Bean
@@ -75,4 +67,19 @@ public class KafkaInterceptor {
 
         return errorHandler;
     }
+
+    private void configureLogsAndTracing() {
+        Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.getTenantId());
+        MDC.put("tenantId", UserContext.getTenantId());
+    }
+
+    private void afterCompletion() {
+        UserContext.removeContext();
+        MDC.remove("tenantId");
+    }
+
+    private String getValue(Headers headers, String key) {
+        return new String(headers.lastHeader(key).value(), StandardCharsets.UTF_8);
+    }
+
 }
