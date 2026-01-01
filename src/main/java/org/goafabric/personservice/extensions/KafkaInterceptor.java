@@ -1,3 +1,4 @@
+/*
 package org.goafabric.personservice.extensions;
 
 import io.opentelemetry.api.trace.Span;
@@ -42,3 +43,5 @@ public class KafkaInterceptor {
     }
 
 }
+
+ */
