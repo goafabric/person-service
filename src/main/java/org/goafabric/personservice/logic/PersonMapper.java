@@ -1,8 +1,10 @@
 package org.goafabric.personservice.logic;
 
-import org.goafabric.personservice.controller.dto.PersonSearch;
-import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
+import org.goafabric.personservice.controller.dto.PersonSearch;
+import org.goafabric.personservice.persistence.entity.AddressEo;
+import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -21,4 +23,5 @@ public interface PersonMapper {
 
     PersonEo map(PersonSearch value);
 
+    Address map(AddressEo value);
 }

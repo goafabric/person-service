@@ -1,47 +1,55 @@
-/*
 package org.goafabric.personservice.extensions;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.header.Headers;
 import org.slf4j.MDC;
-import org.springframework.aot.hint.MemberCategory;
-import org.springframework.aot.hint.annotation.RegisterReflection;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.listener.RecordInterceptor;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
-@Aspect
-@Component
-@RegisterReflection(classes = KafkaInterceptor.class, memberCategories = MemberCategory.INVOKE_DECLARED_METHODS)
+@Configuration
 public class KafkaInterceptor {
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
+            ConsumerFactory<String, Object> consumerFactory
+    ) {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
+        factory.setConsumerFactory(consumerFactory);
+        factory.setRecordInterceptor(new RecordInterceptor<>() {
+            @Override
+            public ConsumerRecord<String, Object> intercept(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
+                UserContext.setContext(getValue(record.headers(), "X-TenantId"), getValue(record.headers(), "X-OrganizationId"),
+                        getValue(record.headers(), "X-Auth-Request-Preferred-Username"), null);
+                configureLogsAndTracing();
+                return record;
+            }
 
-    @Around("@annotation(org.springframework.kafka.annotation.KafkaHandler) && args(..,headers)")
-    public Object resolveTenantInfo(ProceedingJoinPoint joinPoint, @Headers Map<String, Object> headers) throws Throwable {
-        UserContext.setContext(new String((byte[]) headers.get("X-TenantId"), StandardCharsets.UTF_8), new String((byte[])headers.get("X-OrganizationId"), StandardCharsets.UTF_8),
-                new String((byte[]) headers.get("X-Auth-Request-Preferred-Username"), StandardCharsets.UTF_8), null);
-
-        configureLogsAndTracing();
-        Object result = joinPoint.proceed();
-        afterCompletion();
-
-        return result;
+            @Override
+            public void afterRecord(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
+                afterCompletion();
+            }
+        });
+        return factory;
     }
 
-    private static void configureLogsAndTracing() {
+    private void configureLogsAndTracing() {
         Span.fromContext(Context.current()).setAttribute("tenant.id", UserContext.getTenantId());
         MDC.put("tenantId", UserContext.getTenantId());
     }
 
-    private static void afterCompletion() {
+    private void afterCompletion() {
         UserContext.removeContext();
         MDC.remove("tenantId");
     }
 
+    private String getValue(Headers headers, String key) {
+        return new String(headers.lastHeader(key).value(), StandardCharsets.UTF_8);
+    }
 }
-
- */

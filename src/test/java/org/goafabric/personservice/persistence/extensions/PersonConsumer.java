@@ -1,7 +1,7 @@
 package org.goafabric.personservice.persistence.extensions;
 
-import org.goafabric.personservice.persistence.entity.AddressEo;
-import org.goafabric.personservice.persistence.entity.PersonEo;
+import org.goafabric.personservice.controller.dto.Address;
+import org.goafabric.personservice.controller.dto.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -18,13 +18,13 @@ public class PersonConsumer {
     private final CountDownLatch latch = new CountDownLatch(1);
 
     @KafkaHandler
-    public void consumePerson(PersonEo person, @Header("operation") String operation) {
+    public void consumePerson(Person person, @Header("operation") String operation) {
         log.info("loopback event for person {} {}", person, operation);
         latch.countDown();
     }
 
     @KafkaHandler
-    public void consumeAddress(AddressEo address, @Header("operation") String operation) {
+    public void consumeAddress(Address address, @Header("operation") String operation) {
         log.info("loopback event for address {} {}", address, operation);
         latch.countDown();
     }

@@ -5,6 +5,7 @@ import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.goafabric.personservice.extensions.UserContext;
+import org.goafabric.personservice.logic.PersonMapper;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;
@@ -25,10 +26,12 @@ public class KafkaPublisher {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final String kafkaServers;
+    private final PersonMapper personMapper;
 
-    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers) {
+    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers, PersonMapper personMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaServers = kafkaServers;
+        this.personMapper = personMapper;
     }
 
     @PostPersist
@@ -51,20 +54,17 @@ public class KafkaPublisher {
 
         switch (object) {
             case PersonEo person ->
-                    publish("person", person.getId(), operation, object);
+                    publish("person", person.getId(), operation, personMapper.map(person));
             case AddressEo address ->
-                    publish("person", address.getId(), operation, object);
+                    publish("person", address.getId(), operation, personMapper.map(address));
             default -> throw new IllegalStateException("Type " + object.getClass());
         }
     }
 
     private void publish(String topic, String key, String operation, Object payload) {
         log.info("publishing event of type {}", topic);
-        // kafkaTemplate.send(type, key, payload);
-
         var record = new ProducerRecord<>(topic, key, payload);
         record.headers().add("operation", operation.getBytes());
-        //record.headers().add("usercontext", new ObjectMapper().writeValueAsBytes(UserContext.getAdapterHeaderMap()));
         UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
         kafkaTemplate.send(record);
     }
