@@ -17,7 +17,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus,heapdump"
+        include: "health,prometheus,heapdump,topics"
 
 #tracing
 spring.application.name: person-service
