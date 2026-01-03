@@ -20,6 +20,8 @@ public class PersonConsumerProd {
 
     @KafkaHandler
     public void consumePerson(Person person, @Header("operation") String operation) {
+        //if (true) { throw new NullPointerException(); }
+
         log.info("loopback event for person {} {}", person, operation);
         latch.countDown();
     }
