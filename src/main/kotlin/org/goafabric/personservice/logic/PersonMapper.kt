@@ -8,10 +8,10 @@ import org.mapstruct.ReportingPolicy
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface PersonMapper {
-    fun map(person: PersonEo): Person
-    fun map(person: Person): PersonEo
-    fun map(countries: List<PersonEo>): List<Person>
-    fun map(countries: Iterable<PersonEo>): List<Person>
+    fun map(value: PersonEo): Person
+    fun map(value: Person): PersonEo
+    fun map(values: List<PersonEo>): List<Person>
+    fun map(values: Iterable<PersonEo>): List<Person>
 
     fun map(value: PersonSearch): PersonEo
 }
