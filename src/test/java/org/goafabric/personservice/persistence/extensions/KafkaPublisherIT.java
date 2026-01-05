@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
 class KafkaPublisherIT {
