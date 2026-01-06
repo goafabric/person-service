@@ -1,3 +1,4 @@
+/*
 package org.goafabric.personservice.persistence.extensions;
 
 import org.goafabric.personservice.controller.dto.Address;
@@ -38,3 +39,5 @@ public class PersonConsumer {
         return latch;
     }
 }
+
+ */
