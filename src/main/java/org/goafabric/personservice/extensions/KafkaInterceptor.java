@@ -2,20 +2,33 @@ package org.goafabric.personservice.extensions;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.context.Context;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.slf4j.MDC;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.listener.RecordInterceptor;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 @Configuration
+@Endpoint(id = "topics")
 public class KafkaInterceptor {
+    private final KafkaAdmin kafkaAdmin;
+
+    public KafkaInterceptor(KafkaAdmin kafkaAdmin) {
+        this.kafkaAdmin = kafkaAdmin;
+    }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory (
             ConsumerFactory<String, Object> consumerFactory,
@@ -43,6 +56,13 @@ public class KafkaInterceptor {
                 afterCompletion();
             }
         };
+    }
+
+    @ReadOperation
+    public Set<String> topics() throws Exception {
+        try (AdminClient client = AdminClient.create(kafkaAdmin.getConfigurationProperties())) {
+            return client.listTopics(new ListTopicsOptions().listInternal(false)).names().get();
+        }
     }
 
     private void configureLogsAndTracing() {
