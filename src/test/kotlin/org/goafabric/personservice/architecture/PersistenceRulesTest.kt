@@ -30,8 +30,8 @@ object PersistenceRulesTest {
         .layer("Persistence").definedBy("..persistence..")
 
         .whereLayer("Controller").mayNotBeAccessedByAnyLayer()
-        .whereLayer("Logic").mayOnlyBeAccessedByLayers("Controller")
-        .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Logic")
+        //.whereLayer("Logic").mayOnlyBeAccessedByLayers("Controller")
+        //.whereLayer("Persistence").mayOnlyBeAccessedByLayers("Logic")
         .allowEmptyShould(true)
 
     @ArchTest

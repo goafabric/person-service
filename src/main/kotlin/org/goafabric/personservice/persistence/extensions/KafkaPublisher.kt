@@ -45,8 +45,8 @@ class KafkaPublisher(
         }
 
         when (entity) {
-            is PersonEo  -> publish("person", entity.id!!, operation, entity)
-            is AddressEo -> publish("address", entity.id!!, operation, entity)
+            is PersonEo  -> publish("person", entity.id!!, operation, personMapper.map(entity))
+            is AddressEo -> publish("address", entity.id!!, operation, personMapper.map(entity))
             else -> error("Type " + entity::class)
         }
     }
