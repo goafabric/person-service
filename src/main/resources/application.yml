@@ -59,7 +59,7 @@ adapter:
 
 spring:
   kafka:
-    enabled: true
+    #enabled: true
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
     consumer:
