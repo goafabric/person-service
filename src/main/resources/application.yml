@@ -57,7 +57,7 @@ adapter:
 
 spring:
   kafka:
-    #bootstrap-servers: "localhost:9092"
+    #enabled: true
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
     consumer:

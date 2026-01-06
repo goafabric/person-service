@@ -3,47 +3,44 @@ package org.goafabric.personservice.persistence.extensions
 import jakarta.persistence.PostPersist
 import jakarta.persistence.PostRemove
 import jakarta.persistence.PostUpdate
-import org.goafabric.personservice.controller.dto.EventData
-import org.goafabric.personservice.extensions.UserContext.adapterHeaderMap
+import org.apache.kafka.clients.producer.ProducerRecord
+import org.goafabric.personservice.extensions.UserContext
+import org.goafabric.personservice.logic.PersonMapper
 import org.goafabric.personservice.persistence.entity.AddressEo
 import org.goafabric.personservice.persistence.entity.PersonEo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.aot.hint.MemberCategory
-import org.springframework.aot.hint.annotation.RegisterReflection
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
+import java.util.function.BiConsumer
 
-@RegisterReflection(
-    classes = [EventData::class, PersonEo::class, AddressEo::class],
-    memberCategories = [MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS]
-)
 @Component
 class KafkaPublisher(
-    private val kafkaTemplate: KafkaTemplate<String, EventData>,
-    @param:Value("\${spring.kafka.bootstrap-servers:}"
-    ) private val kafkaServers: String
+    private val kafkaTemplate: KafkaTemplate<String, Any>,
+    @param:Value("\${spring.kafka.enabled:false}") private val kafkaEnabled: Boolean,
+    private val personMapper: PersonMapper
 ) {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostPersist
-    fun afterCreate(entity: Any) {
-        publish("CREATE", entity)
+    fun afterCreate(`object`: Any) {
+        publish("CREATE", `object`)
     }
 
     @PostUpdate
-    fun afterUpdate(entity: Any) {
-        publish("UPDATE", entity)
+    fun afterUpdate(`object`: Any) {
+        publish("UPDATE", `object`)
     }
 
     @PostRemove
-    fun afterDelete(entity: Any) {
-        publish("DELETE", entity)
+    fun afterDelete(`object`: Any) {
+        publish("DELETE", `object`)
     }
 
     private fun publish(operation: String, entity: Any) {
-        if (kafkaServers.isEmpty()) {
+        if (!kafkaEnabled) {
             return
         }
 
@@ -54,11 +51,18 @@ class KafkaPublisher(
         }
     }
 
-    private fun publish(type: String, key: String, operation: String, payload: Any) {
-        log.info("publishing event of type {}", type)
-        kafkaTemplate.send(
-            type, key,
-            EventData(type, operation, payload, adapterHeaderMap)
-        )
+    //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
+    private fun publish(topic: String, key: String, operation: String, payload: Any) {
+        log.info("publishing event of type {}", topic)
+        val record = ProducerRecord(topic, key, payload)
+        record.headers().add("operation", operation.toByteArray(StandardCharsets.UTF_8))
+
+        UserContext.adapterHeaderMap.forEach(BiConsumer { key1: String, value: String ->
+            record.headers().add(
+                key1, value.toByteArray(StandardCharsets.UTF_8)
+            )
+        })
+
+        kafkaTemplate.send(record)
     }
 }
