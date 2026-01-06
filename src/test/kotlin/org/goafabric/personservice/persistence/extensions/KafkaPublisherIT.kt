@@ -35,7 +35,7 @@ class KafkaPublisherIT(
                 null,
                 "Homer",
                 "Simpson",
-                listOf<Address?>(
+                listOf(
                     createAddress("Evergreen Terrace"),
                     createAddress("Everblue Terrace")
                 )
