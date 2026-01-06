@@ -1,4 +1,3 @@
-/*
 package org.goafabric.personservice.controller;
 
 import org.goafabric.personservice.controller.dto.Address;
@@ -7,12 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CountDownLatch;
 
 @Component
+@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
 @KafkaListener(topics = {"person"}, groupId = "person-2")
 public class PersonConsumerProd {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -36,4 +37,3 @@ public class PersonConsumerProd {
         return latch;
     }
 }
-*/

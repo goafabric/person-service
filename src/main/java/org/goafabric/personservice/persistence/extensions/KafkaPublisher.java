@@ -21,12 +21,12 @@ public class KafkaPublisher {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final String kafkaServers;
+    private final Boolean kafkaEnabled;
     private final PersonMapper personMapper;
 
-    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.bootstrap-servers:}") String kafkaServers, PersonMapper personMapper) {
+    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.enabled:false}") Boolean kafkaEnabled, PersonMapper personMapper) {
         this.kafkaTemplate = kafkaTemplate;
-        this.kafkaServers = kafkaServers;
+        this.kafkaEnabled = kafkaEnabled;
         this.personMapper = personMapper;
     }
 
@@ -46,7 +46,7 @@ public class KafkaPublisher {
     }
 
     private void publish(String operation, Object object) {
-       if (kafkaServers.isEmpty()) { return; }
+       if (!kafkaEnabled) { return; }
 
         switch (object) {
             case PersonEo person ->
