@@ -60,6 +60,7 @@ adapter:
 spring:
   kafka:
     #enabled: true
+    properties.request.timeout.ms: 10000
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
     consumer:

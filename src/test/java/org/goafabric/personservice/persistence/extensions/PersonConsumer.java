@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
 //Without EventData we can now simply consume the Objects itself => No more SafeJsonSerializer + Reflection Registration of Entities required
 //Headers are handled by KafkaInterceptor
 @Component
-@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
+//@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
 @KafkaListener(topics = {"person"}, groupId = "person")
 public class PersonConsumer {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -40,4 +39,4 @@ public class PersonConsumer {
     }
 }
 
- */
+*/
