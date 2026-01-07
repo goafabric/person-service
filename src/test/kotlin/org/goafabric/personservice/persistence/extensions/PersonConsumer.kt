@@ -14,8 +14,8 @@ import java.util.concurrent.CountDownLatch
 //Without EventData we can now simply consume the Objects itself => No more SafeJsonSerializer + Reflection Registration of Entities required
 //Headers are handled by KafkaInterceptor
 @Component
-@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
 @KafkaListener(topics = ["person"], groupId = "person")
+//@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
 class PersonConsumer {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
     val latch: CountDownLatch = CountDownLatch(1)

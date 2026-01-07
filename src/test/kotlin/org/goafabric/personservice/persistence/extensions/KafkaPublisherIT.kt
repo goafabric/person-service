@@ -14,7 +14,7 @@ import org.springframework.kafka.test.utils.ContainerTestUtils
 import org.springframework.test.annotation.DirtiesContext
 import java.util.concurrent.TimeUnit
 
-@SpringBootTest
+@SpringBootTest(properties = ["spring.kafka.enabled=true"])
 @EmbeddedKafka(partitions = 1)
 @DirtiesContext
 class KafkaPublisherIT(
