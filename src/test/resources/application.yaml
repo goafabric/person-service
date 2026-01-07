@@ -1,3 +1,0 @@
-spring:
-  kafka:
-    enabled: false
