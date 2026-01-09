@@ -61,7 +61,7 @@ public class KafkaPublisher {
     private void publish(String topic, String key, String operation, Object payload) {
         log.info("publishing event of type {}", topic);
         var record = new ProducerRecord<>(topic, key, payload);
-        record.headers().add("operation", operation.getBytes());
+        record.headers().add("operation", operation.getBytes(StandardCharsets.UTF_8));
         UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
         kafkaTemplate.send(record);
     }
