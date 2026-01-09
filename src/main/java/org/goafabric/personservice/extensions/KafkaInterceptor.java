@@ -20,6 +20,7 @@ import org.springframework.kafka.listener.RecordInterceptor;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @Configuration
 @Endpoint(id = "topics")
@@ -60,7 +61,7 @@ public class KafkaInterceptor {
     }
 
     @ReadOperation
-    public Set<String> topics() throws Exception {
+    public Set<String> topics() throws ExecutionException, InterruptedException {
         try (AdminClient client = AdminClient.create(kafkaAdmin.getConfigurationProperties())) {
             return client.listTopics(new ListTopicsOptions().listInternal(false)).names().get();
         }
