@@ -21,13 +21,13 @@ class PersonConsumer {
     val latch: CountDownLatch = CountDownLatch(1)
 
     @KafkaHandler
-    fun consumePerson(person: Person?, @Header("operation") operation: String?) {
+    fun consumePerson(person: Person, @Header("operation") operation: String) {
         log.info("loopback event for person {} {}", person, operation)
         latch.countDown()
     }
 
     @KafkaHandler
-    fun consumeAddress(address: Address?, @Header("operation") operation: String?) {
+    fun consumeAddress(address: Address, @Header("operation") operation: String) {
         log.info("loopback event for address {} {}", address, operation)
         latch.countDown()
     }
