@@ -8,8 +8,8 @@ import org.springframework.web.service.annotation.GetExchange
 @CircuitBreaker(name = "calleeservice")
 interface CalleeServiceAdapter {
     @GetExchange("/callees/sayMyName")
-    fun sayMyName(@RequestParam("name") name: String?): Callee?
+    fun sayMyName(@RequestParam("name") name: String): Callee
 
     @GetExchange("/callees/sayMyOtherName/{name}")
-    fun sayMyOtherName(@PathVariable("name") name: String?): Callee?
+    fun sayMyOtherName(@PathVariable("name") name: String): Callee
 }
