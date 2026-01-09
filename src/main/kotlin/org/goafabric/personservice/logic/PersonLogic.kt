@@ -44,7 +44,7 @@ class PersonLogic(
     }
 
     fun sayMyName (name : String) : Person {
-        return Person(firstName = calleeServiceAdapter.sayMyName(name)!!.message, lastName = "", address = emptyList())
+        return Person(firstName = calleeServiceAdapter.sayMyName(name).message, lastName = "", address = emptyList())
     }
 
 }
