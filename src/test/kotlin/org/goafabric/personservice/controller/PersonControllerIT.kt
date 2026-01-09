@@ -17,7 +17,6 @@ import org.springframework.test.context.aot.DisabledInAotMode
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisabledInAotMode
 internal class PersonControllerIT(
     @Autowired private val personController: PersonController,
     @Autowired private val personRepository: PersonRepository) {

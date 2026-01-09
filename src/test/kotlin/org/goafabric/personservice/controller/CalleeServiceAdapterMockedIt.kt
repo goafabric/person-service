@@ -13,7 +13,6 @@ import org.springframework.test.context.aot.DisabledInAotMode
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisabledInAotMode
 class CalleeServiceAdapterMockedIt(
     @Autowired private val personController: PersonController) {
 
