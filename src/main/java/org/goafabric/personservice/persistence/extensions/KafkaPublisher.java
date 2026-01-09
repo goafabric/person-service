@@ -5,7 +5,7 @@ import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.goafabric.personservice.extensions.UserContext;
-import org.goafabric.personservice.logic.PersonMapper;
+import org.goafabric.personservice.logic.mapper.PersonMapper;
 import org.goafabric.personservice.persistence.entity.AddressEo;
 import org.goafabric.personservice.persistence.entity.PersonEo;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package org.goafabric.personservice.logic;
+package org.goafabric.personservice.logic.mapper;
 
 import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;

@@ -3,6 +3,7 @@ package org.goafabric.personservice.logic;
 import org.goafabric.personservice.adapter.CalleeServiceAdapter;
 import org.goafabric.personservice.controller.dto.Person;
 import org.goafabric.personservice.controller.dto.PersonSearch;
+import org.goafabric.personservice.logic.mapper.PersonMapper;
 import org.goafabric.personservice.persistence.PersonRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
