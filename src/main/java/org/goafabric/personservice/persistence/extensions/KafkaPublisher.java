@@ -21,10 +21,10 @@ public class KafkaPublisher {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final Boolean kafkaEnabled;
+    private final boolean kafkaEnabled;
     private final PersonMapper personMapper;
 
-    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.enabled:false}") Boolean kafkaEnabled, PersonMapper personMapper) {
+    public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.enabled:false}") boolean kafkaEnabled, PersonMapper personMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaEnabled = kafkaEnabled;
         this.personMapper = personMapper;
@@ -60,10 +60,10 @@ public class KafkaPublisher {
     //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
     private void publish(String topic, String key, String operation, Object payload) {
         log.info("publishing event of type {}", topic);
-        var record = new ProducerRecord<>(topic, key, payload);
-        record.headers().add("operation", operation.getBytes(StandardCharsets.UTF_8));
-        UserContext.getAdapterHeaderMap().forEach((key1, value) -> record.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
-        kafkaTemplate.send(record);
+        var producerRecord = new ProducerRecord<>(topic, key, payload);
+        producerRecord.headers().add("operation", operation.getBytes(StandardCharsets.UTF_8));
+        UserContext.getAdapterHeaderMap().forEach((key1, value) -> producerRecord.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
+        kafkaTemplate.send(producerRecord);
     }
 
 }

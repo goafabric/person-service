@@ -62,13 +62,6 @@ class AuditTrailListenerIT {
                 .isNotNull().contains("Terrace");
 
 
-        /*
-        var updateAddress = selectFrom("UPDATE", address.id());
-        assertThat(updateAddress.getOldvalue()).isNotNull();
-        assertThat(updateAddress.getNewvalue()).isNotNull();
-
-         */
-
         var deleteAddress = selectFrom("DELETE", address.id());
         assertThat(deleteAddress.getOldValue()).isNotNull();
         assertThat(deleteAddress.getNewValue()).isNull();

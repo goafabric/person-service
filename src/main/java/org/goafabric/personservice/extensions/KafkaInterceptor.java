@@ -7,6 +7,7 @@ import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.MDC;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
@@ -44,15 +45,15 @@ public class KafkaInterceptor {
     public RecordInterceptor<String, Object> recordInterceptor() {
         return new RecordInterceptor<>() {
             @Override
-            public ConsumerRecord<String, Object> intercept(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
-                UserContext.setContext(getValue(record.headers(), "X-TenantId"), getValue(record.headers(), "X-OrganizationId"),
-                        getValue(record.headers(), "X-Auth-Request-Preferred-Username"), null);
+            public ConsumerRecord<String, Object> intercept(@NonNull ConsumerRecord<String, Object> consumerRecord, @NonNull Consumer<String, Object> consumer) {
+                UserContext.setContext(getValue(consumerRecord.headers(), "X-TenantId"), getValue(consumerRecord.headers(), "X-OrganizationId"),
+                        getValue(consumerRecord.headers(), "X-Auth-Request-Preferred-Username"), null);
                 configureLogsAndTracing();
-                return record;
+                return consumerRecord;
             }
 
             @Override
-            public void afterRecord(ConsumerRecord<String, Object> record, Consumer<String, Object> consumer) {
+            public void afterRecord(@NonNull ConsumerRecord<String, Object> consumerRecord, @NonNull Consumer<String, Object> consumer) {
                 afterCompletion();
             }
         };
