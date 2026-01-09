@@ -54,15 +54,15 @@ class KafkaPublisher(
     //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
     private fun publish(topic: String, key: String, operation: String, payload: Any) {
         log.info("publishing event of type {}", topic)
-        val record = ProducerRecord(topic, key, payload)
-        record.headers().add("operation", operation.toByteArray(StandardCharsets.UTF_8))
+        val producerRecord = ProducerRecord(topic, key, payload)
+        producerRecord.headers().add("operation", operation.toByteArray(StandardCharsets.UTF_8))
 
         UserContext.adapterHeaderMap.forEach(BiConsumer { key1: String, value: String ->
-            record.headers().add(
+            producerRecord.headers().add(
                 key1, value.toByteArray(StandardCharsets.UTF_8)
             )
         })
 
-        kafkaTemplate.send(record)
+        kafkaTemplate.send(producerRecord)
     }
 }

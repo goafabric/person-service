@@ -39,18 +39,18 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin) {
     fun recordInterceptor(): RecordInterceptor<String, Any> {
         return object : RecordInterceptor<String, Any> {
             override fun intercept(
-                record: ConsumerRecord<String, Any>,
+                consumerRecord: ConsumerRecord<String, Any>,
                 consumer: Consumer<String, Any>
             ): ConsumerRecord<String, Any> {
                 setContext(
-                    getValue(record.headers(), "X-TenantId"), getValue(record.headers(), "X-OrganizationId"),
-                    getValue(record.headers(), "X-Auth-Request-Preferred-Username"), null
+                    getValue(consumerRecord.headers(), "X-TenantId"), getValue(consumerRecord.headers(), "X-OrganizationId"),
+                    getValue(consumerRecord.headers(), "X-Auth-Request-Preferred-Username"), null
                 )
                 configureLogsAndTracing()
-                return record
+                return consumerRecord
             }
 
-            override fun afterRecord(record: ConsumerRecord<String, Any>, consumer: Consumer<String, Any>) {
+            override fun afterRecord(consumerRecord: ConsumerRecord<String, Any>, consumer: Consumer<String, Any>) {
                 afterCompletion()
             }
         }

@@ -54,13 +54,6 @@ internal class AuditTrailListenerIT(
         assertThat(Objects.requireNonNull(createAddress.newValue))
             .isNotNull().contains("Terrace")
 
-
-        /*
-        var updateAddress = selectFrom("UPDATE", address.id());
-        assertThat(updateAddress.oldValue).isNotNull();
-        assertThat(updateAddress.newValue).isNotNull();
-
-         */
         val deleteAddress = selectFrom("DELETE", address?.id)
         assertThat(deleteAddress.oldValue).isNotNull()
         assertThat(deleteAddress.newValue).isNull()
