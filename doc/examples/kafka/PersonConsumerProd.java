@@ -1,4 +1,3 @@
-/*
 package org.goafabric.personservice.controller;
 
 import org.goafabric.personservice.controller.dto.Address;
@@ -37,4 +36,4 @@ public class PersonConsumerProd {
     public CountDownLatch getLatch() {
         return latch;
     }
-}*/
+}
