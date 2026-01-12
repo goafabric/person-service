@@ -24,6 +24,8 @@ public class KafkaPublisher {
     private final boolean kafkaEnabled;
     private final PersonMapper personMapper;
 
+    enum DbOperation { CREATE, UPDATE, DELETE }
+
     public KafkaPublisher(KafkaTemplate<String, Object> kafkaTemplate, @Value("${spring.kafka.enabled:false}") boolean kafkaEnabled, PersonMapper personMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaEnabled = kafkaEnabled;
@@ -32,20 +34,20 @@ public class KafkaPublisher {
 
     @PostPersist
     public void afterCreate(Object object)  {
-        publish("CREATE", object);
+        publish(DbOperation.CREATE, object);
     }
 
     @PostUpdate
     public void afterUpdate(Object object) {
-        publish("UPDATE", object);
+        publish(DbOperation.UPDATE, object);
     }
 
     @PostRemove
     public void afterDelete(Object object) {
-        publish("DELETE", object);
+        publish(DbOperation.DELETE, object);
     }
 
-    private void publish(String operation, Object object) {
+    private void publish(DbOperation operation, Object object) {
        if (!kafkaEnabled) { return; }
 
         switch (object) {
@@ -58,10 +60,10 @@ public class KafkaPublisher {
     }
 
     //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
-    private void publish(String topic, String key, String operation, Object payload) {
+    private void publish(String topic, String key, DbOperation operation, Object payload) {
         log.info("publishing event of type {}", topic);
         var producerRecord = new ProducerRecord<>(topic, key, payload);
-        producerRecord.headers().add("operation", operation.getBytes(StandardCharsets.UTF_8));
+        producerRecord.headers().add("operation", operation.toString().getBytes(StandardCharsets.UTF_8));
         UserContext.getAdapterHeaderMap().forEach((key1, value) -> producerRecord.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
         kafkaTemplate.send(producerRecord);
     }
