@@ -24,22 +24,24 @@ class KafkaPublisher(
 ) {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
+    private enum class DbOperation {  CREATE, UPDATE, DELETE }
+
     @PostPersist
     fun afterCreate(`object`: Any) {
-        publish("CREATE", `object`)
+        publish(DbOperation.CREATE, `object`)
     }
 
     @PostUpdate
     fun afterUpdate(`object`: Any) {
-        publish("UPDATE", `object`)
+        publish(DbOperation.UPDATE, `object`)
     }
 
     @PostRemove
     fun afterDelete(`object`: Any) {
-        publish("DELETE", `object`)
+        publish(DbOperation.DELETE, `object`)
     }
 
-    private fun publish(operation: String, entity: Any) {
+    private fun publish(operation: DbOperation, entity: Any) {
         if (!kafkaEnabled) {
             return
         }
@@ -52,10 +54,10 @@ class KafkaPublisher(
     }
 
     //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
-    private fun publish(topic: String, key: String, operation: String, payload: Any) {
+    private fun publish(topic: String, key: String, operation: DbOperation, payload: Any) {
         log.info("publishing event of type {}", topic)
         val producerRecord = ProducerRecord(topic, key, payload)
-        producerRecord.headers().add("operation", operation.toByteArray(StandardCharsets.UTF_8))
+        producerRecord.headers().add("operation", operation.toString().toByteArray(StandardCharsets.UTF_8))
 
         UserContext.adapterHeaderMap.forEach(BiConsumer { key1: String, value: String ->
             producerRecord.headers().add(
