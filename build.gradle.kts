@@ -20,10 +20,10 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.2.2.6593"
 
-	kotlin("jvm") version "2.2.21"
-	kotlin("plugin.spring") version "2.2.21"
-	kotlin("plugin.jpa") version "2.2.21"
-	kotlin("kapt") version "2.2.21"
+	kotlin("jvm") version "2.3.0"
+	kotlin("plugin.spring") version "2.3.0"
+	kotlin("plugin.jpa") version "2.3.0"
+	kotlin("kapt") version "2.3.0"
 
 	id("org.cyclonedx.bom") version "3.1.0"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
@@ -42,7 +42,7 @@ dependencies {
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
 		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.1")
-		implementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
+		implementation("org.mockito.kotlin:mockito-kotlin:6.2.0")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
 }
