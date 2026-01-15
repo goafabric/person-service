@@ -10,12 +10,12 @@ import org.goafabric.personservice.persistence.extensions.KafkaPublisher
 class AddressEo (
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: String?,
+    var id: String?,
 
-    val street: String,
-    val city: String,
+    var street: String,
+    var city: String,
 
     @Version //optimistic locking
-    val version: Long?
+    var version: Long?
 )
 
