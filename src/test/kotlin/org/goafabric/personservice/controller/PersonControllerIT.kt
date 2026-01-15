@@ -52,7 +52,7 @@ internal class PersonControllerIT(
     fun findByAddressCity() {
         val persons: List<Person> = personController.findByStreet("Evergreen Terrace", 0, 3)
         assertThat(persons).isNotNull().isNotEmpty()
-        assertThat(persons.first().address.first()!!.street).startsWith("Evergreen Terrace No.")
+        assertThat(persons.first().address.first().street).startsWith("Evergreen Terrace No.")
     }
     
 
@@ -81,32 +81,11 @@ internal class PersonControllerIT(
         assertThat(
             personController.save(
                 Person(person.id, person.version, person.firstName, person.lastName, person.address)
-            )!!.id
-        ).isEqualTo(person.id!!)
+            ).id
+        ).isEqualTo(person.id)
 
-        personRepository.deleteById(person.id!!)
+        personRepository.deleteById(person.id)
     }
-
-    /*
-    @Test
-    fun saveWithValidationException() {
-        Assertions.assertThatThrownBy {
-            personController.save(
-                Person(
-                    null,
-                    null,
-                    "Homer",
-                    "",
-                    java.util.List.of(
-                        createAddress("Evergreen Terrace"),
-                        createAddress("Everblue Terrace")
-                    )
-                )
-            )
-        }.isInstanceOf(ConstraintViolationException::class.java)
-    }
-
-     */
 
     @Test
     fun sayMyName() {
