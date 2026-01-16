@@ -27,6 +27,7 @@ public class AuditTrailListener implements ApplicationContextAware {
 
     @Entity
     @Table(name = "audit_trail")
+    @SuppressWarnings("java:S107")
     public static class AuditTrail {
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)
