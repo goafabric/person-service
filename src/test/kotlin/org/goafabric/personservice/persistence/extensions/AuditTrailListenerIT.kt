@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
-import java.util.List
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 internal class AuditTrailListenerIT(
@@ -48,13 +47,13 @@ internal class AuditTrailListenerIT(
     fun creatUpdateDeleteAddress() {
         val address = save().address.first()
 
-        val createAddress = selectFrom("CREATE", address?.id)
+        val createAddress = selectFrom("CREATE", address.id)
         assertThat(createAddress.oldValue).isNull()
         assertThat(createAddress.newValue).isNotNull()
         assertThat(Objects.requireNonNull(createAddress.newValue))
             .isNotNull().contains("Terrace")
 
-        val deleteAddress = selectFrom("DELETE", address?.id)
+        val deleteAddress = selectFrom("DELETE", address.id)
         assertThat(deleteAddress.oldValue).isNotNull()
         assertThat(deleteAddress.newValue).isNull()
         assertThat(Objects.requireNonNull(deleteAddress.oldValue))
@@ -62,7 +61,7 @@ internal class AuditTrailListenerIT(
     }
 
     private fun selectFrom(operation: String, id: String?): AuditTrail {
-        val query = entityManager!!.createQuery<AuditTrail>(
+        val query = entityManager.createQuery<AuditTrail>(
             "SELECT a FROM AuditTrailListener\$AuditTrail a WHERE a.objectId = :objectId AND a.operation = :operation",
             AuditTrail::class.java
         )
@@ -72,13 +71,13 @@ internal class AuditTrailListenerIT(
     }
 
     fun save(): Person {
-        val person = personController!!.save(
+        val person = personController.save(
             Person(
                 null,
                 null,
                 "Marge",
                 "Simpson",
-                List.of<Address?>(
+                listOf(
                     createAddress("Evergreen Terrace"),
                     createAddress("Everblue Terrace")
                 )
@@ -93,7 +92,7 @@ internal class AuditTrailListenerIT(
             )
         )
 
-        personRepository!!.deleteById(person.id!!)
+        personRepository.deleteById(person.id!!)
         return person
     }
 
