@@ -8,7 +8,6 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 import org.slf4j.MDC;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
@@ -25,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 @Configuration
 @Endpoint(id = "topics")
+@SuppressWarnings("java:S2638")
 public class KafkaInterceptor {
     private final KafkaAdmin kafkaAdmin;
 
@@ -47,7 +47,7 @@ public class KafkaInterceptor {
     public RecordInterceptor<String, Object> recordInterceptor() {
         return new RecordInterceptor<>() {
             @Override
-            public @Nullable ConsumerRecord<String, Object> intercept(@NonNull ConsumerRecord<String, Object> consumerRecord, @NonNull Consumer<String, Object> consumer) {
+            public ConsumerRecord<String, Object> intercept(@NonNull ConsumerRecord<String, Object> consumerRecord, @NonNull Consumer<String, Object> consumer) {
                 UserContext.setContext(getValue(consumerRecord.headers(), "X-TenantId"), getValue(consumerRecord.headers(), "X-OrganizationId"),
                         getValue(consumerRecord.headers(), "X-Auth-Request-Preferred-Username"), null);
                 configureLogsAndTracing();
