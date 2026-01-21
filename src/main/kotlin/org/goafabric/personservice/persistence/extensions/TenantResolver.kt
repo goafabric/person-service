@@ -19,7 +19,6 @@ import java.sql.Connection
 import java.sql.SQLException
 import java.util.function.Consumer
 import javax.sql.DataSource
-import kotlin.collections.set
 
 @Component
 @ConditionalOnExpression("#{!('\${spring.autoconfigure.exclude:}'.contains('DataSourceAutoConfiguration'))}")
@@ -54,8 +53,12 @@ class TenantResolver(
     @Throws(SQLException::class)
     override fun getConnection(schema: String): Connection {
         val connection = dataSource.connection
-        connection.schema =
-            if (defaultSchema == schema) defaultSchema else schemaPrefix + UserContext.tenantId
+        try {
+            connection.schema = if (defaultSchema == schema) defaultSchema else schemaPrefix + UserContext.tenantId
+        } catch (e: Exception) {
+            if (!connection.isClosed) { connection.close() }
+            throw e
+        }
         return connection
     }
 
