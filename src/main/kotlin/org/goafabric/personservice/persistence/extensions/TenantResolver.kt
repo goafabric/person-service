@@ -56,7 +56,7 @@ class TenantResolver(
         try {
             connection.schema = if (defaultSchema == schema) defaultSchema else schemaPrefix + UserContext.tenantId
         } catch (e: Exception) {
-            if (!connection.isClosed) { connection.close() }
+            connection.close()
             throw e
         }
         return connection
