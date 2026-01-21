@@ -63,7 +63,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
             connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + UserContext.getTenantId());
             return connection;
         } catch (Exception e) {
-            if (!connection.isClosed()) { connection.close(); }
+            connection.close();
             throw e;
         }
     }
