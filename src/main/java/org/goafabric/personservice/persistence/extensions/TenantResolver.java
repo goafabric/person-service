@@ -59,8 +59,13 @@ public class TenantResolver implements CurrentTenantIdentifierResolver<String>, 
     @Override
     public Connection getConnection(String schema) throws SQLException {
         var connection = dataSource.getConnection();
-        connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + UserContext.getTenantId());
-        return connection;
+        try {
+            connection.setSchema(defaultSchema.equals(schema) ? defaultSchema : schemaPrefix + UserContext.getTenantId());
+            return connection;
+        } catch (Exception e) {
+            if (!connection.isClosed()) { connection.close(); }
+            throw e;
+        }
     }
 
     @Override
