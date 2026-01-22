@@ -25,6 +25,10 @@ management.tracing.sampling.probability: "1.0"
 logging.level.io.opentelemetry.exporter: "OFF"
 management.opentelemetry.tracing.export.otlp.endpoint: "http://localhost:4318/v1/traces"
 
+#otel collector (prometheus) metrics configuration, disabled currently, for details https://spring.io/blog/2025/11/18/opentelemetry-with-spring-boot
+#management.otlp.metrics.export.url: "http://otel-collector:4318/v1/metrics"
+logging.level.io.micrometer.registry.otlp: "OFF"
+
 #persistence
 spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
 #spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
@@ -90,4 +94,3 @@ logging.level.org.flywaydb.core: "INFO"
 logging.level.org.hibernate.SQL: "INFO"
 
 springdoc.enable-kotlin: "false"
-logging.level.io.micrometer.registry.otlp: "OFF"
