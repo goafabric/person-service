@@ -83,7 +83,7 @@ class PersonControllerIT {
         final Person person = personController.save(
                 new Person(null,
                         null,
-                        "Homer",
+                        "Lisa",
                         "Simpson",
                         List.of(
                                 createAddress("Evergreen Terrace"),
@@ -116,7 +116,7 @@ class PersonControllerIT {
     void saveWithValidationException() {
         var person = new Person(null,
                 null,
-                "Homer",
+                "Lisa",
                 "",
                 List.of(
                         createAddress("Evergreen Terrace"),
@@ -135,7 +135,7 @@ class PersonControllerIT {
 
     @Test
     void find() {
-        var persons = personController.find(new PersonSearch("Homer", null), 0, 3);
+        var persons = personController.find(new PersonSearch("Lisa", null), 0, 3);
         assertThat(persons).isNotNull().hasSize(1);
         System.out.println(persons);
     }
