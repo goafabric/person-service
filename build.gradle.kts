@@ -1,3 +1,4 @@
+import org.springframework.boot.gradle.tasks.aot.ProcessTestAot
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
@@ -126,3 +127,5 @@ openApi {
 }
 
 sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }
+
+tasks.withType<ProcessTestAot>().configureEach { enabled = false }
