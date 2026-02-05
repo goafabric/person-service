@@ -24,6 +24,9 @@ public class ApplicationBaseRuntimeHints implements RuntimeHintsRegistrar {
         hints.reflection().registerType(TypeReference.of("org.springdoc.core.providers.SpringWebProvider"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
 
+        hints.reflection().registerType(TypeReference.of("org.springdoc.core.providers.SpringWebProvider$$SpringCGLIB$$0"),
+                builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
+
         //kafka
         hints.reflection().registerType(TypeReference.of("java.security.AccessController"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
