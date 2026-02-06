@@ -5,11 +5,11 @@ recipeList:
   # upgrade spring dependency
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.springframework.boot
-      newVersion: 4.0.1
+      newVersion: 4.0.2
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.graalvm.buildtools.native
-      newVersion: 0.11.3
+      newVersion: 0.11.4
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
