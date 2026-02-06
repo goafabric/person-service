@@ -13,7 +13,7 @@ recipeList:
 
   - org.openrewrite.gradle.plugins.UpgradePluginVersion:
       pluginIdPattern: org.hibernate.orm
-      newVersion: 7.1.8.Final
+      newVersion: 7.2.1.Final
 
   # add new starters with autoconfig
   - org.openrewrite.gradle.AddDependency:
