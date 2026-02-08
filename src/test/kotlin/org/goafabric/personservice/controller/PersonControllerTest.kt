@@ -40,7 +40,7 @@ internal class PersonControllerTest {
     companion object {
         private fun createPerson(): Person {
             return Person("0", null, "Homer", "Simpson"
-                , address = listOf(Address("", "", "", ""))
+                , address = listOf(Address("", null, "", ""))
             )
         }
     }
