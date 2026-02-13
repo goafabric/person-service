@@ -98,7 +98,10 @@ class PersonControllerIT {
 
 
         //update
-        var personUpdated = personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+        personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
+
+        //wh
+        var personUpdated = personController.find(new PersonSearch(person.firstName(), "updated"), 0 ,3).getFirst();
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
 
