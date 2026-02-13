@@ -211,7 +211,8 @@
             "type": "string"
           },
           "version": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "street": {
             "type": "string",
@@ -233,7 +234,8 @@
             "type": "string"
           },
           "version": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "firstName": {
             "type": "string",
