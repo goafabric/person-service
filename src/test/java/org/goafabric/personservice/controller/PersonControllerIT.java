@@ -100,7 +100,7 @@ class PersonControllerIT {
         //update
         personController.save(new Person(person.id(), person.version(), person.firstName(), "updated", person.address()));
 
-        //wh
+        //we have to load the entity again to get the updated version, if we just use the save returned it will be incorrect
         var personUpdated = personController.find(new PersonSearch(person.firstName(), "updated"), 0 ,3).getFirst();
         assertThat(personUpdated.id()).isEqualTo(person.id());
         assertThat(personUpdated.version()).isEqualTo(1L);
