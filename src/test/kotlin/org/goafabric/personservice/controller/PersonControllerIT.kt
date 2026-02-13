@@ -76,7 +76,12 @@ internal class PersonControllerIT(
         assertThat(person.version).isEqualTo(0)
 
         //update
-        val personUpdated = personController.save(Person(person.id, person.version, firstName = person.firstName, "updated", person.address))
+        personController.save(Person(person.id, person.version, firstName = person.firstName, "updated", person.address))
+
+        //we have to load the entity again to get the updated version, if we just use the save returned it will be incorrect
+        val personUpdated = personController.find(PersonSearch("Homer", "updated"), 0, 3).first()
+        assertThat(personUpdated.version).isEqualTo(1)
+
         assertThat(personUpdated.id).isEqualTo(person.id)
         assertThat(personUpdated.version).isEqualTo(1)
 
