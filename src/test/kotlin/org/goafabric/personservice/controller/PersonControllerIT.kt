@@ -76,11 +76,11 @@ internal class PersonControllerIT(
         assertThat(person.version).isEqualTo(0)
 
         //update
-        val personUpdated = personController.save(Person(person.id, person.version, "updated", person.lastName, person.address))
+        val personUpdated = personController.save(Person(person.id, person.version, firstName = person.firstName, "updated", person.address))
         assertThat(personUpdated.id).isEqualTo(person.id)
-        //assertThat(personUpdated.version).isEqualTo(1)
+        assertThat(personUpdated.version).isEqualTo(1)
 
-        assertThat(personUpdated.firstName).isEqualTo("updated")
+        assertThat(personUpdated.lastName).isEqualTo("updated")
 
         personRepository.deleteById(person.id)
     }

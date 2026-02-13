@@ -38,7 +38,7 @@ class PersonLogic(
     }
 
     fun save(person : Person): Person {
-        return personMapper.map(personRepository.save(
+        return personMapper.map(personRepository.saveAndFlush(
             personMapper.map(person))
         )
     }
