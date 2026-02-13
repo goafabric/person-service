@@ -1,7 +1,5 @@
 package org.goafabric.personservice.controller
 
-import jakarta.validation.ConstraintViolationException
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.goafabric.personservice.adapter.Callee
 import org.goafabric.personservice.adapter.CalleeServiceAdapter
@@ -13,7 +11,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.aot.DisabledInAotMode
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -58,7 +55,7 @@ internal class PersonControllerIT(
 
     @Test
     fun save() {
-        val person: Person? = personController.save(
+        val person: Person = personController.save(
             Person(
                 null,
                 null,
@@ -73,16 +70,17 @@ internal class PersonControllerIT(
 
         assertThat(person).isNotNull()
 
-        val person2: Person = personController.getById(person!!.id!!)
+        val person2: Person = personController.getById(person.id!!)
         assertThat(person2).isNotNull()
         assertThat(person2.address).hasSize(2)
+        assertThat(person.version).isEqualTo(0)
 
         //update
-        assertThat(
-            personController.save(
-                Person(person.id, person.version, person.firstName, person.lastName, person.address)
-            ).id
-        ).isEqualTo(person.id)
+        val personUpdated = personController.save(Person(person.id, person.version, "updated", person.lastName, person.address))
+        assertThat(personUpdated.id).isEqualTo(person.id)
+        //assertThat(personUpdated.version).isEqualTo(1)
+
+        assertThat(personUpdated.firstName).isEqualTo("updated")
 
         personRepository.deleteById(person.id)
     }
