@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
@@ -25,7 +24,6 @@ plugins {
 	kotlin("plugin.jpa") version "2.3.10"
 	kotlin("kapt") version "2.3.10"
 
-	id("org.cyclonedx.bom") version "3.1.0"
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
