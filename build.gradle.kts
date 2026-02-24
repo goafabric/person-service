@@ -12,7 +12,7 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.2_10-jdk-noble@sha256:67bc062
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "4.0.2"
+	id("org.springframework.boot") version "4.0.3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.4"
 	id("com.google.cloud.tools.jib") version "3.5.3"
