@@ -54,7 +54,7 @@ public class KafkaPublisher {
             case PersonEo person ->
                     publish("person", person.getId(), operation, personMapper.map(person));
             case AddressEo address ->
-                    publish("person", address.getId(), operation, personMapper.map(address));
+                    publish("address", address.getId(), operation, personMapper.map(address));
             default -> throw new IllegalStateException("Type " + object.getClass());
         }
     }
