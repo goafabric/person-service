@@ -4,7 +4,6 @@ import org.goafabric.personservice.controller.dto.Address;
 import org.goafabric.personservice.controller.dto.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
@@ -16,18 +15,17 @@ import java.util.concurrent.CountDownLatch;
 //Headers are handled by KafkaInterceptor
 @Component
 //@RetryableTopic(attempts = "3", dltTopicSuffix = ".DLT")
-@KafkaListener(topics = {"person"}, groupId = "person")
 public class PersonConsumer {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final CountDownLatch latch = new CountDownLatch(1);
 
-    @KafkaHandler
+    @KafkaListener(topics = {"person"}, groupId = "person")
     public void consumePerson(Person person, @Header("operation") String operation) {
         log.info("loopback event for person {} {}", person, operation);
         latch.countDown();
     }
 
-    @KafkaHandler
+    @KafkaListener(topics = {"address"}, groupId = "address")
     public void consumeAddress(Address address, @Header("operation") String operation) {
         log.info("loopback event for address {} {}", address, operation);
         latch.countDown();
