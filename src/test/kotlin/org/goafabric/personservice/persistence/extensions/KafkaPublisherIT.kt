@@ -1,6 +1,7 @@
 package org.goafabric.personservice.persistence.extensions
 
 import org.assertj.core.api.Assertions.assertThat
+import org.goafabric.personservice.consumer.PersonConsumer
 import org.goafabric.personservice.controller.PersonController
 import org.goafabric.personservice.controller.dto.Address
 import org.goafabric.personservice.controller.dto.Person
