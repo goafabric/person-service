@@ -39,7 +39,6 @@ dependencies {
 		implementation("org.mapstruct:mapstruct:1.6.3")
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.1.1")
 		implementation("org.mockito.kotlin:mockito-kotlin:6.2.3")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
@@ -53,8 +52,6 @@ dependencies {
 	//monitoring
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
-
-	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
