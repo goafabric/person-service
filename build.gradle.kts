@@ -12,17 +12,17 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.2_10-jre-noble@sha256:b02e4cd
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "4.0.3"
+	id("org.springframework.boot") version "4.0.4"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.11.5"
 	id("com.google.cloud.tools.jib") version "3.5.3"
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.2.3.7755"
 
-	kotlin("jvm") version "2.3.10"
-	kotlin("plugin.spring") version "2.3.10"
-	kotlin("plugin.jpa") version "2.3.10"
-	kotlin("kapt") version "2.3.10"
+	kotlin("jvm") version "2.3.20"
+	kotlin("plugin.spring") version "2.3.20"
+	kotlin("plugin.jpa") version "2.3.20"
+	kotlin("kapt") version "2.3.20"
 
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
@@ -39,7 +39,7 @@ dependencies {
 		implementation("org.mapstruct:mapstruct:1.6.3")
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
-		implementation("org.mockito.kotlin:mockito-kotlin:6.2.3")
+		implementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	}
 }
