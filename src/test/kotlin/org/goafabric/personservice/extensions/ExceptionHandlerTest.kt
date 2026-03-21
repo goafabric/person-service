@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
-internal class ExceptionHandlerTest {
+class ExceptionHandlerTest {
     private val exceptionHandler: ExceptionHandler = ExceptionHandler()
 
     @Test

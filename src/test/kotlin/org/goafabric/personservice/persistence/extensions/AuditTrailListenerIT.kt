@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class AuditTrailListenerIT(
+class AuditTrailListenerIT(
     @Autowired val personController: PersonController,
     @Autowired val personRepository: PersonRepository,
     @Autowired val entityManager: EntityManager) {

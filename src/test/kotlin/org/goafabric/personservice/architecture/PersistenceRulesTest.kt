@@ -16,7 +16,7 @@ import com.tngtech.archunit.library.Architectures
 import org.goafabric.personservice.Application
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [DoNotIncludeTests::class, PersistenceRulesTest.IgnoreTestContext::class])
-object PersistenceRulesTest {
+class PersistenceRulesTest {
     @ArchTest
     val layerAreRespectedWithPersistence: ArchRule = Architectures.layeredArchitecture()
         .consideringOnlyDependenciesInLayers()
@@ -57,7 +57,7 @@ object PersistenceRulesTest {
         }
         ).allowEmptyShould(true)
 
-    internal class IgnoreTestContext : ImportOption {
+    class IgnoreTestContext : ImportOption {
         override fun includes(location: Location): Boolean {
             return !location.contains("$$") && !location.contains("EnhancerByCGLIB")
                     && !location.contains("__TestContext") && !location.contains("BeanFactoryRegistrations")
