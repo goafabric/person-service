@@ -1,5 +1,0 @@
-- the application should represent a simple rest endpoint to display person + address (1:n)
-- person is usually compose of at least firstname and lastname
-- address at least has city, street, zipcide
-- data should be stored inside the database accordingly
-- the project name should be "awesome-spec-service"
