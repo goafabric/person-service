@@ -73,5 +73,10 @@ public class ApplicationBaseRuntimeHints implements RuntimeHintsRegistrar {
         //org.graalvm.buildtools.native 1.0 regression
         hints.reflection().registerType(TypeReference.of("org.hibernate.validator.internal.util.logging.Log_$logger"),
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));
+
+        hints.reflection().registerType(TypeReference.of("org.hibernate.validator.internal.util.logging.Messages_$bundle"),
+                builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
+
+
     }
 }
