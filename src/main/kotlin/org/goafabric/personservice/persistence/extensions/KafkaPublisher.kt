@@ -3,6 +3,7 @@ package org.goafabric.personservice.persistence.extensions
 import jakarta.persistence.PostPersist
 import jakarta.persistence.PostRemove
 import jakarta.persistence.PostUpdate
+import jakarta.transaction.TransactionManager
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.goafabric.personservice.extensions.UserContext
 import org.goafabric.personservice.logic.PersonMapper
@@ -10,9 +11,12 @@ import org.goafabric.personservice.persistence.entity.AddressEo
 import org.goafabric.personservice.persistence.entity.PersonEo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.nio.charset.StandardCharsets
 import java.util.function.BiConsumer
 
@@ -52,6 +56,8 @@ class KafkaPublisher(
             else -> error("Type " + entity::class)
         }
     }
+    @Autowired
+    var transActionManager: TransactionManager? = null
 
     //publish both person and address with the same topic to retain order, put Operation and UserContext to Kafka Headers to prevent EventData Wrapper
     private fun publish(topic: String, key: String, operation: DbOperation, payload: Any) {
@@ -65,6 +71,13 @@ class KafkaPublisher(
             )
         })
 
-        kafkaTemplate.send(producerRecord)
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+            override fun afterCompletion(status: Int) {
+                if (status == TransactionSynchronization.STATUS_COMMITTED) {
+                    kafkaTemplate.send(producerRecord)
+                }
+            }
+        })
+
     }
 }
