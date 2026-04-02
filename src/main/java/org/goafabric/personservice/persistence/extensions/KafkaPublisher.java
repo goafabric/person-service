@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.nio.charset.StandardCharsets;
 
@@ -65,7 +67,15 @@ public class KafkaPublisher {
         var producerRecord = new ProducerRecord<>(topic, key, payload);
         producerRecord.headers().add("operation", operation.toString().getBytes(StandardCharsets.UTF_8));
         UserContext.getAdapterHeaderMap().forEach((key1, value) -> producerRecord.headers().add(key1, value.getBytes(StandardCharsets.UTF_8)));
-        kafkaTemplate.send(producerRecord);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCompletion(int status) {
+                if (status == TransactionSynchronization.STATUS_COMMITTED) {
+                    kafkaTemplate.send(producerRecord);
+                }
+            }
+        });
     }
 
 }
