@@ -41,7 +41,7 @@ dependencies {
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
 		implementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
-		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.2")
 	}
 }
 
