@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.mockito.kotlin.whenever
 
-internal class PersonControllerTest {
+class PersonControllerTest {
     private val personLogic: PersonLogic = mock()
     private val personController = PersonController(personLogic)
     

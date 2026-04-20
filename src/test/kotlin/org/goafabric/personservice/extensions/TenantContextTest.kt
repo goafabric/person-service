@@ -1,9 +1,9 @@
 package org.goafabric.personservice.extensions
 
-import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
-internal class TenantContextTest {
+class TenantContextTest {
     @Test
     fun getTenantId() {
         UserContext.setContext(null, null, null, null)

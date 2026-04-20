@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class PersonControllerIT(
+class PersonControllerIT(
     @Autowired private val personController: PersonController,
     @Autowired private val personRepository: PersonRepository) {
     @MockitoBean  private val calleeServiceAdapter: CalleeServiceAdapter? = null
