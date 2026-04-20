@@ -18,6 +18,7 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.5.3"
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.2.3.7755"
+	id("info.solidsoft.pitest") version "1.19.0"
 
 	kotlin("jvm") version "2.3.10"
 	kotlin("plugin.spring") version "2.3.10"
@@ -92,6 +93,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-kafka-test")
 	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
+
+	//pitest
+	pitest("org.pitest:pitest-junit5-plugin:1.2.3")
 }
 
 tasks.withType<Test> {
@@ -136,3 +140,9 @@ openApi {
 sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }
 
 kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")
+
+pitest {
+	testStrengthThreshold = 60
+	targetClasses.set(listOf("org.goafabric.*"))
+	targetTests.set(listOf("*.*Test"))
+}
