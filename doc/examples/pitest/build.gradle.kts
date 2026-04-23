@@ -1,15 +1,16 @@
-import org.springframework.boot.gradle.tasks.aot.ProcessTestAot
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
 val javaVersion = "25"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
+tasks.withType<KotlinCompile>().all { compilerOptions { jvmTarget.set(JvmTarget.fromTarget(javaVersion)) } }
 
 val dockerRegistry = "goafabric"
 val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.2_10-jre-noble@sha256:b02e4cd184d9ece59b01129af1d0a069fa01e4f0f798f0bc4f3ff1a8391ba694"
 
 plugins {
-	java
 	jacoco
 	id("org.springframework.boot") version "4.0.5"
 	id("io.spring.dependency-management") version "1.1.7"
@@ -18,9 +19,14 @@ plugins {
 	id("com.google.cloud.tools.jib") version "3.5.3"
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.2.3.7755"
+	id("info.solidsoft.pitest") version "1.19.0"
+
+	kotlin("jvm") version "2.3.20"
+	kotlin("plugin.spring") version "2.3.20"
+	kotlin("plugin.jpa") version "2.3.20"
+	kotlin("kapt") version "2.3.20"
 
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-	id("info.solidsoft.pitest") version "1.19.0"
 }
 
 repositories {
@@ -33,10 +39,10 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
-
-		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+		implementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
+		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.2")
 	}
 }
 
@@ -46,41 +52,44 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	//monitoring
-    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
-    implementation("org.springframework.boot:spring-boot-starter-restclient")
-    implementation("io.github.resilience4j:resilience4j-spring-boot4")
+	implementation("io.github.resilience4j:resilience4j-spring-boot4") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
 	implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
+	//code generation
+	implementation("org.mapstruct:mapstruct")
+	kapt("org.mapstruct:mapstruct-processor:1.6.3")
+
 	//persistence
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
 	implementation("com.h2database:h2")
 	implementation("org.postgresql:postgresql")
-    implementation("org.springframework.boot:spring-boot-starter-flyway")
+	implementation("org.springframework.boot:spring-boot-starter-flyway")
 	implementation("org.flywaydb:flyway-database-postgresql")
 
 	implementation("org.springframework.boot:spring-boot-starter-kafka")
 
-	//mongodb + elastic
+	//mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
-	//code generation
-	implementation("org.mapstruct:mapstruct")
-	annotationProcessor("org.mapstruct:mapstruct-processor")
+	//kotlin
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("tools.jackson.module:jackson-module-kotlin")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-kafka-test")
-
-	//devtools
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
 
 	//pitest
@@ -128,11 +137,10 @@ openApi {
 
 sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }
 
-tasks.withType<ProcessTestAot>().configureEach { enabled = false }
+kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")
 
 pitest {
 	testStrengthThreshold = 60
 	targetClasses.set(listOf("org.goafabric.*"))
 	targetTests.set(listOf("*.*Test"))
-	excludedClasses.add("*.ApplicationBaseRuntimeHints")
 }
