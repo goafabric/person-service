@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.ListTopicsOptions
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.header.Headers
 import org.goafabric.personservice.extensions.UserContext.removeContext
 import org.goafabric.personservice.extensions.UserContext.setContext
@@ -18,8 +19,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.KafkaAdmin
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer
+import org.springframework.kafka.listener.DefaultErrorHandler
 import org.springframework.kafka.listener.RecordInterceptor
+import org.springframework.util.backoff.FixedBackOff
 import java.nio.charset.StandardCharsets
+import java.util.function.BiFunction
 
 @Configuration
 @Endpoint(id = "topics")
@@ -56,6 +62,22 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin) {
         }
     }
 
+    @Bean
+    open fun deadLetterErrorHandler(kafkaTemplate: KafkaTemplate<String, Any>): DefaultErrorHandler {
+        val recoverer = DeadLetterPublishingRecoverer(
+            kafkaTemplate, BiFunction { record: ConsumerRecord<*, *>?, exception: Exception? ->
+                TopicPartition(
+                    record!!.topic() + ".DLT",
+                    record.partition()
+                )
+            }
+        )
+
+        val errorHandler = DefaultErrorHandler(recoverer, FixedBackOff(1000L, 3))
+        errorHandler.addNotRetryableExceptions(IllegalStateException::class.java, IllegalArgumentException::class.java)
+
+        return errorHandler
+    }
     @ReadOperation
     fun topics(): MutableSet<String>? {
         AdminClient.create(kafkaAdmin.getConfigurationProperties()).use { client ->
