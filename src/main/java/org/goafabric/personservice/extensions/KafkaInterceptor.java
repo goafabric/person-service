@@ -6,6 +6,7 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Headers;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.MDC;
@@ -16,7 +17,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.RecordInterceptor;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
@@ -59,6 +64,22 @@ public class KafkaInterceptor {
                 afterCompletion();
             }
         };
+    }
+
+    @Bean
+    public DefaultErrorHandler deadLetterErrorHandler(KafkaTemplate<String, Object> kafkaTemplate) {
+        var recoverer = new DeadLetterPublishingRecoverer(
+                kafkaTemplate, (record, exception) ->
+                new TopicPartition(
+                        record.topic() + ".DLT",
+                        record.partition()
+                )
+        );
+
+        var errorHandler = new DefaultErrorHandler(recoverer, new FixedBackOff(1000L, 3));
+        errorHandler.addNotRetryableExceptions(IllegalStateException.class, IllegalArgumentException.class);
+
+        return errorHandler;
     }
 
     @ReadOperation
