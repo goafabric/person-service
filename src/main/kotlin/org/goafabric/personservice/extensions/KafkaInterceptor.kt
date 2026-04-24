@@ -78,6 +78,7 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin) {
 
         return errorHandler
     }
+
     @ReadOperation
     fun topics(): MutableSet<String>? {
         AdminClient.create(kafkaAdmin.getConfigurationProperties()).use { client ->
