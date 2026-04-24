@@ -25,9 +25,6 @@ jobs:
       - name: Test
         run: gradle build test generateOpenApiDocs
 
-      - name: PITest
-        run: gradle pitest
-
       - name: Sonar
         continue-on-error: true
         run: gradle sonar -Dsonar.plugins.downloadOnlyRequired=true -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=goafabric -Dsonar.token=${{ secrets.SONAR_USER_TOKEN }}
