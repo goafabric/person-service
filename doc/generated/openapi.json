@@ -208,10 +208,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "version": {
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "format": "int64"
           },
           "street": {
@@ -231,10 +237,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "version": {
-            "type": "integer",
+            "type": [
+              "integer",
+              "null"
+            ],
             "format": "int64"
           },
           "firstName": {
@@ -259,10 +271,16 @@
         "type": "object",
         "properties": {
           "firstName": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "lastName": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }
