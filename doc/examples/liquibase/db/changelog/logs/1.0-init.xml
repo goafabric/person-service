@@ -1,34 +1,37 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="andreas (generated)" id="1">
         <createTable tableName="person">
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_person"/>
             </column>
-            <column name="company_id" type="VARCHAR(36)"/>
+            <column name="organization_id" type="VARCHAR(36)"/>
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="address_id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column defaultValueNumeric="0" name="version" type="BIGINT"/>
         </createTable>
     </changeSet>
 
     <changeSet author="andreas (generated)" id="2">
-        <createTable tableName="person_audit">
+        <createTable tableName="audit_trail">
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_person_audit"/>
             </column>
-            <column name="company_id" type="VARCHAR(36)"/>
-            <column name="reference_id" type="VARCHAR(255)"/>
+            <column name="organization_id" type="VARCHAR(36)"/>
+            <column name="object_id" type="VARCHAR(255)"/>
+            <column name="object_type" type="VARCHAR(255)"/>
             <column name="operation" type="VARCHAR(255)"/>
             <column name="created_by" type="VARCHAR(255)"/>
             <column name="created_at" type="date"/>
             <column name="modified_by" type="VARCHAR(255)"/>
             <column name="modified_at" type="date"/>
-            <column name="oldvalue" type="VARCHAR(10000000)"/>
-            <column name="newvalue" type="VARCHAR(10000000)"/>
+            <column name="old_value" type="VARCHAR(10000000)"/>
+            <column name="new_value" type="VARCHAR(10000000)"/>
         </createTable>
     </changeSet>
 
@@ -37,7 +40,8 @@
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address"/>
             </column>
-            <column name="company_id" type="VARCHAR(36)"/>
+            <column name="organization_id" type="VARCHAR(36)"/>
+            <column name="person_id" type="VARCHAR(36)"/>
             <column name="street" type="VARCHAR(255)"/>
             <column name="city" type="VARCHAR(255)"/>
             <column defaultValueNumeric="0" name="version" type="BIGINT"/>
@@ -49,26 +53,26 @@
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address_audit"/>
             </column>
-            <column name="company_id" type="VARCHAR(36)"/>
+            <column name="organization_id" type="VARCHAR(36)"/>
             <column name="reference_id" type="VARCHAR(255)"/>
             <column name="operation" type="VARCHAR(255)"/>
             <column name="created_by" type="VARCHAR(255)"/>
             <column name="created_at" type="date"/>
             <column name="modified_by" type="VARCHAR(255)"/>
             <column name="modified_at" type="date"/>
-            <column name="oldvalue" type="VARCHAR(10000000)"/>
-            <column name="newvalue" type="VARCHAR(10000000)"/>
+            <column name="old_value" type="VARCHAR(10000000)"/>
+            <column name="new_value" type="VARCHAR(10000000)"/>
         </createTable>
     </changeSet>
 
     <changeSet author="andreas (generated)" id="5">
-        <createIndex indexName="idx_person_audit_company_id" tableName="person_audit">
-            <column name="company_id"/>
+        <createIndex indexName="idx_audit_organization_id" tableName="audit_trail">
+            <column name="organization_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="andreas (generated)" id="6">
-        <createIndex indexName="idx_person_company_id" tableName="person">
-            <column name="company_id"/>
+        <createIndex indexName="idx_person_organization_id" tableName="person">
+            <column name="organization_id"/>
         </createIndex>
     </changeSet>
 </databaseChangeLog>

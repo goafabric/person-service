@@ -9,5 +9,5 @@
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
     <!-- <includeAll path="db/changelog/logs"/> -->
-    <include file="classpath:db/changelog/logs/1.0-init.xml"/>
+    <include file="db/changelog/logs/1.0-init.xml"/>
 </databaseChangeLog> 
