@@ -38,6 +38,14 @@ class ControllerRulesTest {
         .should().notBeAnnotatedWith(CrossOrigin::class.java)
 
     @ArchTest
+    val controllerClassesShouldNotEndWithDtoResultResponse: ArchRule = ArchRuleDefinition.classes()
+        .that().resideInAPackage("..controller..")
+        .should().haveSimpleNameNotEndingWith("Dto")
+        .andShould().haveSimpleNameNotEndingWith("DTO")
+        .andShould().haveSimpleNameNotEndingWith("Result")
+        .andShould().haveSimpleNameNotEndingWith("Response")
+
+    @ArchTest
     val controllerShouldNotReturnResponseEntity: ArchRule = ArchRuleDefinition.methods()
         .that().areDeclaredInClassesThat().areAnnotatedWith(RestController::class.java)
         .should(object : ArchCondition<JavaMethod>("ResponseEntity check") {
