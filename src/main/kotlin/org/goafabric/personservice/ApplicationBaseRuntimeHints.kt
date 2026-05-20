@@ -82,20 +82,13 @@ class ApplicationBaseRuntimeHints : RuntimeHintsRegistrar {
         hints.resources().registerPattern("db/migration/common/*.sql")
         hints.resources().registerPattern("db/migration/postgresql/*.sql")
 
-
-        //org.graalvm.buildtools.native 1.0 regression
-        /*
+        //mcp
         hints.reflection().registerType(
-            TypeReference.of("org.hibernate.validator.internal.util.logging.Log_\$logger"),
-            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS) })
+            TypeReference.of("java.lang.Throwable"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
 
         hints.reflection().registerType(
-            org.springframework.aot.hint.TypeReference.of("org.hibernate.validator.internal.util.logging.Messages_\$bundle"),
-            java.util.function.Consumer { builder: TypeHint.Builder? ->
-                builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS).withField("INSTANCE")
-            })
-
-         */
-
+            TypeReference.of("org.springaicommunity.mcp.context.DefaultMetaProvider"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS) })
     }
 }
