@@ -12,6 +12,8 @@ create table person
     version bigint default 0
 );
 
+create index idx_person_tenant_id on person(tenant_id);
+
 create index idx_person_first_name on person(first_name);
 
 create index idx_person_last_name on person(last_name);
