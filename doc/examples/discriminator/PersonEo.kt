@@ -17,7 +17,7 @@ class PersonEo (
     var id: String?,
 
     @TenantId
-    var organizationId: String?,
+    var tenantId: String?,
 
     var firstName: String?,
     var lastName: String?,

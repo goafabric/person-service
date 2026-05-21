@@ -29,13 +29,7 @@ class TenantResolver(
 
     /** Resolver for optional CompanyId via @TenantId Discriminator  */
     override fun resolveCurrentTenantIdentifier(): String {
-        return getOrgunitId()
-    }
-
-    companion object {
-        fun getOrgunitId(): String {
-            return UserContext.tenantId;
-        }
+        return UserContext.tenantId;
     }
 
     override fun validateExistingCurrentSessions(): Boolean {

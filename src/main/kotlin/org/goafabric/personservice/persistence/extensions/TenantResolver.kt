@@ -29,15 +29,8 @@ class TenantResolver(
 ) : CurrentTenantIdentifierResolver<String>, MultiTenantConnectionProvider<String>, HibernatePropertiesCustomizer {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    /** Resolver for optional CompanyId via @TenantId Discriminator  */
     override fun resolveCurrentTenantIdentifier(): String {
-        return getOrgunitId()
-    }
-
-    companion object {
-        fun getOrgunitId(): String {
-            return UserContext.organizationId;
-        }
+        return tenantId
     }
 
     override fun validateExistingCurrentSessions(): Boolean {

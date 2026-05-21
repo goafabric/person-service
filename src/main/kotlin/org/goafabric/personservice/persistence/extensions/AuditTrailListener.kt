@@ -28,7 +28,6 @@ class AuditTrailListener : ApplicationContextAware {
     internal data class AuditTrail(
         @Id @GeneratedValue(strategy = GenerationType.UUID)
         val id: String?,
-        val organizationId: String,
         val objectType: String,
         val objectId: String,
         @Enumerated(EnumType.STRING)
@@ -79,7 +78,6 @@ class AuditTrailListener : ApplicationContextAware {
         val date = Date(System.currentTimeMillis())
         return AuditTrail(
             id = null,
-            organizationId = TenantResolver.getOrgunitId(),
             objectType = getTableName((newObject ?: oldObject)!!),
             objectId = referenceId,
             dbOperation,

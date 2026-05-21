@@ -32,8 +32,6 @@ class PersonControllerIT(
 
         assertThat(person.id).isNotNull()
         assertThat(person.version).isNotNull()
-
-        assertThat(personRepository.findById(persons.first().id!!).get().organizationId).isEqualTo("0")
     }
 
     @Test
