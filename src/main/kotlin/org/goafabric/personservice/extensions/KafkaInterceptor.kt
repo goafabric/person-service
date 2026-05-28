@@ -12,6 +12,7 @@ import org.goafabric.personservice.extensions.UserContext.removeContext
 import org.goafabric.personservice.extensions.UserContext.setContext
 import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.slf4j.MDC
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation
 import org.springframework.context.annotation.Bean
@@ -29,7 +30,8 @@ import java.util.function.BiFunction
 
 @Configuration
 @Endpoint(id = "topics")
-class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin) {
+class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin,
+                       @Value("\${spring.application.name}") private val applicationName: String) {
     @Bean
     fun kafkaListenerContainerFactory(
         consumerFactory: ConsumerFactory<String, Any>,
@@ -64,12 +66,10 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin) {
 
     @Bean
     open fun deadLetterErrorHandler(kafkaTemplate: KafkaTemplate<String, Any>): DefaultErrorHandler {
+        val serviceName = applicationName.removeSuffix("-service")
         val recoverer = DeadLetterPublishingRecoverer(
-            kafkaTemplate, BiFunction { record: ConsumerRecord<*, *>?, exception: Exception? ->
-                TopicPartition(
-                    record!!.topic() + ".DLT",
-                    record.partition()
-                )
+            kafkaTemplate, BiFunction { record, _ ->
+                TopicPartition("${record.topic()}.$serviceName.DLQ", record.partition())
             }
         )
 
