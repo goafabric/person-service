@@ -17,7 +17,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus,heapdump"
+        include: "health,prometheus,heapdump,metrics"
 
 #tracing
 spring.application.name: person-service
@@ -26,8 +26,8 @@ logging.level.io.opentelemetry.exporter: "OFF"
 management.opentelemetry.tracing.export.otlp.endpoint: "http://localhost:4318/v1/traces"
 
 #otel collector (prometheus) metrics configuration, disabled currently, for details https://spring.io/blog/2025/11/18/opentelemetry-with-spring-boot
-#management.otlp.metrics.export.url: "http://otel-collector:4318/v1/metrics"
 logging.level.io.micrometer.registry.otlp: "OFF"
+#management.otlp.metrics.export.url: http://localhost:4318/v1/metrics
 
 #persistence
 spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
