@@ -17,6 +17,9 @@ metadata:
     - microservice
   annotations:
     github.com/project-slug: goafabric/person-service
+    backstage.io/techdocs-ref: dir:./doc/techdocs
+    backstage.io/adr-location: https://github.com/goafabric/backstage/tree/develop/catalog/adr/person-service
+    #backstage.io/techdocs-ref: url:https://github.com/goafabric/backstage/tree/techdos/catalog/techdocs/person-service
   links:
     - url: https://github.com/goafabric/person-service
       title: GitHub Repository
@@ -46,3 +49,23 @@ spec:
   owner: team-blue
   definition:
     $text: doc/generated/openapi.json
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: person-topic
+  description: Person Example Topic
+  tags:
+    - kafka-topic
+    - person-service
+spec:
+  type: kafka-topic
+  lifecycle: production
+  owner: devops
+  definition: |
+    topic: person
+    type:  person
+    key: person_id
+    EventData.operation: CREATE | UPDATE | DELETE

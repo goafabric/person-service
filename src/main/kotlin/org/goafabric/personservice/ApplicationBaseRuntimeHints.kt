@@ -1,0 +1,94 @@
+package org.goafabric.personservice
+
+import org.springframework.aot.hint.*
+import org.springframework.aot.hint.MemberCategory
+import org.springframework.aot.hint.TypeHint
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.ImportRuntimeHints
+import java.util.function.Consumer
+
+@Configuration
+@ImportRuntimeHints(ApplicationBaseRuntimeHints::class)
+class ApplicationBaseRuntimeHints : RuntimeHintsRegistrar {
+    override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
+        //springdoc
+        hints.reflection().registerType(
+            TypeReference.of("org.springdoc.core.providers.SpringWebProvider$\$SpringCGLIB$$0"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withField("CGLIB\$FACTORY_DATA") })
+
+        hints.reflection().registerType(
+            TypeReference.of("org.springdoc.core.providers.SpringWebProvider$\$SpringCGLIB$$0"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withField("CGLIB\$CALLBACK_FILTER") })
+
+        hints.reflection().registerType(
+            TypeReference.of("org.springdoc.core.providers.SpringWebProvider"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+
+        //kafka
+        hints.reflection().registerType(
+            TypeReference.of("java.security.AccessController"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("javax.security.auth.Subject"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+
+        //kotlin reflection stuff
+        hints.reflection().registerType(
+            TypeReference.of("java.lang.reflect.Parameter"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("java.lang.reflect.Executable"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+
+        //adapter
+        hints.reflection().registerType(
+            TypeReference.of("org.springframework.web.client.ResourceAccessException"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+
+        //caffeine cache
+        hints.reflection().registerType(
+            TypeReference.of("com.github.benmanes.caffeine.cache.PSAMS"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS) })
+        hints.reflection().registerType(
+            TypeReference.of("com.github.benmanes.caffeine.cache.SSMS"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS) })
+        hints.reflection().registerType(
+            TypeReference.of("com.github.benmanes.caffeine.cache.SSMSA"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS) })
+        hints.reflection().registerType(
+            TypeReference.of("com.github.benmanes.caffeine.cache.SSMS"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withField("FACTORY") })
+        hints.reflection().registerType(
+            TypeReference.of("com.github.benmanes.caffeine.cache.SSMSA"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withField("FACTORY") })
+
+
+        //flyway scripts
+        hints.resources().registerPattern("db/migration/h2/*.sql")
+        hints.resources().registerPattern("db/migration/common/*.sql")
+        hints.resources().registerPattern("db/migration/postgresql/*.sql")
+
+        //mcp
+        hints.reflection().registerType(
+            TypeReference.of("java.lang.Throwable"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        hints.reflection().registerType(
+            TypeReference.of("org.springaicommunity.mcp.context.DefaultMetaProvider"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS) })
+    }
+}

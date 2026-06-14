@@ -1,0 +1,86 @@
+#application
+server:
+  port: 50800
+  tomcat.threads.max: 20
+  forward-headers-strategy: FRAMEWORK
+
+#vthreads
+spring.threads.virtual.enabled: "true"
+
+#monitoring
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus,heapdump"
+
+#tracing
+spring.application.name: person-service
+management.tracing.sampling.probability: "1.0"
+logging.level.io.opentelemetry: "OFF"
+logging.level.io.micrometer.registry.otlp: "OFF"
+#management.otlp.tracing.endpoint: "http://localhost:4318/v1/traces"
+management.opentelemetry.tracing.export.otlp.endpoint: "http://localhost:4318/v1/traces"
+
+#persistence
+spring.datasource.url: jdbc:h2:mem:person;DATABASE_TO_UPPER=FALSE
+#spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username: postgres
+spring.datasource.password: postgres
+
+spring.jpa.hibernate.ddl-auto: "none"
+spring.datasource.hikari.maximum-pool-size: "10"
+spring.datasource.hikari.connection-timeout: "10000"
+
+multi-tenancy.tenants: "0,5"
+multi-tenancy.schema-prefix: "example_"
+database.provisioning.goals: "-migrate -import-demo-data"
+#spring.jpa.properties.hibernate.enable_lazy_load_no_trans: "true" #needed for audittrail updates
+
+#nosql databases
+spring.autoconfigure.exclude: ${.jpa.autoconfiguration},${mongodb.autoconfiguration},${elasticsearch.autoconfiguration}
+
+spring.mongodb.uri: "mongodb://mongodb:mongodb@localhost:27017/person?authSource=admin"
+jpa.autoconfiguration: "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration, org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration, org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration"
+mongodb.autoconfiguration: "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.MongoDataAutoConfiguration, org.springframework.boot.data.mongodb.autoconfigure.DataMongoRepositoriesAutoConfiguration"
+elasticsearch.autoconfiguration: "org.springframework.boot.elasticsearch.autoconfigure.ElasticsearchClientAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchDataAutoConfiguration, org.springframework.boot.data.elasticsearch.autoconfigure.ElasticsearchRepositoriesAutoConfiguration, org.springframework.boot.elasticsearch.autoconfigure.health.ElasticsearchRestHealthContributorAutoConfiguration"
+
+#adapter
+adapter:
+  timeout: 10000
+  calleeservice:
+    url: http://localhost:50900
+    user.name: "admin"
+    user.password: "admin"
+
+#resilience4j
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      #see for more informations under: https://resilience4j.readme.io/docs/circuitbreaker
+      registerHealthIndicator: true
+      slowCallDurationThreshold: ${adapter.timeout} #Effectively the timeout
+      slowCallRateThreshold: 100 #Percentage of calls that that need be registered a slow for the CB to transitions from close to open
+      failureRateThreshold: 50 #Failure rate when the Circuit Breaker transitions from closed to open
+      waitDurationInOpenState: 30s #Time the CircuitBreaker should wait before transitioning back from open to half-open.
+      minimumNumberOfCalls: 5 #The minimum number of calls which are required before the CircuitBreaker can calculate the error rate.
+      permittedNumberOfCallsInHalfOpenState: 10 #Number of permitted calls when the CircuitBreaker is half open.
+      recordExceptions: "java.io.IOException" #"org.springframework.web.client.ResourceAccessException" #Only record Connection Exceptions, all other functional Exceptions are HttpClientExceptions
+      #recordExceptions: "org.springframework.web.client.ResourceAccessException"
+
+#logging
+logging.pattern.level: "%5p tenantId=%X{tenantId:-}" #"%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}] tenantId=%X{tenantId:-}"
+
+logging.level.root: "WARN"
+logging.level.org.springframework: "INFO"
+
+logging.level.org.goafabric: "INFO"
+logging.level.org.flywaydb.core: "INFO"
+logging.level.org.hibernate.SQL: "INFO"
+
+springdoc.enable-kotlin: false

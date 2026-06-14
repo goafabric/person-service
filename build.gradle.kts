@@ -1,24 +1,30 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 val version: String by project
 val javaVersion = "25"
 java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
+tasks.withType<KotlinCompile>().all { compilerOptions { jvmTarget.set(JvmTarget.fromTarget(javaVersion)) } }
 
 val dockerRegistry = "goafabric"
-val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.0_36-jre@sha256:8ae073345116cfd51ec37b26c3a1c25de9336d436354e0be4271bda1463e119c"
+val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.2_10-jre-noble@sha256:b02e4cd184d9ece59b01129af1d0a069fa01e4f0f798f0bc4f3ff1a8391ba694"
 
 plugins {
-	java
 	jacoco
-	id("org.springframework.boot") version "4.0.0"
+	id("org.springframework.boot") version "4.1.0"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.graalvm.buildtools.native") version "0.11.3"
+	id("org.graalvm.buildtools.native") version "0.11.5"
 
-	id("com.google.cloud.tools.jib") version "3.5.1"
+	id("com.google.cloud.tools.jib") version "3.5.3"
 	id("net.researchgate.release") version "3.1.0"
-	id("org.sonarqube") version "7.0.1.6134"
+	id("org.sonarqube") version "7.2.3.7755"
 
-	id("org.cyclonedx.bom") version "3.0.2"
+	kotlin("jvm") version "2.3.20"
+	kotlin("plugin.spring") version "2.3.20"
+	kotlin("plugin.jpa") version "2.3.20"
+	kotlin("kapt") version "2.3.20"
+
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
@@ -32,11 +38,11 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0")
-		implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
-		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.0.0")
-
-		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
+		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
+		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.2.1")
+		testImplementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
+		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.2")
 	}
 }
 
@@ -46,50 +52,53 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	//monitoring
-    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-registry-prometheus")
-
-    implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
+	implementation("net.ttddyy.observation:datasource-micrometer-spring-boot")
 
 	//openapi
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
 
 	//adapter
-	implementation("io.github.resilience4j:resilience4j-spring-boot3")
+	implementation("io.github.resilience4j:resilience4j-spring-boot4") {exclude ("io.github.resilience4j", "resilience4j-micrometer")} // has to be excluded because of aot processor problem with kotlin
 	implementation("org.springframework.boot:spring-boot-starter-aspectj")
-
-	//persistence
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
-	implementation("com.h2database:h2")
-	implementation("org.postgresql:postgresql")
-    implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.flywaydb:flyway-database-postgresql")
-
-	//mongodb + elastic
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	//implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
 	//code generation
 	implementation("org.mapstruct:mapstruct")
-	annotationProcessor("org.mapstruct:mapstruct-processor")
+	kapt("org.mapstruct:mapstruct-processor:1.6.3")
+
+	//persistence
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {exclude("org.glassfish.jaxb", "jaxb-runtime")}
+	implementation("com.h2database:h2")
+	implementation("org.postgresql:postgresql")
+	implementation("org.springframework.boot:spring-boot-starter-flyway")
+	implementation("org.flywaydb:flyway-database-postgresql")
+
+	implementation("org.springframework.boot:spring-boot-starter-kafka")
+
+	//mongodb
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+	//kotlin
+	implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
+    implementation("org.springframework.boot:spring-boot-starter-restclient")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("tools.jackson.module:jackson-module-kotlin")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-	//devtools
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-kafka-test")
+	testImplementation("org.mockito.kotlin:mockito-kotlin")
 	testImplementation("com.tngtech.archunit:archunit-junit5")
-
-	//spring boot 4.0
-	implementation("org.springframework.boot:spring-boot-starter-restclient")
-
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
 	exclude("**/*NRIT*")
 	finalizedBy("jacocoTestReport")
+	testLogging.events("started", "passed", "skipped", "failed")
 }
 tasks.jacocoTestReport { reports {csv.required.set(true); xml.required.set(true) } }
 
@@ -106,7 +115,8 @@ tasks.register("dockerImageNative") { description= "Native Image"; group = "buil
 tasks.named<BootBuildImage>("bootBuildImage") {
 	val nativeImageName = "${dockerRegistry}/${project.name}-native:${project.version}"
 	imageName.set(nativeImageName)
-	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to javaVersion, "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx7000m -march=compatibility"))
+	builder.set("paketobuildpacks/builder-noble-java-tiny@sha256:c8b5f936e6d9af492af4a493b4a03eaf496fe51f206c5d53ccddab7871ed4ef5")
+	environment.set(mapOf("BP_NATIVE_IMAGE" to "true", "BP_JVM_VERSION" to javaVersion, "BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to "-J-Xmx8000m -march=compatibility"))
 	doLast {
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker run --rm $nativeImageName -Dspring.context.exit=onRefresh") }
 		project.objects.newInstance<InjectedExecOps>().execOps.exec { commandLine("/bin/sh", "-c", "docker push $nativeImageName") }
@@ -123,3 +133,7 @@ openApi {
 	customBootRun { args.set(listOf("--server.port=8080")) }
 	tasks.forkedSpringBootRun { dependsOn("compileAotJava", "processAotResources") }
 }
+
+sonar { properties { property("sonar.exclusions", "**/ApplicationBaseRuntimeHints.*") } }
+
+kotlin.compilerOptions.freeCompilerArgs.add("-Xannotation-default-target=param-property")

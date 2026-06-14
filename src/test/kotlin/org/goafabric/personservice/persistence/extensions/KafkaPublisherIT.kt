@@ -1,0 +1,69 @@
+package org.goafabric.personservice.persistence.extensions
+
+import org.assertj.core.api.Assertions.assertThat
+import org.goafabric.personservice.consumer.PersonConsumer
+import org.goafabric.personservice.controller.PersonController
+import org.goafabric.personservice.controller.dto.Address
+import org.goafabric.personservice.controller.dto.Person
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry
+import org.springframework.kafka.test.context.EmbeddedKafka
+import org.springframework.kafka.test.utils.ContainerTestUtils
+import org.springframework.test.annotation.DirtiesContext
+import java.util.concurrent.TimeUnit
+
+@SpringBootTest(properties = ["spring.kafka.enabled=true"])
+@EmbeddedKafka(partitions = 1)
+@DirtiesContext
+class KafkaPublisherIT(
+    @Autowired private val personController: PersonController,
+    @Autowired private val personConsumer: PersonConsumer,
+    @Autowired private val registry: KafkaListenerEndpointRegistry) {
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun save() {
+        registry.listenerContainers.forEach { container ->
+            ContainerTestUtils.waitForAssignment(container, 1)
+        }
+
+        val person = personController.save(
+            Person(
+                null,
+                null,
+                "Homer",
+                "Simpson",
+                listOf(
+                    createAddress("Evergreen Terrace"),
+                    createAddress("Everblue Terrace")
+                )
+            )
+        )
+
+        assertThat(person).isNotNull()
+
+
+        //update
+        val personUpdated = personController.save(
+            Person(
+                person.id,
+                person.version,
+                person.firstName,
+                "updated",
+                person.address
+            )
+        )
+        assertThat(personUpdated.id).isEqualTo(person.id)
+
+        assertThat(personConsumer.latch.await(2, TimeUnit.SECONDS)).isTrue
+    }
+
+    private fun createAddress(street: String): Address {
+        return Address(
+            null, null,
+            street, "Springfield"
+        )
+    }
+}

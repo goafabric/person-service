@@ -1,0 +1,30 @@
+package org.goafabric.personservice.extensions
+
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
+
+class HttpInterceptorTest {
+    private val httpInterceptor = HttpInterceptor()
+
+    @Test
+    fun preHandle() {
+        assertThat(
+            httpInterceptor.preHandle(
+                mock(),
+                mock(), Any()
+            )
+        ).isTrue()
+    }
+
+    @Test
+    fun getTenantId() {
+        assertThat(UserContext.tenantId).isEqualTo("0")
+    }
+
+    @Test
+    fun getUserName() {
+        assertThat(UserContext.userName).isEqualTo("anonymous")
+    }
+
+}

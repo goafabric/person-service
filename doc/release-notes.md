@@ -1,15 +1,10 @@
+# 4.1.0
+- upgrade to Spring Boot 4.0.0
+
 # 4.0.0
 - upgrade to Spring Boot 4.0.0
 
-# 3.5.4
-- upgrade of Spring Boot
-
-# 3.5.3
-- upgrade of Spring Boot
-
 # 3.5.0
-- upgrade of Spring Boot
-- native images are now arm only
 
 # 3.4.3
 - upgrade of Spring Boot
