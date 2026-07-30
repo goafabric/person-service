@@ -1,7 +1,5 @@
 package org.goafabric.personservice.extensions
 
-import io.opentelemetry.api.trace.Span
-import io.opentelemetry.context.Context
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.ListTopicsOptions
 import org.apache.kafka.clients.consumer.Consumer
@@ -87,7 +85,7 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin,
     }
 
     private fun configureLogsAndTracing() {
-        Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
+        //Span.fromContext(Context.current()).setAttribute("tenant.id", tenantId)
         MDC.put("tenantId", tenantId)
     }
 
