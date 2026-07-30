@@ -1,8 +1,6 @@
 package org.goafabric.personservice
 
 import org.springframework.aot.hint.*
-import org.springframework.aot.hint.MemberCategory
-import org.springframework.aot.hint.TypeHint
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.ImportRuntimeHints
 import java.util.function.Consumer
@@ -90,5 +88,11 @@ class ApplicationBaseRuntimeHints : RuntimeHintsRegistrar {
         hints.reflection().registerType(
             TypeReference.of("org.springaicommunity.mcp.context.DefaultMetaProvider"),
             Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS) })
+
+        //org.graalvm.buildtools.native 1.0 regression
+        hints.reflection().registerType(
+            TypeReference.of("com.google.protobuf.ExtensionRegistry"),
+            Consumer { builder: TypeHint.Builder? -> builder!!.withMembers(MemberCategory.INVOKE_DECLARED_METHODS) })
+
     }
 }
