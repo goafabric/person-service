@@ -12,18 +12,18 @@ val baseImage = "ibm-semeru-runtimes:open-jdk-25.0.2_10-jre-noble@sha256:b02e4cd
 
 plugins {
 	jacoco
-	id("org.springframework.boot") version "4.1.0"
+	id("org.springframework.boot") version "4.1.1"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.graalvm.buildtools.native") version "1.1.6"
+	id("org.graalvm.buildtools.native") version "1.1.10"
 
-	id("com.google.cloud.tools.jib") version "3.5.3"
+	id("com.google.cloud.tools.jib") version "3.5.4"
 	id("net.researchgate.release") version "3.1.0"
-	id("org.sonarqube") version "7.2.3.7755"
+	id("org.sonarqube") version "7.4.0.8496"
 
-	kotlin("jvm") version "2.3.20"
-	kotlin("plugin.spring") version "2.3.20"
-	kotlin("plugin.jpa") version "2.3.20"
-	kotlin("kapt") version "2.3.20"
+	kotlin("jvm") version "2.4.10"
+	kotlin("plugin.spring") version "2.4.10"
+	kotlin("plugin.jpa") version "2.4.10"
+	kotlin("kapt") version "2.4.10"
 
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
@@ -38,11 +38,11 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.2.1")
 		testImplementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
-		testImplementation("com.tngtech.archunit:archunit-junit5:1.4.2")
+		testImplementation("com.tngtech.archunit:archunit-junit5:1.5.0")
 	}
 }
 
