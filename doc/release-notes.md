@@ -1,5 +1,8 @@
-# 4.1.0
-- upgrade to Spring Boot 4.0.0
+# 4.1.1
+- upgrade to Spring Boot 4.1.1
+- update to latest org.graalvm.buildtools.native 1.1.10
+  - This also includes updates to ApplicationBaseRuntimeHints (1.0 regression)
+- Removal of native builder image pinning in build.gradle.kts
 
 # 4.0.0
 - upgrade to Spring Boot 4.0.0
