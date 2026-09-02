@@ -18,7 +18,7 @@ plugins {
 
 	id("com.google.cloud.tools.jib") version "3.5.4"
 	id("net.researchgate.release") version "3.1.0"
-	id("org.sonarqube") version "7.4.0.8496"
+	id("org.sonarqube") version "7.5.0.8588"
 
 	kotlin("jvm") version "2.4.10"
 	kotlin("plugin.spring") version "2.4.10"
