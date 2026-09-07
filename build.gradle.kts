@@ -20,10 +20,10 @@ plugins {
 	id("net.researchgate.release") version "3.1.0"
 	id("org.sonarqube") version "7.5.0.8588"
 
-	kotlin("jvm") version "2.4.10"
-	kotlin("plugin.spring") version "2.4.10"
-	kotlin("plugin.jpa") version "2.4.10"
-	kotlin("kapt") version "2.4.10"
+	kotlin("jvm") version "2.4.20"
+	kotlin("plugin.spring") version "2.4.20"
+	kotlin("plugin.jpa") version "2.4.20"
+	kotlin("kapt") version "2.4.20"
 
 	id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
@@ -38,7 +38,7 @@ dependencies {
 	constraints {
 		annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 		implementation("org.mapstruct:mapstruct:1.6.3")
-		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
+		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.2.1")
 		testImplementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
