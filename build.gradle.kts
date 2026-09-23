@@ -41,7 +41,7 @@ dependencies {
 		implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1")
 		implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
 		implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:2.3.0")
-		testImplementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
+		testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
 		testImplementation("com.tngtech.archunit:archunit-junit5:1.5.0")
 	}
 }
