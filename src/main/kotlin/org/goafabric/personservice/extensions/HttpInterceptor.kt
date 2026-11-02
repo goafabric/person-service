@@ -4,9 +4,11 @@ import io.opentelemetry.api.trace.Span
 import io.opentelemetry.context.Context
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.goafabric.personservice.extensions.UserContext.tenantId
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
@@ -59,5 +61,7 @@ class HttpInterceptor : HandlerInterceptor {
         UserContext.removeContext()
         MDC.remove("tenantId")
     }
+
+    @RegisterReflectionForBinding(HttpInterceptor::class) fun getPrefix() = tenantId + "_"
 
 }
