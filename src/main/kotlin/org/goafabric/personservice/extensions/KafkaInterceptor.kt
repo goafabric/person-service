@@ -67,7 +67,7 @@ class KafkaInterceptor(private val kafkaAdmin: KafkaAdmin,
         val serviceName = applicationName.removeSuffix("-service")
         val recoverer = DeadLetterPublishingRecoverer(
             kafkaTemplate, BiFunction { record, _ ->
-                TopicPartition("${record.topic()}.$serviceName.DLT", record.partition())
+                TopicPartition("${record.topic()}.$serviceName.dlt", record.partition())
             }
         )
 
