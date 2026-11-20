@@ -231,7 +231,11 @@
             "maxLength": 255,
             "minLength": 3
           }
-        }
+        },
+        "required": [
+          "city",
+          "street"
+        ]
       },
       "Person": {
         "type": "object",
@@ -265,7 +269,12 @@
               "$ref": "#/components/schemas/Address"
             }
           }
-        }
+        },
+        "required": [
+          "address",
+          "firstName",
+          "lastName"
+        ]
       },
       "PersonSearch": {
         "type": "object",
